@@ -1,0 +1,59 @@
+@use "../../styles/mixins" as m;
+
+.du_radio_group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.du_radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.du_radio_input {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.du_radio_dot {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  border-radius: 50%;
+}
+
+.du_radio_input:checked ~ .du_radio_dot::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background-color: var(--fg);
+  border-radius: 50%;
+}
+
+.du_radio_input:focus-visible ~ .du_radio_dot {
+  outline: var(--border-width) solid var(--fg);
+  outline-offset: 2px;
+}
+
+.du_radio_input:disabled ~ .du_radio_dot {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+}
+
+.du_radio_disabled {
+  cursor: not-allowed;
+}

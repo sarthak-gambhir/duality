@@ -1,0 +1,10 @@
+.du_label {
+  display: inline-block;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.du_label_required {
+  font-weight: 700;
+}

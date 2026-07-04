@@ -1,0 +1,74 @@
+@use "../../styles/mixins" as m;
+
+.du_button {
+  @include m.du_reset_control;
+  @include m.du_border;
+  @include m.du_focus;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+
+  &:disabled {
+    color: var(--fg);
+    cursor: not-allowed;
+
+    @include m.du_dither;
+  }
+}
+
+.du_button_solid {
+  color: var(--bg);
+  background-color: var(--fg);
+
+  &:hover:not(:disabled) {
+    color: var(--fg);
+    background-color: var(--bg);
+  }
+}
+
+.du_button_inverse {
+  color: var(--fg);
+  background-color: var(--bg);
+
+  &:hover:not(:disabled) {
+    color: var(--bg);
+    background-color: var(--fg);
+  }
+}
+
+.du_button_ghost {
+  color: var(--fg);
+  background-color: var(--bg);
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    color: var(--bg);
+    background-color: var(--fg);
+    border-color: var(--fg);
+  }
+}
+
+.du_button_sm {
+  min-block-size: var(--size-sm);
+  padding: 0 var(--space-2);
+  font-size: 14px;
+}
+
+.du_button_md {
+  min-block-size: var(--size-md);
+  padding: 0 var(--space-3);
+  font-size: 16px;
+}
+
+.du_button_lg {
+  min-block-size: var(--size-lg);
+  padding: 0 var(--space-4);
+  font-size: 18px;
+}

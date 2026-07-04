@@ -1,0 +1,132 @@
+@use "../../styles/mixins" as m;
+
+.du_select {
+  position: relative;
+  display: inline-block;
+  inline-size: 100%;
+}
+
+.du_select_button {
+  @include m.du_reset_control;
+  @include m.du_border;
+  @include m.du_focus;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding-inline: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: start;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+  }
+}
+
+.du_select_value {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Two colors only: distinguish the placeholder by style, never by color.
+.du_select_placeholder {
+  font-style: italic;
+}
+
+.du_select_sm {
+  min-block-size: var(--size-sm);
+  font-size: 14px;
+}
+
+.du_select_md {
+  min-block-size: var(--size-md);
+  font-size: 16px;
+}
+
+.du_select_lg {
+  min-block-size: var(--size-lg);
+  font-size: 18px;
+}
+
+// CSS caret: a filled foreground triangle that flips when open.
+.du_select_caret {
+  flex: 0 0 auto;
+  inline-size: 0;
+  block-size: 0;
+  border-inline: 5px solid transparent;
+  border-block-start: 6px solid var(--fg);
+}
+
+.du_select_button[data-open] .du_select_caret {
+  border-block-start: 0;
+  border-block-end: 6px solid var(--fg);
+}
+
+.du_select_invalid .du_select_button {
+  border-style: dashed;
+}
+
+// -- Popup list --------------------------------------------------------------
+.du_select_listbox {
+  position: absolute;
+  z-index: 10;
+  inset-inline: 0;
+  inset-block-start: calc(100% - var(--border-width));
+  max-block-size: 240px;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_select_option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+// Selection is shown by a filled marker (never color alone); the active option
+// (keyboard or hover) inverts the two colors.
+.du_select_option_mark {
+  flex: 0 0 auto;
+  inline-size: 10px;
+  block-size: 10px;
+  background-color: var(--bg);
+}
+
+.du_select_option[aria-selected="true"] .du_select_option_mark {
+  background-color: var(--fg);
+}
+
+.du_select_option[data-active] {
+  color: var(--bg);
+  background-color: var(--fg);
+}
+
+.du_select_option[data-active] .du_select_option_mark {
+  background-color: var(--fg);
+}
+
+.du_select_option[data-active][aria-selected="true"] .du_select_option_mark {
+  background-color: var(--bg);
+}
+
+.du_select_option[aria-disabled="true"] {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+}

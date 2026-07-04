@@ -1,0 +1,22 @@
+@use "../../styles/mixins" as m;
+
+.du_card {
+  color: var(--fg);
+  background-color: var(--bg);
+
+  @include m.du_border;
+}
+
+.du_card_header {
+  padding: var(--space-4);
+  border-bottom: var(--border-width) solid var(--fg);
+}
+
+.du_card_body {
+  padding: var(--space-4);
+}
+
+.du_card_footer {
+  padding: var(--space-4);
+  border-top: var(--border-width) solid var(--fg);
+}

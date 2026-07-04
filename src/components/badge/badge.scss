@@ -1,0 +1,22 @@
+.du_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  min-block-size: var(--size-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_badge_solid {
+  color: var(--bg);
+  background-color: var(--fg);
+}
+
+.du_badge_outline {
+  color: var(--fg);
+  background-color: var(--bg);
+}

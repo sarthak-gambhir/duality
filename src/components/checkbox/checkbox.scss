@@ -1,0 +1,71 @@
+@use "../../styles/mixins" as m;
+
+.du_checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.du_checkbox_input {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.du_checkbox_box {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_checkbox_input:checked ~ .du_checkbox_box,
+.du_checkbox_input:indeterminate ~ .du_checkbox_box {
+  background-color: var(--fg);
+}
+
+.du_checkbox_input:checked ~ .du_checkbox_box::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 6px;
+  inline-size: 4px;
+  block-size: 9px;
+  border-right: var(--border-width) solid var(--bg);
+  border-bottom: var(--border-width) solid var(--bg);
+  transform: rotate(45deg);
+}
+
+.du_checkbox_input:indeterminate ~ .du_checkbox_box::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 3px;
+  block-size: var(--border-width);
+  background-color: var(--bg);
+  transform: translateY(-50%);
+}
+
+.du_checkbox_input:focus-visible ~ .du_checkbox_box {
+  outline: var(--border-width) solid var(--fg);
+  outline-offset: 2px;
+}
+
+.du_checkbox_input:disabled ~ .du_checkbox_box {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+}
+
+.du_checkbox_disabled {
+  cursor: not-allowed;
+}

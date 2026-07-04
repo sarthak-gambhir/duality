@@ -1,0 +1,30 @@
+.du_text {
+  margin: 0;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: var(--line-height);
+}
+
+.du_text_sm {
+  font-size: 14px;
+}
+
+.du_text_md {
+  font-size: var(--font-size);
+}
+
+.du_text_lg {
+  font-size: 20px;
+}
+
+.du_text_xl {
+  font-size: 24px;
+}
+
+.du_text_mono {
+  font-family: var(--font-mono);
+}
+
+.du_text_bold {
+  font-weight: 700;
+}

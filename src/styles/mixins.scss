@@ -1,0 +1,39 @@
+// Reusable SCSS mixins for Duality components.
+// Consumed via: @use "../../styles/mixins" as m;
+
+// Pixel border in the foreground color, never rounded.
+@mixin du_border($width: var(--border-width)) {
+  border: $width solid var(--fg);
+  border-radius: var(--radius);
+}
+
+// Color-safe focus ring. Focus is also signalled by the outline, never color alone.
+@mixin du_focus {
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
+// Swap the two colors (hover / selected / pressed).
+@mixin du_invert {
+  color: var(--bg);
+  background-color: var(--fg);
+}
+
+// Strip native control chrome.
+@mixin du_reset_control {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  appearance: none;
+}
+
+// Two-color checkerboard used for disabled surfaces (a "gray" made from fg/bg).
+@mixin du_dither {
+  background-color: var(--bg);
+  background-image: repeating-conic-gradient(var(--fg) 0 25%, var(--bg) 0 50%);
+  background-size: 4px 4px;
+}

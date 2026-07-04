@@ -1,0 +1,6 @@
+.du_textarea {
+  min-block-size: calc(var(--size-lg) * 2);
+  padding: var(--space-2);
+  line-height: var(--line-height);
+  resize: vertical;
+}

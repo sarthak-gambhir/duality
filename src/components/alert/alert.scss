@@ -1,0 +1,55 @@
+.du_alert {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-4);
+  color: var(--fg);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_alert_content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.du_alert_title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.du_alert_body {
+  font-family: var(--font-sans);
+}
+
+// Marker: a filled foreground pixel. Shape differs per tone (never color).
+.du_alert_marker {
+  flex: 0 0 auto;
+  inline-size: 12px;
+  block-size: 12px;
+  margin-block-start: 3px;
+  background-color: var(--fg);
+}
+
+.du_alert_info {
+  border-style: solid;
+}
+
+.du_alert_warning {
+  border-style: dashed;
+
+  .du_alert_marker {
+    background-color: var(--bg);
+    border: var(--border-width) solid var(--fg);
+  }
+}
+
+.du_alert_error {
+  border-style: double;
+  border-width: var(--border-width-thick);
+
+  .du_alert_marker {
+    transform: rotate(45deg);
+  }
+}

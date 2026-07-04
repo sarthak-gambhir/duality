@@ -1,0 +1,63 @@
+@use "../../styles/mixins" as m;
+
+.du_switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.du_switch_input {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 40px;
+  block-size: var(--size-sm);
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.du_switch_track {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: 40px;
+  block-size: var(--size-sm);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_switch_thumb {
+  position: absolute;
+  inset-block-start: 1px;
+  inset-inline-start: 1px;
+  inline-size: 14px;
+  block-size: 14px;
+  background-color: var(--fg);
+  transition: transform 0.1s steps(2);
+}
+
+.du_switch_input:checked ~ .du_switch_track {
+  background-color: var(--fg);
+}
+
+.du_switch_input:checked ~ .du_switch_track .du_switch_thumb {
+  background-color: var(--bg);
+  transform: translateX(20px);
+}
+
+.du_switch_input:focus-visible ~ .du_switch_track {
+  outline: var(--border-width) solid var(--fg);
+  outline-offset: 2px;
+}
+
+.du_switch_input:disabled ~ .du_switch_track {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+}
+
+.du_switch_disabled {
+  cursor: not-allowed;
+}

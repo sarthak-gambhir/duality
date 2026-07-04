@@ -1,0 +1,5 @@
+.du_stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--du-gap, var(--space-4));
+}

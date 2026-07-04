@@ -1,0 +1,15 @@
+// Base surface for anything rendered inside the Duality theme root.
+.du_theme_root {
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
+  // Every focusable element gets a visible, color-safe focus ring. State is
+  // never conveyed by color alone, so focus also changes the outline style.
+  :focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,5 @@
+.du_inline {
+  display: flex;
+  flex-direction: row;
+  gap: var(--du-gap, var(--space-3));
+}

@@ -1,0 +1,47 @@
+// Minimal, opinionated reset scoped to the Duality theme root.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.du_theme_root {
+  margin: 0;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote {
+    margin: 0;
+  }
+
+  ul[class],
+  ol[class] {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+// Form controls inherit typography by default. This is intentionally a low,
+// element-only specificity so component classes (e.g. .du_button_solid) always
+// win over it. The control mixin (du_reset_control) still applies the same
+// defaults per component.
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}

@@ -1,0 +1,37 @@
+// Entry stylesheet compiled by `sass` to `dist/duality.css`.
+// Consumers import once: `import '@duality/ui/styles.css'`.
+@use "tokens/tokens";
+@use "styles/reset";
+@use "styles/global";
+
+// Layout
+@use "components/stack/stack";
+@use "components/inline/inline";
+@use "components/grid/grid";
+@use "components/container/container";
+@use "components/divider/divider";
+
+// Typography
+@use "components/text/text";
+@use "components/heading/heading";
+@use "components/link/link";
+@use "components/code/code";
+@use "components/kbd/kbd";
+
+// Form controls
+@use "components/button/button";
+@use "components/input/input";
+@use "components/textarea/textarea";
+@use "components/checkbox/checkbox";
+@use "components/radio/radio";
+@use "components/switch/switch";
+@use "components/select/select";
+
+// Form composition
+@use "components/label/label";
+@use "components/form_field/form_field";
+
+// Display
+@use "components/card/card";
+@use "components/badge/badge";
+@use "components/alert/alert";

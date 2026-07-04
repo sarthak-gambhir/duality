@@ -1,0 +1,36 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "selector-class-pattern": [
+      "^du(_[a-z0-9]+)+$",
+      {
+        "message": "Class names must be snake_case with single underscores and start with the du_ prefix (e.g. du_button, du_button_icon, du_button_primary). No __, --, camelCase, or kebab-case."
+      }
+    ],
+    "custom-property-pattern": [
+      "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      {
+        "message": "CSS custom properties are kebab-case (e.g. --fg, --space-2)."
+      }
+    ],
+    "scss/dollar-variable-pattern": [
+      "^[a-z][a-z0-9]*(_[a-z0-9]+)*$",
+      {
+        "message": "SCSS variables must be snake_case with single underscores."
+      }
+    ],
+    "scss/at-mixin-pattern": [
+      "^du(_[a-z0-9]+)+$",
+      {
+        "message": "Mixins are snake_case with the du_ prefix (e.g. du_border, du_focus)."
+      }
+    ],
+    "color-no-hex": null,
+    "alpha-value-notation": "number",
+    "declaration-block-no-redundant-longhand-properties": null,
+    "color-hex-length": null,
+    "value-keyword-case": null,
+    "scss/comment-no-empty": null,
+    "scss/dollar-variable-empty-line-before": null
+  }
+}

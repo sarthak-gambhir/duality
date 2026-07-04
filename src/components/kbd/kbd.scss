@@ -1,0 +1,12 @@
+@use "../../styles/mixins" as m;
+
+.du_kbd {
+  display: inline-block;
+  padding: 0 var(--space-1);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+
+  @include m.du_border;
+}

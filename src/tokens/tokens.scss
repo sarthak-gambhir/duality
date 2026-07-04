@@ -1,0 +1,133 @@
+// =============================================================================
+// Duality design tokens - the single source of runtime tokens.
+//
+// - SCSS variables (snake_case, single underscores) drive build-time values.
+// - CSS custom properties (kebab-case) expose runtime, themeable tokens.
+//
+// COLOR RULE: exactly two colors resolve at runtime, `--fg` and `--bg`.
+// There are no intermediate shades, hue variants, or transparency. A palette is
+// a pair of raw colors (`--ink`, `--surface`); `--fg`/`--bg` derive from them so
+// that the inversion toggle can swap the pair with a single rule.
+//
+// Palette color values are mirrored in `src/theme/palettes.ts` for the Storybook
+// toolbar and the WCAG AAA contrast tests. Keep the two in sync.
+// =============================================================================
+
+@use "sass:map";
+@use "sass:list";
+
+// -- Non-color scales (SCSS side) --------------------------------------------
+$space_scale: (
+  0: 0,
+  1: 4px,
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 24px,
+  6: 32px,
+  7: 48px,
+  8: 64px,
+);
+
+$size_scale: (
+  sm: 20px,
+  md: 24px,
+  lg: 32px,
+  xl: 40px,
+);
+
+$font_sans:
+  ui-sans-serif,
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  Roboto,
+  sans-serif;
+$font_mono:
+  ui-monospace, "SFMono-Regular", "Cascadia Code", "Source Code Pro", Menlo,
+  monospace;
+
+// -- Palettes (pairs of exactly two colors) ----------------------------------
+// Each entry: (ink, surface). `ink` is the default foreground, `surface` the
+// default background. Every pair MUST meet WCAG AAA (>= 7:1) contrast.
+$palettes: (
+  "classic": (
+    #000000,
+    #ffffff,
+  ),
+  "paper": (
+    #111111,
+    #f4f0e6,
+  ),
+  "amber": (
+    #ffb000,
+    #0a0a0a,
+  ),
+  "phosphor": (
+    #33ff33,
+    #001a00,
+  ),
+);
+
+$default_palette: "classic";
+
+// -- Runtime tokens (CSS custom properties) -----------------------------------
+:root {
+  // Spacing
+  --space-0: #{map.get($space_scale, 0)};
+  --space-1: #{map.get($space_scale, 1)};
+  --space-2: #{map.get($space_scale, 2)};
+  --space-3: #{map.get($space_scale, 3)};
+  --space-4: #{map.get($space_scale, 4)};
+  --space-5: #{map.get($space_scale, 5)};
+  --space-6: #{map.get($space_scale, 6)};
+  --space-7: #{map.get($space_scale, 7)};
+  --space-8: #{map.get($space_scale, 8)};
+
+  // Sizing
+  --size-sm: #{map.get($size_scale, sm)};
+  --size-md: #{map.get($size_scale, md)};
+  --size-lg: #{map.get($size_scale, lg)};
+  --size-xl: #{map.get($size_scale, xl)};
+
+  // Borders - pixel edges, never rounded.
+  --border-width: 2px;
+  --border-width-thick: 4px;
+  --radius: 0;
+
+  // Typography
+  --font-sans: #{$font_sans};
+  --font-mono: #{$font_mono};
+  --font-size: 16px;
+  --line-height: 1.5;
+
+  // Default palette (raw pair + derived fg/bg).
+  --ink: #{list.nth(map.get($palettes, $default_palette), 1)};
+  --surface: #{list.nth(map.get($palettes, $default_palette), 2)};
+  --fg: var(--ink);
+  --bg: var(--surface);
+}
+
+// Named palettes: only override the raw pair.
+@each $name, $pair in $palettes {
+  [data-theme="#{$name}"] {
+    --ink: #{list.nth($pair, 1)};
+    --surface: #{list.nth($pair, 2)};
+  }
+}
+
+// Re-derive fg/bg on every theme scope. Custom properties resolve their var()
+// where they are DECLARED, so deriving fg/bg only on :root would leave nested
+// theme roots stuck on the default palette. Declaring them on [data-theme]
+// ensures a palette change applies even when not inverted.
+[data-theme] {
+  --fg: var(--ink);
+  --bg: var(--surface);
+}
+
+// Inversion toggle: swap the pair. Works for any palette. Declared after the
+// rule above (equal specificity) so it wins when both attributes are present.
+[data-inverted="true"] {
+  --fg: var(--surface);
+  --bg: var(--ink);
+}
