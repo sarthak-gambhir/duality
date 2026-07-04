@@ -38,17 +38,18 @@
   text-align: start;
   cursor: pointer;
 
-  &:hover,
-  &:focus {
-    color: var(--bg);
-    background-color: var(--fg);
-    outline: none;
-  }
-
   &[aria-disabled="true"] {
     cursor: not-allowed;
 
     @include m.du_dither;
+  }
+
+  // Disabled items keep their dither; only enabled items invert.
+  &:hover:not([aria-disabled="true"]),
+  &:focus:not([aria-disabled="true"]) {
+    color: var(--bg);
+    background-color: var(--fg);
+    outline: none;
   }
 }
 

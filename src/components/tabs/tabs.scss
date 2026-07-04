@@ -19,10 +19,7 @@
   cursor: pointer;
   border: var(--border-width) solid var(--fg);
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: calc(-2 * var(--border-width));
-  }
+  @include m.du_focus_inset;
 
   &:disabled {
     cursor: not-allowed;

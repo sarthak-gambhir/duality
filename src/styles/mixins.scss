@@ -15,6 +15,16 @@
   }
 }
 
+// Inset focus ring for edge-filling controls (tabs, accordion headers) where an
+// outset ring has no surrounding surface. $color lets filled/inverted states
+// flip the ring so it stays visible (e.g. --bg on a --fg-filled surface).
+@mixin du_focus_inset($color: var(--fg)) {
+  &:focus-visible {
+    outline: var(--border-width) solid $color;
+    outline-offset: calc(-2 * var(--border-width));
+  }
+}
+
 // Swap the two colors (hover / selected / pressed).
 @mixin du_invert {
   color: var(--bg);

@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as m;
+
 .du_slider {
   inline-size: 100%;
   block-size: var(--size-sm);
@@ -51,5 +53,27 @@
 
 .du_slider_invalid::-moz-range-track {
   border-style: dashed;
+}
+
+// Disabled: dither the track and hollow the thumb, so state is never
+// conveyed by color (or cursor) alone.
+.du_slider:disabled::-webkit-slider-runnable-track {
+  @include m.du_dither;
+
+  border-color: var(--fg);
+}
+
+.du_slider:disabled::-webkit-slider-thumb {
+  background-color: var(--bg);
+}
+
+.du_slider:disabled::-moz-range-track {
+  @include m.du_dither;
+
+  border-color: var(--fg);
+}
+
+.du_slider:disabled::-moz-range-thumb {
+  background-color: var(--bg);
 }
 /* stylelint-enable selector-no-vendor-prefix, property-no-vendor-prefix */

@@ -32,15 +32,18 @@
   text-align: start;
   cursor: pointer;
 
+  @include m.du_focus_inset;
+
   &:hover,
   &[data-open] {
     color: var(--bg);
     background-color: var(--fg);
   }
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: -4px;
+  // On the filled trigger the ring must invert to stay visible.
+  &:hover:focus-visible,
+  &[data-open]:focus-visible {
+    outline-color: var(--bg);
   }
 }
 
