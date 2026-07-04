@@ -25,6 +25,12 @@
         "message": "Mixins are snake_case with the du_ prefix (e.g. du_border, du_focus)."
       }
     ],
+    "keyframes-name-pattern": [
+      "^du(_[a-z0-9]+)+$",
+      {
+        "message": "Keyframe names are snake_case with the du_ prefix (e.g. du_spinner_spin)."
+      }
+    ],
     "color-no-hex": null,
     "alpha-value-notation": "number",
     "declaration-block-no-redundant-longhand-properties": null,

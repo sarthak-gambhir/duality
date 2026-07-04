@@ -1,0 +1,19 @@
+@use "../../styles/mixins" as m;
+
+.du_skeleton {
+  border: var(--border-width) solid var(--fg);
+
+  @include m.du_dither;
+
+  animation: du_skeleton_pulse 1.2s steps(2) infinite alternate;
+}
+
+@keyframes du_skeleton_pulse {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 4px 4px;
+  }
+}

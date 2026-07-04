@@ -1,0 +1,18 @@
+.du_pagination_list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.du_pagination_ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--size-sm);
+  color: var(--fg);
+  font-family: var(--font-mono);
+}

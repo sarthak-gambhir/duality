@@ -1,0 +1,32 @@
+@use "../../styles/mixins" as m;
+
+.du_progress {
+  overflow: hidden;
+  inline-size: 100%;
+  block-size: var(--size-sm);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_progress_fill {
+  block-size: 100%;
+  background-color: var(--fg);
+}
+
+.du_progress_indeterminate .du_progress_fill {
+  inline-size: 40%;
+
+  @include m.du_dither;
+
+  animation: du_progress_slide 1.2s steps(8) infinite;
+}
+
+@keyframes du_progress_slide {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(350%);
+  }
+}

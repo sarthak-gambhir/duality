@@ -1,0 +1,58 @@
+@use "../../styles/mixins" as m;
+
+.du_menu_root {
+  position: relative;
+  display: inline-flex;
+}
+
+.du_menu {
+  position: absolute;
+  z-index: 900;
+  min-inline-size: 180px;
+  padding: 0;
+  color: var(--fg);
+  background-color: var(--bg);
+
+  @include m.du_border;
+}
+
+.du_menu_bottom_start {
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-start: 0;
+}
+
+.du_menu_bottom_end {
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-end: 0;
+}
+
+.du_menu_item {
+  @include m.du_reset_control;
+
+  display: block;
+  inline-size: 100%;
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: start;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: var(--bg);
+    background-color: var(--fg);
+    outline: none;
+  }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+  }
+}
+
+.du_menu_separator {
+  block-size: 0;
+  border-block-start: var(--border-width) solid var(--fg);
+}

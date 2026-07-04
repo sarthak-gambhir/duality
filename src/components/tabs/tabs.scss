@@ -1,0 +1,53 @@
+@use "../../styles/mixins" as m;
+
+.du_tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  border-block-end: var(--border-width) solid var(--fg);
+  padding-block-end: var(--space-1);
+}
+
+.du_tab {
+  @include m.du_reset_control;
+
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: calc(-2 * var(--border-width));
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+  }
+
+  &[data-selected] {
+    color: var(--bg);
+    background-color: var(--fg);
+
+    // On the filled tab the ring must invert to stay visible.
+    &:focus-visible {
+      outline-color: var(--bg);
+    }
+  }
+
+  // Inactive tabs read as outlined boxes; hover fills them so the
+  // affordance is never conveyed by color alone.
+  &:hover:not(:disabled) {
+    color: var(--bg);
+    background-color: var(--fg);
+  }
+}
+
+.du_tabpanel {
+  padding: var(--space-4) 0;
+}

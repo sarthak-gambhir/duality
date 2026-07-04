@@ -10,6 +10,10 @@ export type {
 } from "./theme/ThemeProvider";
 export { palettes, paletteNames, defaultPalette } from "./theme/palettes";
 export type { Palette, PaletteName } from "./theme/palettes";
+export { ThemeToggle } from "./components/theme_controls/ThemeToggle";
+export type { ThemeToggleProps } from "./components/theme_controls/ThemeToggle";
+export { PaletteSelect } from "./components/theme_controls/PaletteSelect";
+export type { PaletteSelectProps } from "./components/theme_controls/PaletteSelect";
 export {
   contrastRatio,
   relativeLuminance,
@@ -25,6 +29,11 @@ export type {
   AsProp,
 } from "./utils/polymorphic";
 export type { SpaceStep, SizeToken } from "./tokens/scale";
+export { Portal } from "./utils/Portal";
+export type { PortalProps } from "./utils/Portal";
+export { useDisclosure } from "./utils/useDisclosure";
+export type { Disclosure } from "./utils/useDisclosure";
+export { useControllableState } from "./utils/useControllableState";
 
 // Layout
 export { Box } from "./components/box/Box";
@@ -87,3 +96,37 @@ export { Badge as Tag } from "./components/badge/Badge";
 export type { BadgeProps } from "./components/badge/Badge";
 export { Alert } from "./components/alert/Alert";
 export type { AlertProps } from "./components/alert/Alert";
+
+// Overlays
+export { Modal, ModalHeader, ModalBody, ModalFooter } from "./components/modal/Modal";
+export type { ModalProps, ModalSectionProps } from "./components/modal/Modal";
+export { Tooltip } from "./components/tooltip/Tooltip";
+export type { TooltipProps, TooltipPlacement } from "./components/tooltip/Tooltip";
+export { Popover } from "./components/popover/Popover";
+export type { PopoverProps, PopoverPlacement } from "./components/popover/Popover";
+export { Menu, MenuItem, MenuSeparator } from "./components/menu/Menu";
+export type { MenuProps, MenuItemProps, MenuPlacement } from "./components/menu/Menu";
+export { Tabs, TabList, Tab, TabPanel } from "./components/tabs/Tabs";
+export type { TabsProps, TabListProps, TabProps, TabPanelProps } from "./components/tabs/Tabs";
+export { Accordion, AccordionItem } from "./components/accordion/Accordion";
+export type { AccordionProps, AccordionItemProps } from "./components/accordion/Accordion";
+export { ToastProvider, useToast } from "./components/toast/ToastProvider";
+export type { ToastProviderProps, ToastOptions, ToastPlacement } from "./components/toast/ToastProvider";
+
+// Display / data
+export { Table, THead, TBody, Tr, Th, Td } from "./components/table/Table";
+export type { TableProps } from "./components/table/Table";
+export { Pagination } from "./components/pagination/Pagination";
+export type { PaginationProps } from "./components/pagination/Pagination";
+export { Breadcrumbs } from "./components/breadcrumbs/Breadcrumbs";
+export type { BreadcrumbsProps, BreadcrumbItem } from "./components/breadcrumbs/Breadcrumbs";
+export { Avatar } from "./components/avatar/Avatar";
+export type { AvatarProps } from "./components/avatar/Avatar";
+export { Progress } from "./components/progress/Progress";
+export type { ProgressProps } from "./components/progress/Progress";
+export { Spinner } from "./components/spinner/Spinner";
+export type { SpinnerProps } from "./components/spinner/Spinner";
+export { Skeleton } from "./components/skeleton/Skeleton";
+export type { SkeletonProps } from "./components/skeleton/Skeleton";
+export { Slider } from "./components/slider/Slider";
+export type { SliderProps } from "./components/slider/Slider";

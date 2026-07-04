@@ -1,0 +1,39 @@
+.du_avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--bg);
+  background-color: var(--fg);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_avatar_sm {
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
+  font-size: 12px;
+}
+
+.du_avatar_md {
+  inline-size: var(--size-lg);
+  block-size: var(--size-lg);
+  font-size: 14px;
+}
+
+.du_avatar_lg {
+  inline-size: var(--size-xl);
+  block-size: var(--size-xl);
+  font-size: 18px;
+}
+
+.du_avatar_img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.du_avatar_initials {
+  line-height: 1;
+}

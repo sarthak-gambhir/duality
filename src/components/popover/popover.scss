@@ -1,0 +1,37 @@
+@use "../../styles/mixins" as m;
+
+.du_popover_root {
+  position: relative;
+  display: inline-flex;
+}
+
+.du_popover {
+  position: absolute;
+  z-index: 900;
+  min-inline-size: 180px;
+  padding: var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+
+  @include m.du_border;
+}
+
+.du_popover_bottom_start {
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-start: 0;
+}
+
+.du_popover_bottom_end {
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-end: 0;
+}
+
+.du_popover_top_start {
+  inset-block-end: calc(100% + var(--space-1));
+  inset-inline-start: 0;
+}
+
+.du_popover_top_end {
+  inset-block-end: calc(100% + var(--space-1));
+  inset-inline-end: 0;
+}

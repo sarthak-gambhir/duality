@@ -35,3 +35,22 @@
 @use "components/card/card";
 @use "components/badge/badge";
 @use "components/alert/alert";
+
+// Overlays
+@use "components/modal/modal";
+@use "components/tooltip/tooltip";
+@use "components/popover/popover";
+@use "components/menu/menu";
+@use "components/tabs/tabs";
+@use "components/accordion/accordion";
+@use "components/toast/toast";
+
+// Display / data
+@use "components/table/table";
+@use "components/pagination/pagination";
+@use "components/breadcrumbs/breadcrumbs";
+@use "components/avatar/avatar";
+@use "components/progress/progress";
+@use "components/spinner/spinner";
+@use "components/skeleton/skeleton";
+@use "components/slider/slider";

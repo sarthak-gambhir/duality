@@ -1,0 +1,41 @@
+.du_tooltip_root {
+  position: relative;
+  display: inline-flex;
+}
+
+.du_tooltip {
+  position: absolute;
+  z-index: 900;
+  padding: var(--space-1) var(--space-2);
+  color: var(--bg);
+  background-color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_tooltip_top {
+  inset-block-end: calc(100% + var(--space-2));
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.du_tooltip_bottom {
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.du_tooltip_left {
+  inset-inline-end: calc(100% + var(--space-2));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+.du_tooltip_right {
+  inset-inline-start: calc(100% + var(--space-2));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}

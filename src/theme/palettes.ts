@@ -38,6 +38,19 @@ export const palettes = {
     ink: "#33ff33",
     surface: "#001a00",
   },
+  blueprint: {
+    name: "blueprint",
+    label: "Blueprint",
+    ink: "#ffffff",
+    surface: "#0a2540",
+  },
+  sepia: { name: "sepia", label: "Sepia", ink: "#2b2118", surface: "#efe7d8" },
+  high_contrast: {
+    name: "high_contrast",
+    label: "High Contrast",
+    ink: "#ffff00",
+    surface: "#000000",
+  },
 } as const satisfies Record<string, Palette>;
 
 export type PaletteName = keyof typeof palettes;

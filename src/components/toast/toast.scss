@@ -1,0 +1,60 @@
+@use "../../styles/mixins" as m;
+
+.du_toast_region {
+  position: fixed;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-inline-size: 360px;
+  padding: var(--space-4);
+}
+
+.du_toast_region_bottom_end {
+  inset-block-end: 0;
+  inset-inline-end: 0;
+}
+
+.du_toast_region_bottom_start {
+  inset-block-end: 0;
+  inset-inline-start: 0;
+}
+
+.du_toast_region_top_end {
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+
+.du_toast_region_top_start {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+
+.du_toast {
+  position: relative;
+  background-color: var(--bg);
+}
+
+.du_toast_close {
+  @include m.du_reset_control;
+
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-end: var(--space-2);
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--bg);
+    background-color: var(--fg);
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}

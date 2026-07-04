@@ -1,0 +1,25 @@
+.du_table {
+  inline-size: 100%;
+  color: var(--fg);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+}
+
+.du_table th,
+.du_table td {
+  padding: var(--space-2) var(--space-3);
+  text-align: start;
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_table th {
+  font-weight: 700;
+}
+
+// Header row inverts to read as a distinct band without a second color.
+.du_table thead th {
+  color: var(--bg);
+  background-color: var(--fg);
+}
