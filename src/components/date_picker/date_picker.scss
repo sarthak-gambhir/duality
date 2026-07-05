@@ -1,0 +1,170 @@
+@use "../../styles/mixins" as m;
+
+.du_date_picker {
+  position: relative;
+  display: inline-block;
+}
+
+.du_date_picker_trigger {
+  @include m.du_reset_control;
+  @include m.du_border;
+  @include m.du_focus;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding-inline: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: start;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+}
+
+.du_date_picker_invalid .du_date_picker_trigger {
+  border-style: dashed;
+}
+
+.du_date_picker_placeholder {
+  font-style: italic;
+}
+
+// Small pixel calendar glyph: a box with a heavier top edge.
+.du_date_picker_glyph {
+  flex: 0 0 auto;
+  inline-size: 12px;
+  block-size: 12px;
+  border: var(--border-width) solid var(--fg);
+  border-block-start-width: var(--border-width-thick);
+}
+
+.du_date_picker_sm {
+  min-block-size: var(--size-sm);
+  font-size: 14px;
+}
+
+.du_date_picker_md {
+  min-block-size: var(--size-md);
+  font-size: 16px;
+}
+
+.du_date_picker_lg {
+  min-block-size: var(--size-lg);
+  font-size: 18px;
+}
+
+.du_date_picker_panel {
+  position: absolute;
+  z-index: 20;
+  inset-block-start: calc(100% - var(--border-width));
+  inset-inline-start: 0;
+  padding: var(--space-2);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_date_picker_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-block-end: var(--space-2);
+}
+
+.du_date_picker_month {
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+.du_date_picker_nav {
+  @include m.du_reset_control;
+
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-weight: 700;
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &:hover {
+    @include m.du_invert;
+  }
+}
+
+.du_date_picker_row {
+  display: flex;
+}
+
+.du_date_picker_weekday {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-lg);
+  block-size: var(--size-md);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.du_date_picker_day {
+  @include m.du_reset_control;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-lg);
+  block-size: var(--size-lg);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: var(--border-width) solid transparent;
+}
+
+.du_date_picker_day[data-today] {
+  border-color: var(--fg);
+}
+
+.du_date_picker_day[data-outside] {
+  @include m.du_dither;
+  @include m.du_text_outline(2);
+}
+
+.du_date_picker_day[aria-selected="true"] {
+  @include m.du_invert;
+}
+
+.du_date_picker_day:disabled {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+  @include m.du_text_outline(2);
+}
+
+.du_date_picker_day:focus-visible {
+  outline: var(--border-width) solid var(--fg);
+  outline-offset: calc(-1 * var(--border-width));
+}
+
+.du_date_picker_day[aria-selected="true"]:focus-visible {
+  outline-color: var(--bg);
+}
+
+.du_date_picker_day:hover:not(:disabled) {
+  @include m.du_invert;
+}

@@ -78,6 +78,19 @@ export { Switch } from "./components/switch/Switch";
 export type { SwitchProps } from "./components/switch/Switch";
 export { Select } from "./components/select/Select";
 export type { SelectProps, SelectOption } from "./components/select/Select";
+export { NumberInput } from "./components/number_input/NumberInput";
+export type { NumberInputProps } from "./components/number_input/NumberInput";
+export { ToggleGroup, ToggleGroupItem } from "./components/toggle_group/ToggleGroup";
+export type {
+  ToggleGroupProps,
+  ToggleGroupItemProps,
+} from "./components/toggle_group/ToggleGroup";
+export { Rating } from "./components/rating/Rating";
+export type { RatingProps } from "./components/rating/Rating";
+export { Combobox } from "./components/combobox/Combobox";
+export type { ComboboxProps } from "./components/combobox/Combobox";
+export { DatePicker } from "./components/date_picker/DatePicker";
+export type { DatePickerProps } from "./components/date_picker/DatePicker";
 
 // Form composition
 export { Label } from "./components/label/Label";
@@ -120,6 +133,8 @@ export { Pagination } from "./components/pagination/Pagination";
 export type { PaginationProps } from "./components/pagination/Pagination";
 export { Breadcrumbs } from "./components/breadcrumbs/Breadcrumbs";
 export type { BreadcrumbsProps, BreadcrumbItem } from "./components/breadcrumbs/Breadcrumbs";
+export { Tree } from "./components/tree/Tree";
+export type { TreeProps, TreeNode } from "./components/tree/Tree";
 export { Avatar } from "./components/avatar/Avatar";
 export type { AvatarProps } from "./components/avatar/Avatar";
 export { Progress } from "./components/progress/Progress";
@@ -130,3 +145,5 @@ export { Skeleton } from "./components/skeleton/Skeleton";
 export type { SkeletonProps } from "./components/skeleton/Skeleton";
 export { Slider } from "./components/slider/Slider";
 export type { SliderProps } from "./components/slider/Slider";
+export { RangeSlider } from "./components/range_slider/RangeSlider";
+export type { RangeSliderProps } from "./components/range_slider/RangeSlider";

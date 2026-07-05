@@ -27,6 +27,7 @@
     cursor: not-allowed;
 
     @include m.du_dither;
+    @include m.du_text_outline(2);
   }
 }
 
@@ -129,4 +130,5 @@
   cursor: not-allowed;
 
   @include m.du_dither;
+  @include m.du_text_outline(2);
 }

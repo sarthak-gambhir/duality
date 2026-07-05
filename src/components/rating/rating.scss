@@ -1,0 +1,40 @@
+@use "../../styles/mixins" as m;
+
+.du_rating {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.du_rating_item {
+  @include m.du_reset_control;
+
+  flex: 0 0 auto;
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
+  background-color: var(--bg);
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &[data-filled] {
+    background-color: var(--fg);
+  }
+}
+
+.du_rating_sm .du_rating_item {
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+}
+
+.du_rating_lg .du_rating_item {
+  inline-size: var(--size-lg);
+  block-size: var(--size-lg);
+}

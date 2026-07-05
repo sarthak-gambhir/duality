@@ -1,0 +1,54 @@
+@use "../../styles/mixins" as m;
+
+.du_range_slider {
+  inline-size: 100%;
+  padding: var(--space-3) 0;
+}
+
+.du_range_slider_track {
+  position: relative;
+  block-size: 6px;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_range_slider_fill {
+  position: absolute;
+  inset-block: 0;
+  background-color: var(--fg);
+}
+
+.du_range_slider_thumb {
+  @include m.du_reset_control;
+
+  position: absolute;
+  inset-block-start: 50%;
+  inline-size: 14px;
+  block-size: 14px;
+  background-color: var(--fg);
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+  transform: translate(-50%, -50%);
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 3px;
+  }
+}
+
+.du_range_slider_invalid .du_range_slider_track {
+  border-style: dashed;
+}
+
+.du_range_slider_disabled .du_range_slider_track {
+  @include m.du_dither;
+}
+
+.du_range_slider_disabled .du_range_slider_fill {
+  background-color: transparent;
+}
+
+.du_range_slider_disabled .du_range_slider_thumb {
+  cursor: not-allowed;
+  background-color: var(--bg);
+}

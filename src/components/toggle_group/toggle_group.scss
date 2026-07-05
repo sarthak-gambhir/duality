@@ -1,0 +1,48 @@
+@use "../../styles/mixins" as m;
+
+.du_toggle_group {
+  display: inline-flex;
+}
+
+.du_toggle {
+  @include m.du_reset_control;
+
+  min-block-size: var(--size-md);
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+
+  // Collapse the shared border between adjacent items.
+  & + & {
+    margin-inline-start: calc(-1 * var(--border-width));
+  }
+
+  &:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+
+  &[data-selected] {
+    position: relative;
+    z-index: 1;
+
+    @include m.du_invert;
+  }
+
+  &:hover:not(:disabled) {
+    @include m.du_invert;
+  }
+}

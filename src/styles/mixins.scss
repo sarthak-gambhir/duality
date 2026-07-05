@@ -1,6 +1,8 @@
 // Reusable SCSS mixins for Duality components.
 // Consumed via: @use "../../styles/mixins" as m;
 
+@use "sass:list";
+
 // Pixel border in the foreground color, never rounded.
 @mixin du_border($width: var(--border-width)) {
   border: $width solid var(--fg);
@@ -46,4 +48,26 @@
   background-color: var(--bg);
   background-image: repeating-conic-gradient(var(--fg) 0 25%, var(--bg) 0 50%);
   background-size: 4px 4px;
+}
+
+// Crisp two-color text outline. Rings each glyph with a solid $color pixel
+// border ($radius px thick) so labels stay legible over a dither, without any
+// blur or intermediate tone. Builds a full offset grid so there are no gaps.
+@mixin du_text_outline($radius: 2, $color: var(--bg)) {
+  $shadows: ();
+  $min: $radius * -1;
+
+  @for $x from $min through $radius {
+    @for $y from $min through $radius {
+      @if not ($x == 0 and $y == 0) {
+        $shadows: list.append(
+          $shadows,
+          #{$x}px #{$y}px 0 $color,
+          $separator: comma
+        );
+      }
+    }
+  }
+
+  text-shadow: $shadows;
 }

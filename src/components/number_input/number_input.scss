@@ -1,0 +1,90 @@
+@use "../../styles/mixins" as m;
+
+.du_number_input {
+  @include m.du_border;
+
+  display: inline-flex;
+  align-items: stretch;
+  inline-size: 100%;
+  overflow: hidden;
+  background-color: var(--bg);
+
+  &:focus-within {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &.du_number_input_invalid {
+    border-style: dashed;
+  }
+}
+
+.du_number_input_field {
+  @include m.du_reset_control;
+
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding: 0 var(--space-2);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: center;
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+}
+
+.du_number_input_step {
+  @include m.du_reset_control;
+
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-2);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  border-inline: var(--border-width) solid var(--fg);
+
+  &:first-child {
+    border-inline-start: 0;
+  }
+
+  &:last-of-type {
+    border-inline-end: 0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+
+  &:hover:not(:disabled) {
+    @include m.du_invert;
+  }
+}
+
+.du_number_input_sm {
+  min-block-size: var(--size-sm);
+  font-size: 14px;
+}
+
+.du_number_input_md {
+  min-block-size: var(--size-md);
+  font-size: 16px;
+}
+
+.du_number_input_lg {
+  min-block-size: var(--size-lg);
+  font-size: 18px;
+}

@@ -1,0 +1,336 @@
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
+import { useDismiss } from "../../utils/useDismiss";
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const toISO = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const startOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
+const addDays = (d: Date, n: number) =>
+  new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const addMonths = (d: Date, n: number) =>
+  new Date(d.getFullYear(), d.getMonth() + n, d.getDate());
+const isSameDay = (a: Date, b: Date) => toISO(a) === toISO(b);
+const dayLabel = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+
+export interface DatePickerProps {
+  /** Selected date (controlled). */
+  value?: Date | null;
+  /** Initial date (uncontrolled). */
+  defaultValue?: Date | null;
+  /** Called with the newly selected date. */
+  onValueChange?: (value: Date | null) => void;
+  /** Earliest selectable date. */
+  min?: Date;
+  /** Latest selectable date. */
+  max?: Date;
+  /** Predicate to disable specific dates. */
+  isDateDisabled?: (date: Date) => boolean;
+  /** Formats the value shown in the trigger. Defaults to ISO `yyyy-mm-dd`. */
+  format?: (date: Date) => string;
+  /** Text shown when no date is selected. */
+  placeholder?: string;
+  /** Marks the field invalid. */
+  invalid?: boolean;
+  /** Control size. */
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  id?: string;
+  className?: string;
+  name?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
+}
+
+/**
+ * Two-color date picker: a Select-like trigger opens an anchored calendar grid.
+ * Native `Date` only; today is marked by a border (not color), the selected day
+ * inverts, and the grid supports full keyboard navigation.
+ */
+export function DatePicker({
+  value,
+  defaultValue,
+  onValueChange,
+  min,
+  max,
+  isDateDisabled,
+  format = toISO,
+  placeholder = "Select date...",
+  invalid,
+  size = "md",
+  disabled,
+  id,
+  className,
+  name,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
+}: DatePickerProps) {
+  const [current, setCurrent] = useControllableState<Date | null>({
+    value,
+    defaultValue: defaultValue ?? null,
+    onChange: onValueChange,
+  });
+
+  const [open, setOpen] = useState(false);
+  const [viewMonth, setViewMonth] = useState(() =>
+    startOfMonth(current ?? new Date()),
+  );
+  const [focusedDate, setFocusedDate] = useState(() =>
+    startOfDay(current ?? new Date()),
+  );
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const baseId = useId();
+  const gridLabelId = `${baseId}_grid_label`;
+
+  useDismiss({ enabled: open, onDismiss: () => setOpen(false), refs: [rootRef] });
+
+  useEffect(() => {
+    if (!open) return;
+    const key = toISO(focusedDate);
+    panelRef.current
+      ?.querySelector<HTMLElement>(`[data-date="${key}"]`)
+      ?.focus();
+  }, [open, focusedDate]);
+
+  const isDisabledDate = (d: Date): boolean => {
+    if (min && toISO(d) < toISO(min)) return true;
+    if (max && toISO(d) > toISO(max)) return true;
+    return isDateDisabled?.(d) ?? false;
+  };
+
+  const openCalendar = () => {
+    if (disabled) return;
+    const base = startOfDay(current ?? new Date());
+    setFocusedDate(base);
+    setViewMonth(startOfMonth(base));
+    setOpen(true);
+  };
+
+  const closeCalendar = (focusTrigger = true) => {
+    setOpen(false);
+    if (focusTrigger) triggerRef.current?.focus();
+  };
+
+  const setFocused = (d: Date) => {
+    setFocusedDate(d);
+    if (
+      d.getMonth() !== viewMonth.getMonth() ||
+      d.getFullYear() !== viewMonth.getFullYear()
+    ) {
+      setViewMonth(startOfMonth(d));
+    }
+  };
+
+  const selectDate = (d: Date) => {
+    if (isDisabledDate(d)) return;
+    setCurrent(startOfDay(d));
+    closeCalendar();
+  };
+
+  const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (disabled) return;
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openCalendar();
+    }
+  };
+
+  const onGridKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    switch (event.key) {
+      case "ArrowLeft":
+        event.preventDefault();
+        setFocused(addDays(focusedDate, -1));
+        break;
+      case "ArrowRight":
+        event.preventDefault();
+        setFocused(addDays(focusedDate, 1));
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        setFocused(addDays(focusedDate, -7));
+        break;
+      case "ArrowDown":
+        event.preventDefault();
+        setFocused(addDays(focusedDate, 7));
+        break;
+      case "Home":
+        event.preventDefault();
+        setFocused(addDays(focusedDate, -focusedDate.getDay()));
+        break;
+      case "End":
+        event.preventDefault();
+        setFocused(addDays(focusedDate, 6 - focusedDate.getDay()));
+        break;
+      case "PageUp":
+        event.preventDefault();
+        setFocused(addMonths(focusedDate, -1));
+        break;
+      case "PageDown":
+        event.preventDefault();
+        setFocused(addMonths(focusedDate, 1));
+        break;
+      case "Enter":
+      case " ":
+        event.preventDefault();
+        selectDate(focusedDate);
+        break;
+      case "Escape":
+        event.preventDefault();
+        closeCalendar();
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Build a stable 6-week grid starting on Sunday.
+  const gridStart = addDays(startOfMonth(viewMonth), -startOfMonth(viewMonth).getDay());
+  const weeks = Array.from({ length: 6 }, (_, w) =>
+    Array.from({ length: 7 }, (_, d) => addDays(gridStart, w * 7 + d)),
+  );
+
+  const monthLabel = `${MONTHS[viewMonth.getMonth()]} ${viewMonth.getFullYear()}`;
+  const today = new Date();
+
+  return (
+    <div
+      ref={rootRef}
+      className={cx("du_date_picker", invalid && "du_date_picker_invalid", className)}
+    >
+      <button
+        ref={triggerRef}
+        type="button"
+        id={id}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-invalid={invalid || undefined}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        disabled={disabled}
+        data-open={open || undefined}
+        className={cx("du_date_picker_trigger", `du_date_picker_${size}`)}
+        onClick={() => (open ? closeCalendar(false) : openCalendar())}
+        onKeyDown={onTriggerKeyDown}
+      >
+        <span
+          className={cx(
+            "du_date_picker_value",
+            !current && "du_date_picker_placeholder",
+          )}
+        >
+          {current ? format(current) : placeholder}
+        </span>
+        <span className="du_date_picker_glyph" aria-hidden="true" />
+      </button>
+
+      {open && (
+        <div ref={panelRef} className="du_date_picker_panel">
+          <div className="du_date_picker_header">
+            <button
+              type="button"
+              className="du_date_picker_nav"
+              aria-label="Previous month"
+              onClick={() => setViewMonth(addMonths(viewMonth, -1))}
+            >
+              <span aria-hidden="true">&lsaquo;</span>
+            </button>
+            <span id={gridLabelId} className="du_date_picker_month">
+              {monthLabel}
+            </span>
+            <button
+              type="button"
+              className="du_date_picker_nav"
+              aria-label="Next month"
+              onClick={() => setViewMonth(addMonths(viewMonth, 1))}
+            >
+              <span aria-hidden="true">&rsaquo;</span>
+            </button>
+          </div>
+
+          <div
+            role="grid"
+            aria-labelledby={gridLabelId}
+            className="du_date_picker_grid"
+            onKeyDown={onGridKeyDown}
+          >
+            <div role="row" className="du_date_picker_row">
+              {WEEKDAYS.map((w) => (
+                <span
+                  key={w}
+                  role="columnheader"
+                  aria-label={w}
+                  className="du_date_picker_weekday"
+                >
+                  {w}
+                </span>
+              ))}
+            </div>
+            {weeks.map((week) => (
+              <div role="row" className="du_date_picker_row" key={toISO(week[0] as Date)}>
+                {week.map((date) => {
+                  const outside = date.getMonth() !== viewMonth.getMonth();
+                  const dateDisabled = isDisabledDate(date);
+                  const selected = current ? isSameDay(date, current) : false;
+                  const isFocusable = isSameDay(date, focusedDate);
+                  return (
+                    <button
+                      key={toISO(date)}
+                      type="button"
+                      role="gridcell"
+                      aria-label={dayLabel(date)}
+                      aria-selected={selected}
+                      aria-disabled={dateDisabled || undefined}
+                      data-date={toISO(date)}
+                      data-today={isSameDay(date, today) || undefined}
+                      data-outside={outside || undefined}
+                      disabled={dateDisabled}
+                      tabIndex={isFocusable ? 0 : -1}
+                      className="du_date_picker_day"
+                      onClick={() => selectDate(date)}
+                    >
+                      {date.getDate()}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {name && (
+        <input type="hidden" name={name} value={current ? toISO(current) : ""} />
+      )}
+    </div>
+  );
+}

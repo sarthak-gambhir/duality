@@ -34,10 +34,10 @@ All components are drawn with the two-color model: base is `--fg` on `--bg`, hov
 
 - **Layout:** `Box` (polymorphic), `Stack`, `Inline`, `Grid`, `Container`, `Divider`
 - **Typography:** `Text` (polymorphic), `Heading`, `Link`, `Code`, `Kbd`
-- **Form controls:** `Button`, `Input`, `Textarea`, `Checkbox`, `Radio` + `RadioGroup`, `Switch`, `Select`, `Slider`
+- **Form controls:** `Button`, `Input`, `Textarea`, `Checkbox`, `Radio` + `RadioGroup`, `Switch`, `Select`, `NumberInput`, `ToggleGroup` (+ `ToggleGroupItem`), `Rating`, `Combobox`, `Slider`, `RangeSlider`, `DatePicker`
 - **Form composition:** `Label`, `FormField` (wires `id` / `aria-describedby` / `aria-invalid`)
 - **Display:** `Card` (+ `CardHeader` / `CardBody` / `CardFooter`), `Badge` (alias `Tag`), `Alert`, `Avatar`, `Progress`, `Spinner`, `Skeleton`
-- **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `Pagination`, `Breadcrumbs`
+- **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `Pagination`, `Breadcrumbs`, `Tree`
 - **Overlays:** `Modal` (+ sections), `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `Tabs` (+ `TabList` / `Tab` / `TabPanel`), `Accordion` (+ `AccordionItem`), `Toast` (`ToastProvider` / `useToast`)
 - **Theming:** `ThemeToggle`, `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
 

@@ -26,6 +26,11 @@
 @use "components/radio/radio";
 @use "components/switch/switch";
 @use "components/select/select";
+@use "components/number_input/number_input";
+@use "components/toggle_group/toggle_group";
+@use "components/rating/rating";
+@use "components/combobox/combobox";
+@use "components/date_picker/date_picker";
 
 // Form composition
 @use "components/label/label";
@@ -49,8 +54,10 @@
 @use "components/table/table";
 @use "components/pagination/pagination";
 @use "components/breadcrumbs/breadcrumbs";
+@use "components/tree/tree";
 @use "components/avatar/avatar";
 @use "components/progress/progress";
 @use "components/spinner/spinner";
 @use "components/skeleton/skeleton";
 @use "components/slider/slider";
+@use "components/range_slider/range_slider";

@@ -1,0 +1,74 @@
+@use "../../styles/mixins" as m;
+
+.du_tree,
+.du_tree_group {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.du_tree {
+  font-family: var(--font-sans);
+  color: var(--fg);
+}
+
+.du_tree_item {
+  outline: none;
+}
+
+.du_tree_row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline-end: var(--space-2);
+  cursor: pointer;
+}
+
+.du_tree_row:hover {
+  @include m.du_invert;
+}
+
+.du_tree_item[data-selected] > .du_tree_row {
+  @include m.du_invert;
+}
+
+.du_tree_item[aria-disabled="true"] > .du_tree_row {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+
+  // The dither signals "disabled", but text over the checkerboard falls below
+  // the AAA contrast floor. Ring each glyph with a solid --bg pixel outline so
+  // the label stays crisp while the dither still shows between the letters.
+  .du_tree_label {
+    @include m.du_text_outline(2);
+  }
+}
+
+.du_tree_item:focus-visible > .du_tree_row {
+  outline: var(--border-width) solid var(--fg);
+  outline-offset: calc(-1 * var(--border-width));
+}
+
+.du_tree_item[data-selected]:focus-visible > .du_tree_row {
+  outline-color: var(--bg);
+}
+
+// Pixel caret: points right, rotates to point down when expanded.
+.du_tree_caret {
+  flex: 0 0 auto;
+  inline-size: 0;
+  block-size: 0;
+  border-block: 5px solid transparent;
+  border-inline-start: 6px solid currentColor;
+}
+
+.du_tree_caret[data-open] {
+  transform: rotate(90deg);
+}
+
+.du_tree_spacer {
+  flex: 0 0 auto;
+  inline-size: 6px;
+}
