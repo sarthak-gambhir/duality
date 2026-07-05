@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Inline, Skeleton, Spinner, Stack } from '../../src';
 
 const meta: Meta = {
-  title: 'Data/Spinner & Skeleton',
+  title: 'Display/Spinner & Skeleton',
 };
 
 export default meta;

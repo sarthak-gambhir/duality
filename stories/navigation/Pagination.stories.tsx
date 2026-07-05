@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Pagination } from '../../src';
 
 const meta: Meta<typeof Pagination> = {
-  title: 'Data/Pagination',
+  title: 'Navigation/Pagination',
   component: Pagination,
 };
 

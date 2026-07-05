@@ -37,8 +37,10 @@ All components are drawn with the two-color model: base is `--fg` on `--bg`, hov
 - **Form controls:** `Button`, `Input`, `Textarea`, `Checkbox`, `Radio` + `RadioGroup`, `Switch`, `Select`, `NumberInput`, `ToggleGroup` (+ `ToggleGroupItem`), `Rating`, `Combobox`, `Slider`, `RangeSlider`, `DatePicker`
 - **Form composition:** `Label`, `FormField` (wires `id` / `aria-describedby` / `aria-invalid`)
 - **Display:** `Card` (+ `CardHeader` / `CardBody` / `CardFooter`), `Badge` (alias `Tag`), `Alert`, `Avatar`, `Progress`, `Spinner`, `Skeleton`
-- **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `Pagination`, `Breadcrumbs`, `Tree`
-- **Overlays:** `Modal` (+ sections), `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `Tabs` (+ `TabList` / `Tab` / `TabPanel`), `Accordion` (+ `AccordionItem`), `Toast` (`ToastProvider` / `useToast`)
+- **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `Tree`
+- **Navigation:** `Breadcrumbs`, `Pagination`
+- **Disclosure:** `Tabs` (+ `TabList` / `Tab` / `TabPanel`), `Accordion` (+ `AccordionItem`)
+- **Overlays:** `Modal` (+ sections), `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `Toast` (`ToastProvider` / `useToast`)
 - **Theming:** `ThemeToggle`, `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
 
 Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence and `defaultInverted="system"` to follow the OS color scheme. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage.
