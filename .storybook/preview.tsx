@@ -1,3 +1,4 @@
+import React from "react";
 import type { Decorator, Preview } from "@storybook/react";
 import {
   ThemeProvider,
@@ -39,6 +40,12 @@ export const globalTypes = {
 const withTheme: Decorator = (Story, context) => {
   const theme = context.globals.theme as PaletteName;
   const inverted = context.globals.inverted === "true";
+  // In Docs, stories are embedded previews that should hug their content; only
+  // fill the viewport in the standalone canvas view. Overlay-heavy stories can
+  // reserve space via a `docsMinHeight` parameter so their panels (portaled or
+  // anchored) have room instead of being trapped/overlapping in Docs.
+  const isDocs = context.viewMode === "docs";
+  const docsMinHeight = context.parameters.docsMinHeight as number | undefined;
 
   return (
     // Remount when the toolbar changes so the uncontrolled ThemeProvider picks
@@ -48,7 +55,12 @@ const withTheme: Decorator = (Story, context) => {
       defaultTheme={theme}
       defaultInverted={inverted}
     >
-      <div style={{ padding: "var(--space-5)", minHeight: "100vh" }}>
+      <div
+        style={{
+          padding: "var(--space-5)",
+          minHeight: isDocs ? docsMinHeight : "100vh",
+        }}
+      >
         <Story />
       </div>
     </ThemeProvider>
@@ -56,10 +68,29 @@ const withTheme: Decorator = (Story, context) => {
 };
 
 const preview: Preview = {
+  tags: ["autodocs"],
   decorators: [withTheme],
   parameters: {
     layout: "fullscreen",
     controls: { expanded: true },
+    options: {
+      storySort: {
+        order: [
+          "Introduction",
+          "Foundations",
+          "Layout",
+          "Typography",
+          "Controls",
+          "Forms",
+          "Display",
+          "Data",
+          "Navigation",
+          "Disclosure",
+          "Overlays",
+          "Theming",
+        ],
+      },
+    },
   },
 };
 

@@ -1,0 +1,26 @@
+<style>
+  /*
+   * In autodocs, each embedded story sits in a preview box that clips anchored
+   * overlays (DatePicker calendar, Select/Combobox listboxes, Menu, Popover,
+   * TimePicker). Those panels are absolutely positioned and spill past the
+   * trigger, so the box's overflow hides/scrolls them. The clipping happens on
+   * three nested layers: the outer .sbdocs-preview (overflow:hidden), the
+   * .docs-story wrapper, and its inner ChildrenContainer child (overflow:auto),
+   * which is what shows the scrollbar. Let all of them spill instead. These are
+   * runtime Emotion styles, so !important is required.
+   */
+  .sbdocs-preview,
+  .sbdocs-preview .docs-story,
+  .sbdocs-preview .docs-story > * {
+    overflow: visible !important;
+  }
+
+  /*
+   * The preview box is already position:relative; lifting its stacking so the
+   * spilled overlay paints above the following Docs blocks (e.g. the args
+   * table) rather than being covered by them.
+   */
+  .sbdocs-preview {
+    z-index: 1;
+  }
+</style>

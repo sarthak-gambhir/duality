@@ -5,6 +5,7 @@ import { Combobox, type SelectOption } from "../../src";
 const meta: Meta<typeof Combobox> = {
   title: "Controls/Combobox",
   component: Combobox,
+  parameters: { docsMinHeight: 300 },
 };
 
 export default meta;

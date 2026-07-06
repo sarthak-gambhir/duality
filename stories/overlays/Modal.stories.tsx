@@ -12,6 +12,7 @@ import {
 const meta: Meta<typeof Modal> = {
   title: 'Overlays/Modal',
   component: Modal,
+  parameters: { docsMinHeight: 480 },
 };
 
 export default meta;

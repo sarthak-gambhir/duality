@@ -31,6 +31,10 @@
 @use "components/rating/rating";
 @use "components/combobox/combobox";
 @use "components/date_picker/date_picker";
+@use "components/slider/slider";
+@use "components/range_slider/range_slider";
+@use "components/tag_input/tag_input";
+@use "components/time_picker/time_picker";
 
 // Form composition
 @use "components/label/label";
@@ -40,24 +44,30 @@
 @use "components/card/card";
 @use "components/badge/badge";
 @use "components/alert/alert";
-
-// Overlays
-@use "components/modal/modal";
-@use "components/tooltip/tooltip";
-@use "components/popover/popover";
-@use "components/menu/menu";
-@use "components/tabs/tabs";
-@use "components/accordion/accordion";
-@use "components/toast/toast";
-
-// Display / data
-@use "components/table/table";
-@use "components/pagination/pagination";
-@use "components/breadcrumbs/breadcrumbs";
-@use "components/tree/tree";
 @use "components/avatar/avatar";
 @use "components/progress/progress";
 @use "components/spinner/spinner";
 @use "components/skeleton/skeleton";
-@use "components/slider/slider";
-@use "components/range_slider/range_slider";
+
+// Data
+@use "components/table/table";
+@use "components/data_table/data_table";
+@use "components/tree/tree";
+
+// Navigation
+@use "components/breadcrumbs/breadcrumbs";
+@use "components/pagination/pagination";
+@use "components/stepper/stepper";
+
+// Disclosure
+@use "components/tabs/tabs";
+@use "components/accordion/accordion";
+
+// Overlays
+@use "components/modal/modal";
+@use "components/drawer/drawer";
+@use "components/tooltip/tooltip";
+@use "components/popover/popover";
+@use "components/menu/menu";
+@use "components/command_palette/command_palette";
+@use "components/toast/toast";

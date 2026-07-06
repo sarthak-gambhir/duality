@@ -4,6 +4,7 @@ import { Button, Tooltip } from '../../src';
 const meta: Meta<typeof Tooltip> = {
   title: 'Overlays/Tooltip',
   component: Tooltip,
+  parameters: { docsMinHeight: 160 },
 };
 
 export default meta;

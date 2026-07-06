@@ -1,0 +1,72 @@
+@use "../../styles/mixins" as m;
+
+.du_data_table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.du_data_table_filter {
+  @include m.du_reset_control;
+  @include m.du_border;
+  @include m.du_focus;
+
+  align-self: flex-start;
+  min-inline-size: 240px;
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+
+  &::placeholder {
+    color: var(--fg);
+    font-style: italic;
+  }
+}
+
+.du_data_table [data-align="end"] {
+  text-align: end;
+}
+
+.du_data_table_sort {
+  @include m.du_reset_control;
+  @include m.du_focus;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+// Neutral (unsorted) marker: a hollow pixel square.
+.du_data_table_sort_icon {
+  inline-size: 8px;
+  block-size: 8px;
+  border: var(--border-width) solid var(--fg);
+}
+
+// Sorted markers are solid triangles - direction shown by shape, not color.
+.du_data_table_sort[data-direction="asc"] .du_data_table_sort_icon {
+  inline-size: 0;
+  block-size: 0;
+  border-inline: 5px solid transparent;
+  border-block-end: 8px solid var(--fg);
+  border-block-start: 0;
+}
+
+.du_data_table_sort[data-direction="desc"] .du_data_table_sort_icon {
+  inline-size: 0;
+  block-size: 0;
+  border-inline: 5px solid transparent;
+  border-block-start: 8px solid var(--fg);
+  border-block-end: 0;
+}
+
+.du_data_table_empty {
+  font-style: italic;
+  text-align: center;
+}

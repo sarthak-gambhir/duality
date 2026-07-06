@@ -1,0 +1,96 @@
+@use "../../styles/mixins" as m;
+
+.du_tag_input {
+  @include m.du_border;
+
+  display: block;
+  padding: var(--space-1);
+  color: var(--fg);
+  background-color: var(--bg);
+  cursor: text;
+
+  // Focus ring driven by the inner input's focus.
+  &:focus-within {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: calc(-1 * var(--border-width));
+  }
+}
+
+.du_tag_input_invalid {
+  border-style: dashed;
+}
+
+.du_tag_input_disabled {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+}
+
+.du_tag_input_list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.du_tag_input_chip {
+  display: inline-flex;
+}
+
+.du_tag_input_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.du_tag_input_remove {
+  @include m.du_reset_control;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 16px;
+  block-size: 16px;
+  color: inherit;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fg);
+    background-color: var(--bg);
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--bg);
+    outline-offset: calc(-1 * var(--border-width));
+  }
+}
+
+.du_tag_input_field {
+  flex: 1 1 120px;
+  display: inline-flex;
+}
+
+.du_tag_input_input {
+  @include m.du_reset_control;
+
+  inline-size: 100%;
+  min-inline-size: 80px;
+  padding: var(--space-1) var(--space-2);
+  color: var(--fg);
+  background-color: transparent;
+  font-family: var(--font-sans);
+
+  &::placeholder {
+    color: var(--fg);
+    font-style: italic;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}

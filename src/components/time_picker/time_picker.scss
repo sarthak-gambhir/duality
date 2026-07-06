@@ -1,0 +1,119 @@
+@use "../../styles/mixins" as m;
+
+.du_time_picker {
+  position: relative;
+  display: inline-block;
+}
+
+.du_time_picker_trigger {
+  @include m.du_reset_control;
+  @include m.du_border;
+  @include m.du_focus;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding-inline: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: start;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+}
+
+.du_time_picker_invalid .du_time_picker_trigger {
+  border-style: dashed;
+}
+
+.du_time_picker_placeholder {
+  font-style: italic;
+}
+
+// Small pixel clock glyph: a box with a heavier bottom edge.
+.du_time_picker_glyph {
+  flex: 0 0 auto;
+  inline-size: 12px;
+  block-size: 12px;
+  border: var(--border-width) solid var(--fg);
+  border-block-end-width: var(--border-width-thick);
+}
+
+.du_time_picker_sm {
+  min-block-size: var(--size-sm);
+  font-size: 14px;
+}
+
+.du_time_picker_md {
+  min-block-size: var(--size-md);
+  font-size: 16px;
+}
+
+.du_time_picker_lg {
+  min-block-size: var(--size-lg);
+  font-size: 18px;
+}
+
+.du_time_picker_panel {
+  position: absolute;
+  z-index: 20;
+  inset-block-start: calc(100% - var(--border-width));
+  inset-inline-start: 0;
+  display: flex;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_time_picker_column {
+  display: flex;
+  flex-direction: column;
+  inline-size: var(--size-lg);
+  max-block-size: calc(var(--size-lg) * 5);
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+  border-inline-end: var(--border-width) solid var(--fg);
+
+  &:last-child {
+    border-inline-end: 0;
+  }
+}
+
+.du_time_picker_option {
+  @include m.du_reset_control;
+
+  display: block;
+  inline-size: 100%;
+  padding: var(--space-1) var(--space-2);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: center;
+  cursor: pointer;
+
+  &[aria-selected="true"] {
+    @include m.du_invert;
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: calc(-1 * var(--border-width));
+  }
+
+  &[aria-selected="true"]:focus-visible {
+    outline-color: var(--bg);
+  }
+
+  &:hover {
+    @include m.du_invert;
+  }
+}

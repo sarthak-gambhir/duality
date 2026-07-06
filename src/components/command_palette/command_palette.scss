@@ -1,0 +1,94 @@
+@use "../../styles/mixins" as m;
+
+.du_command_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-block-start: 10vh;
+  padding-inline: var(--space-4);
+
+  @include m.du_dither;
+}
+
+.du_command {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  max-inline-size: 560px;
+  max-block-size: 70vh;
+  color: var(--fg);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_command_input {
+  @include m.du_reset_control;
+
+  flex: 0 0 auto;
+  padding: var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  border-block-end: var(--border-width) solid var(--fg);
+
+  &::placeholder {
+    color: var(--fg);
+    font-style: italic;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.du_command_list {
+  flex: 1 1 auto;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.du_command_group {
+  display: block;
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.du_command_option {
+  @include m.du_reset_control;
+
+  display: block;
+  inline-size: 100%;
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: start;
+  cursor: pointer;
+
+  &[data-active] {
+    color: var(--bg);
+    background-color: var(--fg);
+  }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+}
+
+.du_command_empty {
+  padding: var(--space-3);
+  font-family: var(--font-sans);
+  font-style: italic;
+}

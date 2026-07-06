@@ -6,6 +6,7 @@ const meta: Meta<typeof Select> = {
   title: "Controls/Select",
   component: Select,
   args: { selectSize: "md" },
+  parameters: { docsMinHeight: 280 },
 };
 
 export default meta;

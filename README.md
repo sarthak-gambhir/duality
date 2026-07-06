@@ -34,13 +34,13 @@ All components are drawn with the two-color model: base is `--fg` on `--bg`, hov
 
 - **Layout:** `Box` (polymorphic), `Stack`, `Inline`, `Grid`, `Container`, `Divider`
 - **Typography:** `Text` (polymorphic), `Heading`, `Link`, `Code`, `Kbd`
-- **Form controls:** `Button`, `Input`, `Textarea`, `Checkbox`, `Radio` + `RadioGroup`, `Switch`, `Select`, `NumberInput`, `ToggleGroup` (+ `ToggleGroupItem`), `Rating`, `Combobox`, `Slider`, `RangeSlider`, `DatePicker`
+- **Form controls:** `Button`, `Input`, `Textarea`, `Checkbox`, `Radio` + `RadioGroup`, `Switch`, `Select`, `NumberInput`, `ToggleGroup` (+ `ToggleGroupItem`), `Rating`, `Combobox`, `Slider`, `RangeSlider`, `DatePicker`, `TimePicker`, `TagInput`
 - **Form composition:** `Label`, `FormField` (wires `id` / `aria-describedby` / `aria-invalid`)
 - **Display:** `Card` (+ `CardHeader` / `CardBody` / `CardFooter`), `Badge` (alias `Tag`), `Alert`, `Avatar`, `Progress`, `Spinner`, `Skeleton`
-- **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `Tree`
-- **Navigation:** `Breadcrumbs`, `Pagination`
+- **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `DataTable` (sortable + filterable), `Tree`
+- **Navigation:** `Breadcrumbs`, `Pagination`, `Stepper`
 - **Disclosure:** `Tabs` (+ `TabList` / `Tab` / `TabPanel`), `Accordion` (+ `AccordionItem`)
-- **Overlays:** `Modal` (+ sections), `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `Toast` (`ToastProvider` / `useToast`)
+- **Overlays:** `Modal` (+ sections), `Drawer` (+ sections), `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `CommandPalette`, `Toast` (`ToastProvider` / `useToast`)
 - **Theming:** `ThemeToggle`, `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
 
 Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence and `defaultInverted="system"` to follow the OS color scheme. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage.

@@ -3,6 +3,7 @@ import { Button, Inline, ToastProvider, useToast } from '../../src';
 
 const meta: Meta = {
   title: 'Overlays/Toast',
+  parameters: { docsMinHeight: 320 },
 };
 
 export default meta;

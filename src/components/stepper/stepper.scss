@@ -1,0 +1,124 @@
+@use "../../styles/mixins" as m;
+
+.du_stepper {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-family: var(--font-sans);
+  color: var(--fg);
+}
+
+.du_stepper_horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.du_stepper_vertical {
+  flex-direction: column;
+}
+
+.du_stepper_item {
+  display: flex;
+  position: relative;
+  gap: var(--space-2);
+}
+
+.du_stepper_horizontal .du_stepper_item {
+  flex: 1 1 0;
+  align-items: center;
+}
+
+.du_stepper_vertical .du_stepper_item {
+  flex-direction: row;
+  align-items: flex-start;
+  padding-block-end: var(--space-4);
+}
+
+.du_stepper_button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: start;
+}
+
+button.du_stepper_button {
+  cursor: pointer;
+
+  @include m.du_focus;
+}
+
+.du_stepper_marker {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
+  font-weight: 700;
+  color: var(--fg);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+// Completed and current steps are filled; distinguished by glyph (check vs
+// number) and, for current, a thicker outline so state isn't color-only.
+.du_stepper_item[data-status="complete"] .du_stepper_marker {
+  color: var(--bg);
+  background-color: var(--fg);
+}
+
+.du_stepper_item[data-status="current"] .du_stepper_marker {
+  color: var(--bg);
+  background-color: var(--fg);
+  border-width: var(--border-width-thick);
+}
+
+.du_stepper_label {
+  font-weight: 700;
+}
+
+.du_stepper_text {
+  display: flex;
+  flex-direction: column;
+}
+
+.du_stepper_description {
+  font-size: 14px;
+}
+
+.du_stepper_item[data-status="upcoming"] .du_stepper_text {
+  font-style: italic;
+}
+
+// Pixel check drawn with two borders, like the checkbox.
+.du_stepper_check {
+  inline-size: 6px;
+  block-size: 10px;
+  border-inline-end: var(--border-width-thick) solid var(--bg);
+  border-block-end: var(--border-width-thick) solid var(--bg);
+  transform: rotate(45deg);
+  margin-block-start: -2px;
+}
+
+.du_stepper_connector {
+  flex: 1 1 auto;
+  background-color: var(--fg);
+}
+
+.du_stepper_horizontal .du_stepper_connector {
+  block-size: var(--border-width);
+  margin-inline: var(--space-2);
+}
+
+.du_stepper_vertical .du_stepper_connector {
+  position: absolute;
+  inline-size: var(--border-width);
+  inset-block: calc(var(--size-md) + var(--space-1)) 0;
+  inset-inline-start: calc(var(--size-md) / 2);
+}

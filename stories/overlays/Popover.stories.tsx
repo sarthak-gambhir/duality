@@ -4,6 +4,7 @@ import { Button, Popover, Stack, Text } from '../../src';
 const meta: Meta<typeof Popover> = {
   title: 'Overlays/Popover',
   component: Popover,
+  parameters: { docsMinHeight: 220 },
 };
 
 export default meta;

@@ -4,6 +4,7 @@ import { Button, Menu, MenuItem, MenuSeparator } from '../../src';
 const meta: Meta<typeof Menu> = {
   title: 'Overlays/Menu',
   component: Menu,
+  parameters: { docsMinHeight: 240 },
 };
 
 export default meta;

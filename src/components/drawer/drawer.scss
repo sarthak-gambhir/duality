@@ -1,0 +1,68 @@
+@use "../../styles/mixins" as m;
+
+.du_drawer_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  // Two-color scrim: a dither instead of a translucent gray.
+  @include m.du_dither;
+}
+
+.du_drawer {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  max-block-size: 100vh;
+  max-inline-size: 100vw;
+  color: var(--fg);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+
+  @include m.du_focus;
+}
+
+.du_drawer_start {
+  inset-block: 0;
+  inset-inline-start: 0;
+  block-size: 100vh;
+}
+
+.du_drawer_end {
+  inset-block: 0;
+  inset-inline-end: 0;
+  block-size: 100vh;
+}
+
+.du_drawer_top {
+  inset-inline: 0;
+  inset-block-start: 0;
+  inline-size: 100vw;
+}
+
+.du_drawer_bottom {
+  inset-inline: 0;
+  inset-block-end: 0;
+  inline-size: 100vw;
+}
+
+.du_drawer_header {
+  flex: 0 0 auto;
+  padding: var(--space-4);
+  border-block-end: var(--border-width) solid var(--fg);
+}
+
+.du_drawer_body {
+  flex: 1 1 auto;
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+.du_drawer_footer {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  padding: var(--space-4);
+  border-block-start: var(--border-width) solid var(--fg);
+}

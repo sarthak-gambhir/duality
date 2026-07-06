@@ -5,6 +5,7 @@ import { DatePicker, Stack, Text } from "../../src";
 const meta: Meta<typeof DatePicker> = {
   title: "Controls/DatePicker",
   component: DatePicker,
+  parameters: { docsMinHeight: 380 },
 };
 
 export default meta;
