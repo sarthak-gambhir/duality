@@ -13,7 +13,12 @@ type Story = StoryObj<typeof ToggleGroup>;
 function Single() {
   const [value, setValue] = useState<string | string[]>("center");
   return (
-    <ToggleGroup type="single" value={value} onValueChange={setValue} label="Alignment">
+    <ToggleGroup
+      type="single"
+      value={value}
+      onValueChange={setValue}
+      label="Alignment"
+    >
       <ToggleGroupItem value="left">Left</ToggleGroupItem>
       <ToggleGroupItem value="center">Center</ToggleGroupItem>
       <ToggleGroupItem value="right">Right</ToggleGroupItem>
@@ -24,7 +29,12 @@ function Single() {
 function Multiple() {
   const [value, setValue] = useState<string | string[]>(["bold"]);
   return (
-    <ToggleGroup type="multiple" value={value} onValueChange={setValue} label="Text style">
+    <ToggleGroup
+      type="multiple"
+      value={value}
+      onValueChange={setValue}
+      label="Text style"
+    >
       <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
       <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
       <ToggleGroupItem value="underline">Underline</ToggleGroupItem>

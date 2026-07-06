@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Inline, PaletteSelect, ThemeToggle } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Inline, PaletteSelect, ThemeToggle } from "../../src";
 
 const meta: Meta = {
-  title: 'Theming/Controls',
+  title: "Theming/Controls",
 };
 
 export default meta;

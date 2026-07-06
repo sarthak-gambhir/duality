@@ -20,14 +20,20 @@ describe("Combobox", () => {
 
     expect(screen.getByRole("option", { name: /Apple/ })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: /Apricot/ })).toBeInTheDocument();
-    expect(screen.queryByRole("option", { name: /Banana/ })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", { name: /Banana/ }),
+    ).not.toBeInTheDocument();
   });
 
   it("selects an option with keyboard and reflects the value", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     render(
-      <Combobox options={options} aria-label="fruit" onValueChange={onValueChange} />,
+      <Combobox
+        options={options}
+        aria-label="fruit"
+        onValueChange={onValueChange}
+      />,
     );
 
     const input = screen.getByRole("combobox", { name: "fruit" });

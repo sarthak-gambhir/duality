@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from "react";
 
 /** A next value, or an updater function receiving the current value. */
 export type SetStateAction<T> = T | ((prev: T) => T);
@@ -13,7 +13,7 @@ export interface UseControllableStateOptions<T> {
 }
 
 function isUpdater<T>(next: SetStateAction<T>): next is (prev: T) => T {
-  return typeof next === 'function';
+  return typeof next === "function";
 }
 
 /**

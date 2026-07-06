@@ -15,11 +15,10 @@ import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import type { SelectOption } from "../select/Select";
 
-export interface ComboboxProps
-  extends Omit<
-    ComponentPropsWithoutRef<"input">,
-    "value" | "defaultValue" | "onChange" | "size"
-  > {
+export interface ComboboxProps extends Omit<
+  ComponentPropsWithoutRef<"input">,
+  "value" | "defaultValue" | "onChange" | "size"
+> {
   /** Options to filter and choose from. */
   options: SelectOption[];
   /** Selected value (controlled). */
@@ -276,9 +275,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
           </ul>
         )}
 
-        {name && (
-          <input type="hidden" name={name} value={currentValue ?? ""} />
-        )}
+        {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
       </div>
     );
   },

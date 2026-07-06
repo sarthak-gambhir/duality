@@ -29,8 +29,10 @@ function useToggleGroup(): ToggleGroupContextValue {
   return ctx;
 }
 
-export interface ToggleGroupProps
-  extends Omit<ComponentPropsWithoutRef<"div">, "onChange" | "defaultValue"> {
+export interface ToggleGroupProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "onChange" | "defaultValue"
+> {
   /** Single selection (radio-like) or multiple (independent toggles). */
   type?: "single" | "multiple";
   /** Selected value(s) (controlled). */
@@ -76,9 +78,7 @@ export function ToggleGroup({
   const rootRef = useRef<HTMLDivElement>(null);
 
   const isSelected = (v: string) =>
-    type === "multiple"
-      ? (current as string[]).includes(v)
-      : current === v;
+    type === "multiple" ? (current as string[]).includes(v) : current === v;
 
   const toggle = (v: string) => {
     if (type === "multiple") {
@@ -125,7 +125,9 @@ export function ToggleGroup({
 
   // In single mode, if nothing is selected yet, make the first item focusable.
   const resolvedFocusable =
-    type === "single" && !focusableValue ? firstValue(children) : focusableValue;
+    type === "single" && !focusableValue
+      ? firstValue(children)
+      : focusableValue;
 
   return (
     <div
@@ -188,8 +190,10 @@ function firstValue(children: ReactNode): string | undefined {
   return found;
 }
 
-export interface ToggleGroupItemProps
-  extends Omit<ComponentPropsWithoutRef<"button">, "value"> {
+export interface ToggleGroupItemProps extends Omit<
+  ComponentPropsWithoutRef<"button">,
+  "value"
+> {
   /** This item's value. */
   value: string;
 }

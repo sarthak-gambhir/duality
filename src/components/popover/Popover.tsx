@@ -5,12 +5,13 @@ import {
   type MouseEvent,
   type ReactElement,
   type ReactNode,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
-import { useDismiss } from '../../utils/useDismiss';
+} from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
+import { useDismiss } from "../../utils/useDismiss";
 
-export type PopoverPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+export type PopoverPlacement =
+  "bottom-start" | "bottom-end" | "top-start" | "top-end";
 
 interface TriggerProps {
   onClick?: (event: MouseEvent) => void;
@@ -36,7 +37,7 @@ export interface PopoverProps {
 export function Popover({
   trigger,
   children,
-  placement = 'bottom-start',
+  placement = "bottom-start",
   open,
   defaultOpen = false,
   onOpenChange,
@@ -52,12 +53,16 @@ export function Popover({
   const id = useId();
   const panelId = `${id}_popover`;
 
-  useDismiss({ enabled: isOpen, onDismiss: () => setOpen(false), refs: [rootRef] });
+  useDismiss({
+    enabled: isOpen,
+    onDismiss: () => setOpen(false),
+    refs: [rootRef],
+  });
 
   const clonedTrigger = cloneElement(trigger, {
-    'aria-haspopup': 'dialog',
-    'aria-expanded': isOpen,
-    'aria-controls': isOpen ? panelId : undefined,
+    "aria-haspopup": "dialog",
+    "aria-expanded": isOpen,
+    "aria-controls": isOpen ? panelId : undefined,
     onClick: (event: MouseEvent) => {
       trigger.props.onClick?.(event);
       setOpen(!isOpen);
@@ -71,7 +76,11 @@ export function Popover({
         <div
           role="dialog"
           id={panelId}
-          className={cx('du_popover', `du_popover_${placement.replace('-', '_')}`, className)}
+          className={cx(
+            "du_popover",
+            `du_popover_${placement.replace("-", "_")}`,
+            className,
+          )}
         >
           {children}
         </div>

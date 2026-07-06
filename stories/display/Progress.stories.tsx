@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Progress, Stack } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Progress, Stack } from "../../src";
 
 const meta: Meta<typeof Progress> = {
-  title: 'Display/Progress',
+  title: "Display/Progress",
   component: Progress,
 };
 

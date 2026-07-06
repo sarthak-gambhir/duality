@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Tab, TabList, TabPanel, Tabs, Text } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Tab, TabList, TabPanel, Tabs, Text } from "../../src";
 
 const meta: Meta<typeof Tabs> = {
-  title: 'Disclosure/Tabs',
+  title: "Disclosure/Tabs",
   component: Tabs,
 };
 

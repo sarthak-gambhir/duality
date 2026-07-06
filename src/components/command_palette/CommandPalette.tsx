@@ -5,11 +5,11 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { Portal } from '../../utils/Portal';
-import { useDismiss } from '../../utils/useDismiss';
-import { useFocusTrap } from '../../utils/useFocusTrap';
+} from "react";
+import { cx } from "../../utils/cx";
+import { Portal } from "../../utils/Portal";
+import { useDismiss } from "../../utils/useDismiss";
+import { useFocusTrap } from "../../utils/useFocusTrap";
 
 export interface Command {
   /** Unique id. */
@@ -38,11 +38,15 @@ export interface CommandPaletteProps {
   /** Message shown when nothing matches. */
   emptyMessage?: string;
   /** Accessible name for the dialog. */
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
 }
 
-function nextEnabledIndex(items: Command[], from: number, step: 1 | -1): number {
+function nextEnabledIndex(
+  items: Command[],
+  from: number,
+  step: 1 | -1,
+): number {
   const count = items.length;
   if (count === 0) return -1;
   let index = from;
@@ -61,12 +65,12 @@ export function CommandPalette({
   isOpen,
   onClose,
   commands,
-  placeholder = 'Type a command or search...',
-  emptyMessage = 'No commands',
+  placeholder = "Type a command or search...",
+  emptyMessage = "No commands",
   className,
-  'aria-label': ariaLabel = 'Command palette',
+  "aria-label": ariaLabel = "Command palette",
 }: CommandPaletteProps) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -79,10 +83,14 @@ export function CommandPalette({
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (q === '') return commands;
+    if (q === "") return commands;
     return commands.filter((command) => {
-      const haystack = [command.label, command.group ?? '', ...(command.keywords ?? [])]
-        .join(' ')
+      const haystack = [
+        command.label,
+        command.group ?? "",
+        ...(command.keywords ?? []),
+      ]
+        .join(" ")
         .toLowerCase();
       return haystack.includes(q);
     });
@@ -93,18 +101,18 @@ export function CommandPalette({
 
   useEffect(() => {
     if (!isOpen) return undefined;
-    setQuery('');
+    setQuery("");
     setActiveIndex(nextEnabledIndex(commands, -1, 1));
     inputRef.current?.focus();
     const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
   }, [isOpen, commands]);
 
   useEffect(() => {
-    optionRefs.current[activeIndex]?.scrollIntoView?.({ block: 'nearest' });
+    optionRefs.current[activeIndex]?.scrollIntoView?.({ block: "nearest" });
   }, [activeIndex]);
 
   const run = (index: number) => {
@@ -116,23 +124,23 @@ export function CommandPalette({
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     switch (event.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         event.preventDefault();
         setActiveIndex((index) => nextEnabledIndex(filtered, index, 1));
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         event.preventDefault();
         setActiveIndex((index) => nextEnabledIndex(filtered, index, -1));
         break;
-      case 'Home':
+      case "Home":
         event.preventDefault();
         setActiveIndex(nextEnabledIndex(filtered, -1, 1));
         break;
-      case 'End':
+      case "End":
         event.preventDefault();
         setActiveIndex(nextEnabledIndex(filtered, 0, -1));
         break;
-      case 'Enter':
+      case "Enter":
         if (activeIndex >= 0) {
           event.preventDefault();
           run(activeIndex);
@@ -155,7 +163,7 @@ export function CommandPalette({
           role="dialog"
           aria-modal="true"
           aria-label={ariaLabel}
-          className={cx('du_command', className)}
+          className={cx("du_command", className)}
         >
           <input
             ref={inputRef}
@@ -166,7 +174,9 @@ export function CommandPalette({
             aria-autocomplete="list"
             aria-expanded
             aria-controls={listboxId}
-            aria-activedescendant={activeIndex >= 0 ? optionId(activeIndex) : undefined}
+            aria-activedescendant={
+              activeIndex >= 0 ? optionId(activeIndex) : undefined
+            }
             aria-label={ariaLabel}
             value={query}
             placeholder={placeholder}
@@ -188,7 +198,11 @@ export function CommandPalette({
               const showGroup = command.group && command.group !== lastGroup;
               lastGroup = command.group;
               return (
-                <li key={command.id} role="presentation" className="du_command_row">
+                <li
+                  key={command.id}
+                  role="presentation"
+                  className="du_command_row"
+                >
                   {showGroup && (
                     <span className="du_command_group" role="presentation">
                       {command.group}
@@ -206,7 +220,9 @@ export function CommandPalette({
                     data-active={index === activeIndex || undefined}
                     className="du_command_option"
                     tabIndex={-1}
-                    onMouseEnter={() => !command.disabled && setActiveIndex(index)}
+                    onMouseEnter={() =>
+                      !command.disabled && setActiveIndex(index)
+                    }
                     onClick={() => run(index)}
                   >
                     {command.label}

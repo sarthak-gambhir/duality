@@ -1,9 +1,9 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
-import { useDismiss } from '../../utils/useDismiss';
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
+import { useDismiss } from "../../utils/useDismiss";
 
-const pad = (n: number) => String(n).padStart(2, '0');
+const pad = (n: number) => String(n).padStart(2, "0");
 
 interface TimeParts {
   hour: number;
@@ -20,8 +20,8 @@ function parse(value: string | null): TimeParts | null {
   return { hour, minute };
 }
 
-const to24 = (displayHour: number, period: 'AM' | 'PM') =>
-  period === 'PM' ? (displayHour % 12) + 12 : displayHour % 12;
+const to24 = (displayHour: number, period: "AM" | "PM") =>
+  period === "PM" ? (displayHour % 12) + 12 : displayHour % 12;
 
 export interface TimePickerProps {
   /** Selected time as `"HH:mm"` (24h, controlled). */
@@ -39,14 +39,14 @@ export interface TimePickerProps {
   /** Marks the field invalid. */
   invalid?: boolean;
   /** Control size. */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   disabled?: boolean;
   id?: string;
   name?: string;
   className?: string;
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 /**
@@ -60,16 +60,16 @@ export function TimePicker({
   onValueChange,
   step = 5,
   hour12 = false,
-  placeholder = 'Select time...',
+  placeholder = "Select time...",
   invalid,
-  size = 'md',
+  size = "md",
   disabled,
   id,
   name,
   className,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  'aria-describedby': ariaDescribedby,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
 }: TimePickerProps) {
   const [current, setCurrent] = useControllableState<string | null>({
     value,
@@ -83,21 +83,27 @@ export function TimePicker({
   const panelRef = useRef<HTMLDivElement>(null);
   const baseId = useId();
 
-  useDismiss({ enabled: open, onDismiss: () => setOpen(false), refs: [rootRef] });
+  useDismiss({
+    enabled: open,
+    onDismiss: () => setOpen(false),
+    refs: [rootRef],
+  });
 
   useEffect(() => {
     if (!open) return;
     panelRef.current
-      ?.querySelectorAll<HTMLElement>('[data-selected]')
-      .forEach((el) => el.scrollIntoView?.({ block: 'center' }));
+      ?.querySelectorAll<HTMLElement>("[data-selected]")
+      .forEach((el) => el.scrollIntoView?.({ block: "center" }));
   }, [open]);
 
   const parts = parse(current);
   const selHour = parts?.hour ?? null;
   const selMinute = parts?.minute ?? null;
 
-  const displayHour = selHour == null ? null : selHour % 12 === 0 ? 12 : selHour % 12;
-  const period: 'AM' | 'PM' | null = selHour == null ? null : selHour < 12 ? 'AM' : 'PM';
+  const displayHour =
+    selHour == null ? null : selHour % 12 === 0 ? 12 : selHour % 12;
+  const period: "AM" | "PM" | null =
+    selHour == null ? null : selHour < 12 ? "AM" : "PM";
 
   const commit = (hour: number, minute: number) => {
     setCurrent(`${pad(hour)}:${pad(minute)}`);
@@ -106,14 +112,18 @@ export function TimePicker({
   const hours = hour12
     ? Array.from({ length: 12 }, (_, i) => i + 1)
     : Array.from({ length: 24 }, (_, i) => i);
-  const minutes = Array.from({ length: Math.ceil(60 / step) }, (_, i) => i * step);
+  const minutes = Array.from(
+    { length: Math.ceil(60 / step) },
+    (_, i) => i * step,
+  );
 
   const selectHour = (h: number) => {
-    if (hour12) commit(to24(h, period ?? 'AM'), selMinute ?? 0);
+    if (hour12) commit(to24(h, period ?? "AM"), selMinute ?? 0);
     else commit(h, selMinute ?? 0);
   };
   const selectMinute = (m: number) => commit(selHour ?? 0, m);
-  const selectPeriod = (p: 'AM' | 'PM') => commit(to24(displayHour ?? 12, p), selMinute ?? 0);
+  const selectPeriod = (p: "AM" | "PM") =>
+    commit(to24(displayHour ?? 12, p), selMinute ?? 0);
 
   const closePanel = (focusTrigger = true) => {
     setOpen(false);
@@ -127,14 +137,18 @@ export function TimePicker({
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (disabled) return;
-    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+    if (
+      event.key === "ArrowDown" ||
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
       event.preventDefault();
       openPanel();
     }
   };
 
   const onPanelKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       event.preventDefault();
       closePanel();
     }
@@ -142,14 +156,19 @@ export function TimePicker({
 
   const label = (() => {
     if (!parts) return placeholder;
-    if (hour12) return `${pad(displayHour ?? 12)}:${pad(parts.minute)} ${period}`;
+    if (hour12)
+      return `${pad(displayHour ?? 12)}:${pad(parts.minute)} ${period}`;
     return `${pad(parts.hour)}:${pad(parts.minute)}`;
   })();
 
   return (
     <div
       ref={rootRef}
-      className={cx('du_time_picker', invalid && 'du_time_picker_invalid', className)}
+      className={cx(
+        "du_time_picker",
+        invalid && "du_time_picker_invalid",
+        className,
+      )}
     >
       <button
         ref={triggerRef}
@@ -163,12 +182,15 @@ export function TimePicker({
         aria-describedby={ariaDescribedby}
         disabled={disabled}
         data-open={open || undefined}
-        className={cx('du_time_picker_trigger', `du_time_picker_${size}`)}
+        className={cx("du_time_picker_trigger", `du_time_picker_${size}`)}
         onClick={() => (open ? closePanel(false) : openPanel())}
         onKeyDown={onTriggerKeyDown}
       >
         <span
-          className={cx('du_time_picker_value', !parts && 'du_time_picker_placeholder')}
+          className={cx(
+            "du_time_picker_value",
+            !parts && "du_time_picker_placeholder",
+          )}
         >
           {label}
         </span>
@@ -176,7 +198,11 @@ export function TimePicker({
       </button>
 
       {open && (
-        <div ref={panelRef} className="du_time_picker_panel" onKeyDown={onPanelKeyDown}>
+        <div
+          ref={panelRef}
+          className="du_time_picker_panel"
+          onKeyDown={onPanelKeyDown}
+        >
           <ul
             role="listbox"
             aria-label="Hours"
@@ -234,7 +260,7 @@ export function TimePicker({
               id={`${baseId}_period`}
               className="du_time_picker_column"
             >
-              {(['AM', 'PM'] as const).map((p) => {
+              {(["AM", "PM"] as const).map((p) => {
                 const selected = p === period;
                 return (
                   <li key={p} role="presentation">
@@ -256,7 +282,7 @@ export function TimePicker({
         </div>
       )}
 
-      {name && <input type="hidden" name={name} value={current ?? ''} />}
+      {name && <input type="hidden" name={name} value={current ?? ""} />}
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Inline, Stepper, type StepperStep } from '../../src';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button, Inline, Stepper, type StepperStep } from "../../src";
 
 const meta: Meta<typeof Stepper> = {
-  title: 'Navigation/Stepper',
+  title: "Navigation/Stepper",
   component: Stepper,
 };
 
@@ -11,16 +11,16 @@ export default meta;
 type Story = StoryObj<typeof Stepper>;
 
 const steps: StepperStep[] = [
-  { label: 'Account', description: 'Your details' },
-  { label: 'Address', description: 'Where to ship' },
-  { label: 'Payment', description: 'Card or invoice' },
-  { label: 'Review', description: 'Confirm order' },
+  { label: "Account", description: "Your details" },
+  { label: "Address", description: "Where to ship" },
+  { label: "Payment", description: "Card or invoice" },
+  { label: "Review", description: "Confirm order" },
 ];
 
-function Demo({ orientation }: { orientation?: 'horizontal' | 'vertical' }) {
+function Demo({ orientation }: { orientation?: "horizontal" | "vertical" }) {
   const [active, setActive] = useState(1);
   return (
-    <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
+    <div style={{ display: "grid", gap: "var(--space-4)" }}>
       <Stepper
         steps={steps}
         activeStep={active}
@@ -48,4 +48,6 @@ function Demo({ orientation }: { orientation?: 'horizontal' | 'vertical' }) {
 }
 
 export const Horizontal: Story = { render: () => <Demo /> };
-export const Vertical: Story = { render: () => <Demo orientation="vertical" /> };
+export const Vertical: Story = {
+  render: () => <Demo orientation="vertical" />,
+};

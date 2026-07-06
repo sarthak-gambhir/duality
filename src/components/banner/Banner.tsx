@@ -1,9 +1,9 @@
-import { type ReactNode } from 'react';
-import { cx } from '../../utils/cx';
+import { type ReactNode } from "react";
+import { cx } from "../../utils/cx";
 
 export interface BannerProps {
   /** Severity. Signalled by marker shape + border style, never by color. */
-  tone?: 'info' | 'warning' | 'error';
+  tone?: "info" | "warning" | "error";
   /** Optional bold heading. */
   title?: ReactNode;
   /** Banner message. */
@@ -19,18 +19,18 @@ export interface BannerProps {
 
 /** Full-width, page-level callout. Optionally dismissible with an action slot. */
 export function Banner({
-  tone = 'info',
+  tone = "info",
   title,
   children,
   action,
   onDismiss,
-  dismissLabel = 'Dismiss',
+  dismissLabel = "Dismiss",
   className,
 }: BannerProps) {
   return (
     <div
-      role={tone === 'error' ? 'alert' : 'status'}
-      className={cx('du_banner', `du_banner_${tone}`, className)}
+      role={tone === "error" ? "alert" : "status"}
+      className={cx("du_banner", `du_banner_${tone}`, className)}
     >
       <span className="du_banner_marker" aria-hidden="true" />
       <div className="du_banner_content">

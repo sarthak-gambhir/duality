@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { usePortalContainer } from '../theme/ThemeProvider';
+import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { usePortalContainer } from "../theme/ThemeProvider";
 
 export interface PortalProps {
   children: ReactNode;

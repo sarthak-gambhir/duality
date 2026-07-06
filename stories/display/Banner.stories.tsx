@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Banner, Button, Stack } from '../../src';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Banner, Button, Stack } from "../../src";
 
 const meta: Meta<typeof Banner> = {
-  title: 'Display/Banner',
+  title: "Display/Banner",
   component: Banner,
 };
 
@@ -30,7 +30,8 @@ export const Dismissible: Story = {
   render: () => {
     function Demo() {
       const [open, setOpen] = useState(true);
-      if (!open) return <Button onClick={() => setOpen(true)}>Show banner</Button>;
+      if (!open)
+        return <Button onClick={() => setOpen(true)}>Show banner</Button>;
       return (
         <Banner
           tone="info"

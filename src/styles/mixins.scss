@@ -59,7 +59,7 @@
 
   @for $x from $min through $radius {
     @for $y from $min through $radius {
-      @if not ($x == 0 and $y == 0) {
+      @if not($x == 0 and $y == 0) {
         $shadows: list.append(
           $shadows,
           #{$x}px #{$y}px 0 $color,

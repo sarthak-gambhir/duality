@@ -7,11 +7,10 @@ import {
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 
-export interface NumberInputProps
-  extends Omit<
-    ComponentPropsWithoutRef<"input">,
-    "value" | "defaultValue" | "onChange" | "size" | "min" | "max" | "step"
-  > {
+export interface NumberInputProps extends Omit<
+  ComponentPropsWithoutRef<"input">,
+  "value" | "defaultValue" | "onChange" | "size" | "min" | "max" | "step"
+> {
   /** Current value (controlled). */
   value?: number;
   /** Initial value (uncontrolled). */

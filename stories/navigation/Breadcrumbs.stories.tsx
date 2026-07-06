@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumbs } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Breadcrumbs } from "../../src";
 
 const meta: Meta<typeof Breadcrumbs> = {
-  title: 'Navigation/Breadcrumbs',
+  title: "Navigation/Breadcrumbs",
   component: Breadcrumbs,
 };
 
@@ -13,9 +13,9 @@ export const Default: Story = {
   render: () => (
     <Breadcrumbs
       items={[
-        { label: 'Home', href: '#' },
-        { label: 'Components', href: '#' },
-        { label: 'Breadcrumbs' },
+        { label: "Home", href: "#" },
+        { label: "Components", href: "#" },
+        { label: "Breadcrumbs" },
       ]}
     />
   ),

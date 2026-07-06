@@ -4,10 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Theming and Density
 
-Everything renders inside a `ThemeProvider`, which establishes a theme scope on a
-`du_theme_root` element carrying `data-theme`, `data-inverted`, and
-`data-density`. The tokens stylesheet reads those attributes to resolve the two
-colors and the spacing / sizing scale. Import the stylesheet once:
+Everything renders inside a `ThemeProvider`, which establishes a theme scope on a `du_theme_root` element carrying `data-theme`, `data-inverted`, and `data-density`. The tokens stylesheet reads those attributes to resolve the two colors and the spacing / sizing scale. Import the stylesheet once:
 
 ```tsx
 import { ThemeProvider, Button } from "@duality/ui";
@@ -24,35 +21,28 @@ export function App() {
 
 ## Palettes
 
-A palette is a pair of colors `(--ink, --surface)` from which `--fg` / `--bg`
-derive. All palettes meet AAA (7:1). Preview any of them with the **Palette**
-toolbar control, or set one as the default:
+A palette is a pair of colors `(--ink, --surface)` from which `--fg` / `--bg` derive. All palettes meet AAA (7:1). Preview any of them with the **Palette** toolbar control, or set one as the default:
 
 ```tsx
 <ThemeProvider defaultTheme="phosphor">...</ThemeProvider>
 ```
 
-Built-in palettes: `classic`, `paper`, `amber`, `phosphor`, `blueprint`,
-`sepia`, `high_contrast`. The `palettes` export (and the `contrastRatio` /
-`meetsAAA` helpers) are available if you want to validate custom pairs.
+Built-in palettes: `classic`, `paper`, `amber`, `phosphor`, `blueprint`, `sepia`, `high_contrast`. The `palettes` export (and the `contrastRatio` / `meetsAAA` helpers) are available if you want to validate custom pairs.
 
 ## Inversion
 
-Inversion swaps the two colors for the entire scope; it is how "dark mode" works
-in a two-color system. Drive it explicitly, or follow the OS:
+Inversion swaps the two colors for the entire scope; it is how "dark mode" works in a two-color system. Drive it explicitly, or follow the OS:
 
 ```tsx
 // Follow prefers-color-scheme, and keep following live changes.
 <ThemeProvider defaultInverted="system">...</ThemeProvider>
 ```
 
-`useTheme()` exposes `inverted`, `setInverted`, and `toggleInverted`. The
-`ThemeToggle` component wraps this in a ready-made control.
+`useTheme()` exposes `inverted`, `setInverted`, and `toggleInverted`. The `ThemeToggle` component wraps this in a ready-made control.
 
 ## Persistence
 
-Pass a `storageKey` to persist the active theme, inversion, and density to
-`localStorage` and restore them on the next load:
+Pass a `storageKey` to persist the active theme, inversion, and density to `localStorage` and restore them on the next load:
 
 ```tsx
 <ThemeProvider storageKey="duality">...</ThemeProvider>
@@ -60,34 +50,22 @@ Pass a `storageKey` to persist the active theme, inversion, and density to
 
 ## Density
 
-`density` scales the spacing and sizing tokens without touching the colors or
-border widths. `comfortable` (default) uses the standard scale; `compact`
-applies a tighter one via `data-density="compact"`.
+`density` scales the spacing and sizing tokens without touching the colors or border widths. `comfortable` (default) uses the standard scale; `compact` applies a tighter one via `data-density="compact"`.
 
 ```tsx
 <ThemeProvider defaultDensity="compact">...</ThemeProvider>
 ```
 
-`useTheme()` exposes `density` and `setDensity`. Use the **Density** toolbar
-control to compare the two on any story. Because density is applied at the scope,
-it affects every component at once; the per-component `size` props are
-independent and still work.
+`useTheme()` exposes `density` and `setDensity`. Use the **Density** toolbar control to compare the two on any story. Because density is applied at the scope, it affects every component at once; the per-component `size` props are independent and still work.
 
 ## Reduced motion
 
-When `prefers-reduced-motion: reduce` is set, Duality drops all animations and
-transitions and falls back to a static two-color equivalent. Nothing is lost,
-because motion is only ever a secondary cue.
+When `prefers-reduced-motion: reduce` is set, Duality drops all animations and transitions and falls back to a static two-color equivalent. Nothing is lost, because motion is only ever a secondary cue.
 
 ## Right-to-left
 
-Component styles use logical properties throughout, so setting `dir="rtl"` on any
-ancestor mirrors the layout correctly. Preview it with the **Direction** toolbar
-control.
+Component styles use logical properties throughout, so setting `dir="rtl"` on any ancestor mirrors the layout correctly. Preview it with the **Direction** toolbar control.
 
 ## Portaled overlays
 
-Overlays that portal out of the DOM flow (`Modal`, `Drawer`, `Toast`,
-`ConfirmDialog`, `ContextMenu`) render into the nearest theme root via
-`usePortalContainer`, so they always inherit the active palette, inversion, and
-density.
+Overlays that portal out of the DOM flow (`Modal`, `Drawer`, `Toast`, `ConfirmDialog`, `ContextMenu`) render into the nearest theme root via `usePortalContainer`, so they always inherit the active palette, inversion, and density.

@@ -5,9 +5,9 @@ import {
   useRef,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
+} from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
 
 interface TabsContextValue {
   value: string;
@@ -19,11 +19,14 @@ const TabsContext = createContext<TabsContextValue | null>(null);
 
 function useTabs(): TabsContextValue {
   const ctx = useContext(TabsContext);
-  if (!ctx) throw new Error('Tabs subcomponents must be used within <Tabs>.');
+  if (!ctx) throw new Error("Tabs subcomponents must be used within <Tabs>.");
   return ctx;
 }
 
-export interface TabsProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
+export interface TabsProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "onChange"
+> {
   /** Selected tab value (controlled). */
   value?: string;
   /** Initial selected value (uncontrolled). */
@@ -49,15 +52,17 @@ export function Tabs({
   const idBase = useId();
 
   return (
-    <TabsContext.Provider value={{ value: current, setValue: setCurrent, idBase }}>
-      <div className={cx('du_tabs', className)} {...rest}>
+    <TabsContext.Provider
+      value={{ value: current, setValue: setCurrent, idBase }}
+    >
+      <div className={cx("du_tabs", className)} {...rest}>
         {children}
       </div>
     </TabsContext.Provider>
   );
 }
 
-export type TabListProps = ComponentPropsWithoutRef<'div'>;
+export type TabListProps = ComponentPropsWithoutRef<"div">;
 
 /** Row of tabs with arrow-key roving focus. */
 export function TabList({ className, children, ...rest }: TabListProps) {
@@ -65,16 +70,19 @@ export function TabList({ className, children, ...rest }: TabListProps) {
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const tabs = Array.from(
-      listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])') ?? [],
+      listRef.current?.querySelectorAll<HTMLButtonElement>(
+        '[role="tab"]:not([disabled])',
+      ) ?? [],
     );
     const index = tabs.indexOf(document.activeElement as HTMLButtonElement);
     if (index < 0) return;
 
     let next = -1;
-    if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-    else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
-    else if (event.key === 'Home') next = 0;
-    else if (event.key === 'End') next = tabs.length - 1;
+    if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+    else if (event.key === "ArrowLeft")
+      next = (index - 1 + tabs.length) % tabs.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = tabs.length - 1;
 
     const target = tabs[next];
     if (next >= 0 && target) {
@@ -85,13 +93,22 @@ export function TabList({ className, children, ...rest }: TabListProps) {
   };
 
   return (
-    <div ref={listRef} role="tablist" className={cx('du_tablist', className)} onKeyDown={onKeyDown} {...rest}>
+    <div
+      ref={listRef}
+      role="tablist"
+      className={cx("du_tablist", className)}
+      onKeyDown={onKeyDown}
+      {...rest}
+    >
       {children}
     </div>
   );
 }
 
-export interface TabProps extends Omit<ComponentPropsWithoutRef<'button'>, 'value'> {
+export interface TabProps extends Omit<
+  ComponentPropsWithoutRef<"button">,
+  "value"
+> {
   /** This tab's value. */
   value: string;
 }
@@ -110,20 +127,25 @@ export function Tab({ value, className, disabled, ...rest }: TabProps) {
       tabIndex={selected ? 0 : -1}
       disabled={disabled}
       data-selected={selected || undefined}
-      className={cx('du_tab', className)}
+      className={cx("du_tab", className)}
       onClick={() => ctx.setValue(value)}
       {...rest}
     />
   );
 }
 
-export interface TabPanelProps extends ComponentPropsWithoutRef<'div'> {
+export interface TabPanelProps extends ComponentPropsWithoutRef<"div"> {
   /** Value of the tab this panel belongs to. */
   value: string;
 }
 
 /** Content panel shown when its tab is selected. */
-export function TabPanel({ value, className, children, ...rest }: TabPanelProps) {
+export function TabPanel({
+  value,
+  className,
+  children,
+  ...rest
+}: TabPanelProps) {
   const ctx = useTabs();
   const selected = ctx.value === value;
   return (
@@ -132,7 +154,7 @@ export function TabPanel({ value, className, children, ...rest }: TabPanelProps)
       id={`${ctx.idBase}_panel_${value}`}
       aria-labelledby={`${ctx.idBase}_tab_${value}`}
       hidden={!selected}
-      className={cx('du_tabpanel', className)}
+      className={cx("du_tabpanel", className)}
       {...rest}
     >
       {selected && children}

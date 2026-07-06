@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Button,
   Modal,
@@ -7,10 +7,10 @@ import {
   ModalHeader,
   Text,
   useDisclosure,
-} from '../../src';
+} from "../../src";
 
 const meta: Meta<typeof Modal> = {
-  title: 'Overlays/Modal',
+  title: "Overlays/Modal",
   component: Modal,
   parameters: { docsMinHeight: 480 },
 };
@@ -30,7 +30,10 @@ function Demo() {
           </Text>
         </ModalHeader>
         <ModalBody>
-          <Text>This dialog traps focus, closes on Escape, and dims with a dither scrim.</Text>
+          <Text>
+            This dialog traps focus, closes on Escape, and dims with a dither
+            scrim.
+          </Text>
         </ModalBody>
         <ModalFooter>
           <Button variant="ghost" onClick={close}>

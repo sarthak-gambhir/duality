@@ -1,8 +1,13 @@
-import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import { cx } from '../../utils/cx';
-import { Portal } from '../../utils/Portal';
-import { useDismiss } from '../../utils/useDismiss';
-import { useFocusTrap } from '../../utils/useFocusTrap';
+import {
+  useEffect,
+  useRef,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from "react";
+import { cx } from "../../utils/cx";
+import { Portal } from "../../utils/Portal";
+import { useDismiss } from "../../utils/useDismiss";
+import { useFocusTrap } from "../../utils/useFocusTrap";
 
 export interface ModalProps {
   /** Whether the modal is open. */
@@ -11,11 +16,11 @@ export interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   /** Accessible name (use when there is no visible titled header). */
-  'aria-label'?: string;
+  "aria-label"?: string;
   /** Id of the element labelling the dialog (e.g. a ModalHeader). */
-  'aria-labelledby'?: string;
+  "aria-labelledby"?: string;
   /** Id of the element describing the dialog. */
-  'aria-describedby'?: string;
+  "aria-describedby"?: string;
   /** Close when the backdrop is pressed. Defaults to true. */
   closeOnBackdrop?: boolean;
   /** Close on Escape. Defaults to true. */
@@ -34,9 +39,9 @@ export function Modal({
   closeOnEscape = true,
   maxWidth = 480,
   className,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  'aria-describedby': ariaDescribedby,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
 }: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +58,7 @@ export function Modal({
   useEffect(() => {
     if (!isOpen) return undefined;
     const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
@@ -72,7 +77,7 @@ export function Modal({
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
           tabIndex={-1}
-          className={cx('du_modal', className)}
+          className={cx("du_modal", className)}
           style={{ maxWidth }}
         >
           {children}
@@ -82,19 +87,19 @@ export function Modal({
   );
 }
 
-export type ModalSectionProps = ComponentPropsWithoutRef<'div'>;
+export type ModalSectionProps = ComponentPropsWithoutRef<"div">;
 
 /** Top section of a Modal, separated by a pixel rule. */
 export function ModalHeader({ className, ...rest }: ModalSectionProps) {
-  return <div className={cx('du_modal_header', className)} {...rest} />;
+  return <div className={cx("du_modal_header", className)} {...rest} />;
 }
 
 /** Main content section of a Modal. */
 export function ModalBody({ className, ...rest }: ModalSectionProps) {
-  return <div className={cx('du_modal_body', className)} {...rest} />;
+  return <div className={cx("du_modal_body", className)} {...rest} />;
 }
 
 /** Bottom section of a Modal, separated by a pixel rule. */
 export function ModalFooter({ className, ...rest }: ModalSectionProps) {
-  return <div className={cx('du_modal_footer', className)} {...rest} />;
+  return <div className={cx("du_modal_footer", className)} {...rest} />;
 }

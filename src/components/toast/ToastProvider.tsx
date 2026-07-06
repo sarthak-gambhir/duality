@@ -6,20 +6,20 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from 'react';
-import { Portal } from '../../utils/Portal';
-import { Alert } from '../alert/Alert';
+} from "react";
+import { Portal } from "../../utils/Portal";
+import { Alert } from "../alert/Alert";
 
 export interface ToastOptions {
   title?: ReactNode;
   description?: ReactNode;
   /** Severity, mirrors Alert tones. Defaults to info. */
-  tone?: 'info' | 'warning' | 'error';
+  tone?: "info" | "warning" | "error";
   /** Auto-dismiss delay in ms; 0 disables auto-dismiss. Defaults to 5000. */
   duration?: number;
 }
 
-interface ToastItem extends Required<Pick<ToastOptions, 'tone' | 'duration'>> {
+interface ToastItem extends Required<Pick<ToastOptions, "tone" | "duration">> {
   id: string;
   title?: ReactNode;
   description?: ReactNode;
@@ -36,11 +36,12 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error('useToast must be used within a <ToastProvider>.');
+  if (!ctx) throw new Error("useToast must be used within a <ToastProvider>.");
   return ctx;
 }
 
-export type ToastPlacement = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
+export type ToastPlacement =
+  "top-start" | "top-end" | "bottom-start" | "bottom-end";
 
 export interface ToastProviderProps {
   children: ReactNode;
@@ -49,7 +50,10 @@ export interface ToastProviderProps {
 }
 
 /** Provides `useToast()` and renders the toast stack in a portal. */
-export function ToastProvider({ children, placement = 'bottom-end' }: ToastProviderProps) {
+export function ToastProvider({
+  children,
+  placement = "bottom-end",
+}: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const timers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
@@ -67,7 +71,7 @@ export function ToastProvider({ children, placement = 'bottom-end' }: ToastProvi
       const id = Math.random().toString(36).slice(2);
       const item: ToastItem = {
         id,
-        tone: options.tone ?? 'info',
+        tone: options.tone ?? "info",
         duration: options.duration ?? 5000,
         title: options.title,
         description: options.description,
@@ -91,7 +95,9 @@ export function ToastProvider({ children, placement = 'bottom-end' }: ToastProvi
       {children}
       {toasts.length > 0 && (
         <Portal>
-          <div className={`du_toast_region du_toast_region_${placement.replace('-', '_')}`}>
+          <div
+            className={`du_toast_region du_toast_region_${placement.replace("-", "_")}`}
+          >
             {toasts.map((t) => (
               <div key={t.id} className="du_toast">
                 <Alert tone={t.tone} title={t.title}>

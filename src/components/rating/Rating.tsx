@@ -8,8 +8,10 @@ import {
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 
-export interface RatingProps
-  extends Omit<ComponentPropsWithoutRef<"div">, "onChange" | "defaultValue"> {
+export interface RatingProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "onChange" | "defaultValue"
+> {
   /** Current rating 0..max (controlled). */
   value?: number;
   /** Initial rating (uncontrolled). */

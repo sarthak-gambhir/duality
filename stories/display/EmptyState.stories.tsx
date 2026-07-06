@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button, EmptyState } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button, EmptyState } from "../../src";
 
 const meta: Meta<typeof EmptyState> = {
-  title: 'Display/EmptyState',
+  title: "Display/EmptyState",
   component: EmptyState,
 };
 
@@ -21,6 +21,9 @@ export const Default: Story = {
 
 export const TextOnly: Story = {
   render: () => (
-    <EmptyState title="No results" description="Try adjusting your filters or search terms." />
+    <EmptyState
+      title="No results"
+      description="Try adjusting your filters or search terms."
+    />
   ),
 };

@@ -1,11 +1,7 @@
-import {
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
-import { Badge } from '../badge/Badge';
+import { useRef, useState, type KeyboardEvent } from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
+import { Badge } from "../badge/Badge";
 
 export interface TagInputProps {
   /** Current tags (controlled). */
@@ -27,9 +23,9 @@ export interface TagInputProps {
   /** Name for hidden inputs so tags submit with a form (one per tag). */
   name?: string;
   id?: string;
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
   className?: string;
 }
 
@@ -49,28 +45,28 @@ export function TagInput({
   name,
   id,
   className,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  'aria-describedby': ariaDescribedby,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
 }: TagInputProps) {
   const [tags, setTags] = useControllableState<string[]>({
     value,
     defaultValue: defaultValue ?? [],
     onChange: onValueChange,
   });
-  const [draft, setDraft] = useState('');
+  const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const commit = () => {
     const tag = draft.trim();
-    if (tag === '') return;
+    if (tag === "") return;
     if (max !== undefined && tags.length >= max) return;
     if (!allowDuplicates && tags.includes(tag)) {
-      setDraft('');
+      setDraft("");
       return;
     }
     setTags([...tags, tag]);
-    setDraft('');
+    setDraft("");
   };
 
   const removeAt = (index: number) => {
@@ -78,10 +74,10 @@ export function TagInput({
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' || event.key === ',') {
+    if (event.key === "Enter" || event.key === ",") {
       event.preventDefault();
       commit();
-    } else if (event.key === 'Backspace' && draft === '' && tags.length > 0) {
+    } else if (event.key === "Backspace" && draft === "" && tags.length > 0) {
       event.preventDefault();
       removeAt(tags.length - 1);
     }
@@ -90,9 +86,9 @@ export function TagInput({
   return (
     <div
       className={cx(
-        'du_tag_input',
-        invalid && 'du_tag_input_invalid',
-        disabled && 'du_tag_input_disabled',
+        "du_tag_input",
+        invalid && "du_tag_input_invalid",
+        disabled && "du_tag_input_disabled",
         className,
       )}
       data-disabled={disabled || undefined}
@@ -139,9 +135,10 @@ export function TagInput({
         </li>
       </ul>
 
-      {name && tags.map((tag, index) => (
-        <input key={index} type="hidden" name={name} value={tag} />
-      ))}
+      {name &&
+        tags.map((tag, index) => (
+          <input key={index} type="hidden" name={name} value={tag} />
+        ))}
     </div>
   );
 }

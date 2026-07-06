@@ -15,7 +15,12 @@ function Demo(args: React.ComponentProps<typeof NumberInput>) {
   const [value, setValue] = useState<number | undefined>(3);
   return (
     <div style={{ maxWidth: 200 }}>
-      <NumberInput {...args} value={value} onValueChange={setValue} aria-label="quantity" />
+      <NumberInput
+        {...args}
+        value={value}
+        onValueChange={setValue}
+        aria-label="quantity"
+      />
     </div>
   );
 }

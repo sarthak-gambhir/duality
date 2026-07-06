@@ -1,6 +1,6 @@
-import { useMemo, useState, type ReactNode } from 'react';
-import { cx } from '../../utils/cx';
-import { Table, TBody, THead, Td, Th, Tr } from '../table/Table';
+import { useMemo, useState, type ReactNode } from "react";
+import { cx } from "../../utils/cx";
+import { Table, TBody, THead, Td, Th, Tr } from "../table/Table";
 
 export interface DataTableColumn<T> {
   /** Unique column id. */
@@ -17,10 +17,10 @@ export interface DataTableColumn<T> {
   /** Allow sorting on this column (needs `value`). */
   sortable?: boolean;
   /** Text alignment of the column. */
-  align?: 'start' | 'end';
+  align?: "start" | "end";
 }
 
-type SortDirection = 'asc' | 'desc';
+type SortDirection = "asc" | "desc";
 
 export interface DataTableProps<T> {
   /** Column definitions. */
@@ -38,13 +38,13 @@ export interface DataTableProps<T> {
   /** Message shown when no rows match. */
   emptyMessage?: string;
   /** Accessible name for the table. */
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
 }
 
 const ariaSortValue = {
-  asc: 'ascending',
-  desc: 'descending',
+  asc: "ascending",
+  desc: "descending",
 } as const;
 
 /**
@@ -57,23 +57,27 @@ export function DataTable<T>({
   data,
   getRowId,
   filterable = true,
-  filterPlaceholder = 'Filter...',
+  filterPlaceholder = "Filter...",
   initialSort,
-  emptyMessage = 'No results',
+  emptyMessage = "No results",
   className,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
 }: DataTableProps<T>) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [sort, setSort] = useState<{ id: string; dir: SortDirection } | null>(
-    initialSort ? { id: initialSort.columnId, dir: initialSort.direction } : null,
+    initialSort
+      ? { id: initialSort.columnId, dir: initialSort.direction }
+      : null,
   );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (q === '') return data;
+    if (q === "") return data;
     const searchable = columns.filter((column) => column.value);
     return data.filter((row) =>
-      searchable.some((column) => String(column.value!(row)).toLowerCase().includes(q)),
+      searchable.some((column) =>
+        String(column.value!(row)).toLowerCase().includes(q),
+      ),
     );
   }, [data, columns, query]);
 
@@ -81,31 +85,32 @@ export function DataTable<T>({
     if (!sort) return filtered;
     const column = columns.find((c) => c.id === sort.id);
     if (!column?.value) return filtered;
-    const factor = sort.dir === 'asc' ? 1 : -1;
+    const factor = sort.dir === "asc" ? 1 : -1;
     return [...filtered].sort((a, b) => {
       const va = column.value!(a);
       const vb = column.value!(b);
-      if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * factor;
+      if (typeof va === "number" && typeof vb === "number")
+        return (va - vb) * factor;
       return String(va).localeCompare(String(vb)) * factor;
     });
   }, [filtered, sort, columns]);
 
   const toggleSort = (id: string) => {
     setSort((current) => {
-      if (current?.id !== id) return { id, dir: 'asc' };
-      if (current.dir === 'asc') return { id, dir: 'desc' };
+      if (current?.id !== id) return { id, dir: "asc" };
+      if (current.dir === "asc") return { id, dir: "desc" };
       return null;
     });
   };
 
   return (
-    <div className={cx('du_data_table', className)}>
+    <div className={cx("du_data_table", className)}>
       {filterable && (
         <input
           type="text"
           value={query}
           placeholder={filterPlaceholder}
-          aria-label={ariaLabel ? `Filter ${ariaLabel}` : 'Filter table'}
+          aria-label={ariaLabel ? `Filter ${ariaLabel}` : "Filter table"}
           className="du_data_table_filter"
           onChange={(event) => setQuery(event.target.value)}
         />
@@ -122,7 +127,11 @@ export function DataTable<T>({
                   key={column.id}
                   data-align={column.align}
                   aria-sort={
-                    canSort ? (isSorted ? ariaSortValue[sort.dir] : 'none') : undefined
+                    canSort
+                      ? isSorted
+                        ? ariaSortValue[sort.dir]
+                        : "none"
+                      : undefined
                   }
                 >
                   {canSort ? (
@@ -133,7 +142,10 @@ export function DataTable<T>({
                       onClick={() => toggleSort(column.id)}
                     >
                       <span>{column.header}</span>
-                      <span className="du_data_table_sort_icon" aria-hidden="true" />
+                      <span
+                        className="du_data_table_sort_icon"
+                        aria-hidden="true"
+                      />
                     </button>
                   ) : (
                     column.header

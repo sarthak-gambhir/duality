@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { FileUpload } from '../../src';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { FileUpload } from "../../src";
 
 const meta: Meta<typeof FileUpload> = {
-  title: 'Controls/FileUpload',
+  title: "Controls/FileUpload",
   component: FileUpload,
 };
 

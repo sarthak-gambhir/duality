@@ -23,7 +23,9 @@ describe("Tree", () => {
       "aria-expanded",
       "false",
     );
-    expect(screen.queryByRole("treeitem", { name: /Button\.tsx/ })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("treeitem", { name: /Button\.tsx/ }),
+    ).not.toBeInTheDocument();
   });
 
   it("expands with ArrowRight and reveals children", async () => {
@@ -33,7 +35,9 @@ describe("Tree", () => {
     src.focus();
     await user.keyboard("{ArrowRight}");
     expect(src).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByRole("treeitem", { name: /Button\.tsx/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("treeitem", { name: /Button\.tsx/ }),
+    ).toBeInTheDocument();
   });
 
   it("selects a node on click", async () => {
@@ -49,9 +53,8 @@ describe("Tree", () => {
     );
     await user.click(screen.getByRole("treeitem", { name: /Button\.tsx/ }));
     expect(onSelectedChange).toHaveBeenCalledWith("button");
-    expect(screen.getByRole("treeitem", { name: /Button\.tsx/ })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    expect(
+      screen.getByRole("treeitem", { name: /Button\.tsx/ }),
+    ).toHaveAttribute("aria-selected", "true");
   });
 });

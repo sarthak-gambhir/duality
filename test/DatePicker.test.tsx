@@ -6,7 +6,9 @@ import { DatePicker } from "../src/components/date_picker/DatePicker";
 describe("DatePicker", () => {
   it("shows the formatted value and opens a calendar grid", async () => {
     const user = userEvent.setup();
-    render(<DatePicker defaultValue={new Date(2026, 6, 15)} aria-label="date" />);
+    render(
+      <DatePicker defaultValue={new Date(2026, 6, 15)} aria-label="date" />,
+    );
 
     const trigger = screen.getByRole("button", { name: "date" });
     expect(trigger).toHaveTextContent("2026-07-15");
@@ -38,7 +40,9 @@ describe("DatePicker", () => {
 
   it("navigates to the previous month", async () => {
     const user = userEvent.setup();
-    render(<DatePicker defaultValue={new Date(2026, 6, 15)} aria-label="date" />);
+    render(
+      <DatePicker defaultValue={new Date(2026, 6, 15)} aria-label="date" />,
+    );
     await user.click(screen.getByRole("button", { name: "date" }));
     await user.click(screen.getByRole("button", { name: "Previous month" }));
     expect(screen.getByRole("grid", { name: "June 2026" })).toBeInTheDocument();
@@ -61,7 +65,13 @@ describe("DatePicker", () => {
   });
 
   it("is disabled", () => {
-    render(<DatePicker defaultValue={new Date(2026, 6, 15)} disabled aria-label="date" />);
+    render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        disabled
+        aria-label="date"
+      />,
+    );
     expect(screen.getByRole("button", { name: "date" })).toBeDisabled();
   });
 });

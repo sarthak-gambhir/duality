@@ -4,11 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Duality
 
-A strict **two-color** design system for React + TypeScript. Everything is
-drawn with exactly two themeable colors — `--fg` (foreground) and `--bg`
-(background). There are no intermediate shades, no hue variants, and no
-transparency. Depth and state are expressed through **inversion**, **pixel /
-dither patterns**, and **border-style changes** — never by color alone.
+A strict **two-color** design system for React + TypeScript. Everything is drawn with exactly two themeable colors — `--fg` (foreground) and `--bg` (background). There are no intermediate shades, no hue variants, and no transparency. Depth and state are expressed through **inversion**, **pixel / dither patterns**, and **border-style changes** — never by color alone.
 
 ## Install
 
@@ -33,32 +29,27 @@ export function App() {
 }
 ```
 
-Use the **Palette** and **Invert** controls in the toolbar (top of the canvas)
-to preview any story under a different two-color palette.
+Use the **Palette** and **Invert** controls in the toolbar (top of the canvas) to preview any story under a different two-color palette.
 
 ## Principles
 
-- **Two colors only.** Every surface resolves to `--fg` on `--bg`, or the
-  inverse. See _Foundations → Two-Color Model_.
-- **State without color.** Hover / selected inverts the pair, focus adds an
-  outline, and disabled uses a dither fill with an outlined label so text stays
-  legible.
+- **Two colors only.** Every surface resolves to `--fg` on `--bg`, or the inverse. See _Foundations → Two-Color Model_.
+- **State without color.** Hover / selected inverts the pair, focus adds an outline, and disabled uses a dither fill with an outlined label so text stays legible.
 - **AAA contrast.** Every palette meets WCAG AAA (7:1) between the two colors.
-- **Accessible by default.** Interactive components ship with the correct ARIA
-  roles, keyboard support, and focus management.
+- **Accessible by default.** Interactive components ship with the correct ARIA roles, keyboard support, and focus management.
 
 ## Categories
 
 - **Foundations** — the two-color model and palettes.
 - **Layout** — `Box`, `Stack`, `Inline`, `Grid`, `Container`, `Divider`.
 - **Typography** — `Text`, `Heading`, `Link`, `Code`, `Kbd`.
-- **Controls** — form inputs: `Button`, `Input`, `Select`, `Combobox`,
-  `Slider`, `RangeSlider`, `DatePicker`, and more.
+- **Controls** — form inputs: `Button`, `Input`, `Select`, `Combobox`, `Slider`, `RangeSlider`, `DatePicker`, and more.
 - **Forms** — `FormField` composition.
-- **Display** — `Card`, `Badge`, `Alert`, `Avatar`, `Progress`, `Spinner`,
-  `Skeleton`.
+- **Display** — `Card`, `Badge`, `Alert`, `Avatar`, `Progress`, `Spinner`, `Skeleton`.
 - **Data** — `Table`, `Tree`.
 - **Navigation** — `Breadcrumbs`, `Pagination`.
 - **Disclosure** — `Tabs`, `Accordion`.
 - **Overlays** — `Modal`, `Tooltip`, `Popover`, `Menu`, `Toast`.
 - **Theming** — `ThemeToggle`, `PaletteSelect`.
+- **Guides** — accessibility, theming & density, and two-color patterns.
+- **Examples** — full composed demo pages (Dashboard, Settings, Email, File Manager, Checkout, Command Center) showing many components working together.

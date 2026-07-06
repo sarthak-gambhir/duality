@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Inline, Skeleton, Spinner, Stack } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Inline, Skeleton, Spinner, Stack } from "../../src";
 
 const meta: Meta = {
-  title: 'Display/Spinner & Skeleton',
+  title: "Display/Spinner & Skeleton",
 };
 
 export default meta;

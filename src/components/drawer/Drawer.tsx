@@ -4,13 +4,13 @@ import {
   type ComponentPropsWithoutRef,
   type CSSProperties,
   type ReactNode,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { Portal } from '../../utils/Portal';
-import { useDismiss } from '../../utils/useDismiss';
-import { useFocusTrap } from '../../utils/useFocusTrap';
+} from "react";
+import { cx } from "../../utils/cx";
+import { Portal } from "../../utils/Portal";
+import { useDismiss } from "../../utils/useDismiss";
+import { useFocusTrap } from "../../utils/useFocusTrap";
 
-export type DrawerSide = 'start' | 'end' | 'top' | 'bottom';
+export type DrawerSide = "start" | "end" | "top" | "bottom";
 
 export interface DrawerProps {
   /** Whether the drawer is open. */
@@ -23,11 +23,11 @@ export interface DrawerProps {
   /** Panel size (width for start/end, height for top/bottom). Number = px. */
   size?: number | string;
   /** Accessible name (use when there is no visible titled header). */
-  'aria-label'?: string;
+  "aria-label"?: string;
   /** Id of the element labelling the dialog (e.g. a DrawerHeader). */
-  'aria-labelledby'?: string;
+  "aria-labelledby"?: string;
   /** Id of the element describing the dialog. */
-  'aria-describedby'?: string;
+  "aria-describedby"?: string;
   /** Close when the backdrop is pressed. Defaults to true. */
   closeOnBackdrop?: boolean;
   /** Close on Escape. Defaults to true. */
@@ -40,14 +40,14 @@ export function Drawer({
   isOpen,
   onClose,
   children,
-  side = 'end',
+  side = "end",
   size = 320,
   closeOnBackdrop = true,
   closeOnEscape = true,
   className,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  'aria-describedby': ariaDescribedby,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
 }: DrawerProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -64,7 +64,7 @@ export function Drawer({
   useEffect(() => {
     if (!isOpen) return undefined;
     const previous = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
@@ -72,8 +72,10 @@ export function Drawer({
 
   if (!isOpen) return null;
 
-  const horizontal = side === 'start' || side === 'end';
-  const style: CSSProperties = horizontal ? { inlineSize: size } : { blockSize: size };
+  const horizontal = side === "start" || side === "end";
+  const style: CSSProperties = horizontal
+    ? { inlineSize: size }
+    : { blockSize: size };
 
   return (
     <Portal>
@@ -86,7 +88,7 @@ export function Drawer({
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
           tabIndex={-1}
-          className={cx('du_drawer', `du_drawer_${side}`, className)}
+          className={cx("du_drawer", `du_drawer_${side}`, className)}
           style={style}
         >
           {children}
@@ -96,19 +98,19 @@ export function Drawer({
   );
 }
 
-export type DrawerSectionProps = ComponentPropsWithoutRef<'div'>;
+export type DrawerSectionProps = ComponentPropsWithoutRef<"div">;
 
 /** Top section of a Drawer, separated by a pixel rule. */
 export function DrawerHeader({ className, ...rest }: DrawerSectionProps) {
-  return <div className={cx('du_drawer_header', className)} {...rest} />;
+  return <div className={cx("du_drawer_header", className)} {...rest} />;
 }
 
 /** Scrollable main content section of a Drawer. */
 export function DrawerBody({ className, ...rest }: DrawerSectionProps) {
-  return <div className={cx('du_drawer_body', className)} {...rest} />;
+  return <div className={cx("du_drawer_body", className)} {...rest} />;
 }
 
 /** Bottom section of a Drawer, separated by a pixel rule. */
 export function DrawerFooter({ className, ...rest }: DrawerSectionProps) {
-  return <div className={cx('du_drawer_footer', className)} {...rest} />;
+  return <div className={cx("du_drawer_footer", className)} {...rest} />;
 }

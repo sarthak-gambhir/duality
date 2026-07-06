@@ -1,7 +1,7 @@
-import { useEffect, useId, useRef, type ReactNode } from 'react';
-import { cx } from '../../utils/cx';
-import { Button } from '../button/Button';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from '../modal/Modal';
+import { useEffect, useId, useRef, type ReactNode } from "react";
+import { cx } from "../../utils/cx";
+import { Button } from "../button/Button";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "../modal/Modal";
 
 export interface ConfirmDialogProps {
   /** Whether the dialog is open. */
@@ -19,7 +19,7 @@ export interface ConfirmDialogProps {
   /** Cancel button label. Defaults to "Cancel". */
   cancelLabel?: string;
   /** `danger` signals a destructive action via a heavier confirm border. */
-  tone?: 'default' | 'danger';
+  tone?: "default" | "danger";
   className?: string;
 }
 
@@ -30,9 +30,9 @@ export function ConfirmDialog({
   onCancel,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
-  tone = 'default',
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
+  tone = "default",
   className,
 }: ConfirmDialogProps) {
   const confirmRef = useRef<HTMLButtonElement>(null);
@@ -53,7 +53,11 @@ export function ConfirmDialog({
       aria-labelledby={titleId}
       aria-describedby={description != null ? descId : undefined}
       maxWidth={420}
-      className={cx('du_confirm_dialog', `du_confirm_dialog_${tone}`, className)}
+      className={cx(
+        "du_confirm_dialog",
+        `du_confirm_dialog_${tone}`,
+        className,
+      )}
     >
       <ModalHeader>
         <div id={titleId} className="du_confirm_dialog_title">
@@ -69,7 +73,11 @@ export function ConfirmDialog({
         <Button variant="ghost" onClick={onCancel}>
           {cancelLabel}
         </Button>
-        <Button ref={confirmRef} className="du_confirm_dialog_confirm" onClick={onConfirm}>
+        <Button
+          ref={confirmRef}
+          className="du_confirm_dialog_confirm"
+          onClick={onConfirm}
+        >
           {confirmLabel}
         </Button>
       </ModalFooter>

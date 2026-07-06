@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { TimePicker } from '../../src';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { TimePicker } from "../../src";
 
 const meta: Meta<typeof TimePicker> = {
-  title: 'Controls/TimePicker',
+  title: "Controls/TimePicker",
   component: TimePicker,
   parameters: { docsMinHeight: 300 },
 };
@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof TimePicker>;
 
 function Controlled({ hour12 }: { hour12?: boolean }) {
-  const [time, setTime] = useState<string | null>('09:30');
+  const [time, setTime] = useState<string | null>("09:30");
   return (
     <TimePicker
       value={time}
@@ -27,5 +27,7 @@ export const TwentyFourHour: Story = { render: () => <Controlled /> };
 export const TwelveHour: Story = { render: () => <Controlled hour12 /> };
 
 export const Disabled: Story = {
-  render: () => <TimePicker defaultValue="12:00" disabled aria-label="Meeting time" />,
+  render: () => (
+    <TimePicker defaultValue="12:00" disabled aria-label="Meeting time" />
+  ),
 };

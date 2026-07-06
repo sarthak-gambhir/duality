@@ -4,9 +4,9 @@ import {
   type FocusEvent,
   type KeyboardEvent,
   type ChangeEvent,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
+} from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
 
 export interface PinInputProps {
   /** Number of cells. Defaults to 4. */
@@ -20,7 +20,7 @@ export interface PinInputProps {
   /** Called once every cell is filled. */
   onComplete?: (value: string) => void;
   /** Allowed characters. Defaults to `numeric`. */
-  type?: 'numeric' | 'alphanumeric';
+  type?: "numeric" | "alphanumeric";
   /** Obscure entered characters. */
   mask?: boolean;
   disabled?: boolean;
@@ -29,13 +29,13 @@ export interface PinInputProps {
   /** Called when focus leaves the group (for form-library integration). */
   onBlur?: (event: FocusEvent<HTMLDivElement>) => void;
   /** Base accessible name; each cell is labelled "<label>, digit N of M". */
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
 }
 
-function sanitize(raw: string, type: 'numeric' | 'alphanumeric'): string {
-  const pattern = type === 'numeric' ? /[^0-9]/g : /[^a-zA-Z0-9]/g;
-  return raw.replace(pattern, '');
+function sanitize(raw: string, type: "numeric" | "alphanumeric"): string {
+  const pattern = type === "numeric" ? /[^0-9]/g : /[^a-zA-Z0-9]/g;
+  return raw.replace(pattern, "");
 }
 
 /** Segmented one-time-code entry with auto-advance, Backspace, and paste. */
@@ -45,23 +45,23 @@ export function PinInput({
   defaultValue,
   onValueChange,
   onComplete,
-  type = 'numeric',
+  type = "numeric",
   mask,
   disabled,
   name,
   onBlur,
-  'aria-label': ariaLabel = 'Verification code',
+  "aria-label": ariaLabel = "Verification code",
   className,
 }: PinInputProps) {
   const [current, setCurrent] = useControllableState<string>({
     value,
-    defaultValue: defaultValue ?? '',
+    defaultValue: defaultValue ?? "",
     onChange: onValueChange,
   });
   const refs = useRef<Array<HTMLInputElement | null>>([]);
 
-  const chars = (current ?? '').slice(0, length).split('');
-  const cellValue = (index: number) => chars[index] ?? '';
+  const chars = (current ?? "").slice(0, length).split("");
+  const cellValue = (index: number) => chars[index] ?? "";
 
   const focusCell = (index: number) => {
     const clamped = Math.max(0, Math.min(index, length - 1));
@@ -76,16 +76,16 @@ export function PinInput({
   };
 
   const setCharAt = (index: number, char: string) => {
-    const arr = (current ?? '').slice(0, length).split('');
-    while (arr.length < index) arr.push('');
+    const arr = (current ?? "").slice(0, length).split("");
+    while (arr.length < index) arr.push("");
     arr[index] = char;
-    return arr.join('').slice(0, length);
+    return arr.join("").slice(0, length);
   };
 
   const onChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const raw = sanitize(event.target.value, type);
-    if (raw === '') {
-      commit(setCharAt(index, ''));
+    if (raw === "") {
+      commit(setCharAt(index, ""));
       return;
     }
     // Use the last typed character so retyping over a filled cell works.
@@ -96,20 +96,20 @@ export function PinInput({
 
   const onKeyDown = (index: number, event: KeyboardEvent<HTMLInputElement>) => {
     switch (event.key) {
-      case 'Backspace':
-        if (cellValue(index) === '' && index > 0) {
+      case "Backspace":
+        if (cellValue(index) === "" && index > 0) {
           event.preventDefault();
-          commit(setCharAt(index - 1, ''));
+          commit(setCharAt(index - 1, ""));
           focusCell(index - 1);
         } else {
-          commit(setCharAt(index, ''));
+          commit(setCharAt(index, ""));
         }
         break;
-      case 'ArrowLeft':
+      case "ArrowLeft":
         event.preventDefault();
         focusCell(index - 1);
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         event.preventDefault();
         focusCell(index + 1);
         break;
@@ -120,14 +120,14 @@ export function PinInput({
 
   const onPaste = (index: number, event: ClipboardEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const pasted = sanitize(event.clipboardData.getData('text'), type);
-    if (pasted === '') return;
-    const arr = (current ?? '').slice(0, length).split('');
-    while (arr.length < length) arr.push('');
+    const pasted = sanitize(event.clipboardData.getData("text"), type);
+    if (pasted === "") return;
+    const arr = (current ?? "").slice(0, length).split("");
+    while (arr.length < length) arr.push("");
     for (let i = 0; i < pasted.length && index + i < length; i += 1) {
       arr[index + i] = pasted[i]!;
     }
-    const next = arr.join('').slice(0, length);
+    const next = arr.join("").slice(0, length);
     commit(next);
     focusCell(Math.min(index + pasted.length, length - 1));
   };
@@ -143,19 +143,19 @@ export function PinInput({
     <div
       role="group"
       aria-label={ariaLabel}
-      className={cx('du_pin_input', className)}
+      className={cx("du_pin_input", className)}
       onBlur={onGroupBlur}
     >
-      {name && <input type="hidden" name={name} value={current ?? ''} />}
+      {name && <input type="hidden" name={name} value={current ?? ""} />}
       {Array.from({ length }, (_, index) => (
         <input
           key={index}
           ref={(node) => {
             refs.current[index] = node;
           }}
-          type={mask ? 'password' : 'text'}
-          inputMode={type === 'numeric' ? 'numeric' : 'text'}
-          autoComplete={index === 0 ? 'one-time-code' : 'off'}
+          type={mask ? "password" : "text"}
+          inputMode={type === "numeric" ? "numeric" : "text"}
+          autoComplete={index === 0 ? "one-time-code" : "off"}
           maxLength={1}
           disabled={disabled}
           aria-label={`${ariaLabel}, character ${index + 1} of ${length}`}

@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
-import { cx } from '../../utils/cx';
+import { type ReactNode } from "react";
+import { cx } from "../../utils/cx";
 
 export interface SideNavItem {
   /** Stable identity, matched against `activeId`. */
@@ -28,13 +28,16 @@ export interface SideNavProps {
   /** Id of the current item; gets `aria-current="page"` and inverts. */
   activeId?: string;
   /** Accessible name for the nav landmark. */
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
 }
 
 function Item({ item, activeId }: { item: SideNavItem; activeId?: string }) {
   const isActive = item.id === activeId;
-  const className = cx('du_side_nav_item', isActive && 'du_side_nav_item_active');
+  const className = cx(
+    "du_side_nav_item",
+    isActive && "du_side_nav_item_active",
+  );
 
   if (item.href && !item.disabled) {
     return (
@@ -42,7 +45,7 @@ function Item({ item, activeId }: { item: SideNavItem; activeId?: string }) {
         <a
           href={item.href}
           className={className}
-          aria-current={isActive ? 'page' : undefined}
+          aria-current={isActive ? "page" : undefined}
         >
           {item.label}
         </a>
@@ -55,7 +58,7 @@ function Item({ item, activeId }: { item: SideNavItem; activeId?: string }) {
       <button
         type="button"
         className={className}
-        aria-current={isActive ? 'page' : undefined}
+        aria-current={isActive ? "page" : undefined}
         aria-disabled={item.disabled || undefined}
         disabled={item.disabled}
         onClick={item.disabled ? undefined : item.onSelect}
@@ -71,14 +74,14 @@ export function SideNav({
   sections,
   items,
   activeId,
-  'aria-label': ariaLabel = 'Sidebar',
+  "aria-label": ariaLabel = "Sidebar",
   className,
 }: SideNavProps) {
   const resolved: SideNavSection[] =
-    sections ?? (items ? [{ id: 'default', items }] : []);
+    sections ?? (items ? [{ id: "default", items }] : []);
 
   return (
-    <nav aria-label={ariaLabel} className={cx('du_side_nav', className)}>
+    <nav aria-label={ariaLabel} className={cx("du_side_nav", className)}>
       {resolved.map((section) => (
         <div key={section.id} className="du_side_nav_section">
           {section.label != null && (

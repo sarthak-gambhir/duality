@@ -1,14 +1,17 @@
-import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { cx } from '../../utils/cx';
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import { cx } from "../../utils/cx";
 
-export interface SliderProps extends Omit<ComponentPropsWithoutRef<'input'>, 'type'> {
+export interface SliderProps extends Omit<
+  ComponentPropsWithoutRef<"input">,
+  "type"
+> {
   /** Marks the control invalid. */
   invalid?: boolean;
 }
 
 /** Two-color range slider built on a native `input[type=range]`. */
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
-  { invalid, className, 'aria-invalid': ariaInvalid, ...rest },
+  { invalid, className, "aria-invalid": ariaInvalid, ...rest },
   ref,
 ) {
   return (
@@ -16,7 +19,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
       ref={ref}
       type="range"
       aria-invalid={ariaInvalid ?? (invalid || undefined)}
-      className={cx('du_slider', invalid && 'du_slider_invalid', className)}
+      className={cx("du_slider", invalid && "du_slider_invalid", className)}
       {...rest}
     />
   );

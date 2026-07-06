@@ -23,7 +23,9 @@ describe("ToggleGroup (single)", () => {
       </ToggleGroup>,
     );
 
-    expect(screen.getByRole("radiogroup", { name: "Align" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("radiogroup", { name: "Align" }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: "Center" })).toHaveAttribute(
       "aria-checked",
       "true",
@@ -61,7 +63,10 @@ describe("ToggleGroup (multiple)", () => {
     );
 
     const bold = screen.getByRole("button", { name: "Bold", pressed: true });
-    const italic = screen.getByRole("button", { name: "Italic", pressed: false });
+    const italic = screen.getByRole("button", {
+      name: "Italic",
+      pressed: false,
+    });
 
     await user.click(italic);
     expect(italic).toHaveAttribute("aria-pressed", "true");

@@ -1,4 +1,4 @@
-import { cx } from '../../utils/cx';
+import { cx } from "../../utils/cx";
 
 export interface StepperStep {
   /** Short step label. */
@@ -15,13 +15,13 @@ export interface StepperProps {
   /** When provided, completed/current steps become clickable. */
   onStepChange?: (index: number) => void;
   /** Layout direction. Defaults to horizontal. */
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
   /** Accessible name for the step list. */
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
 }
 
-type StepStatus = 'complete' | 'current' | 'upcoming';
+type StepStatus = "complete" | "current" | "upcoming";
 
 /**
  * Progress indicator for a multi-step flow. Steps are numbered pixel markers;
@@ -32,26 +32,30 @@ export function Stepper({
   steps,
   activeStep,
   onStepChange,
-  orientation = 'horizontal',
+  orientation = "horizontal",
   className,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
 }: StepperProps) {
   const statusOf = (index: number): StepStatus =>
-    index < activeStep ? 'complete' : index === activeStep ? 'current' : 'upcoming';
+    index < activeStep
+      ? "complete"
+      : index === activeStep
+        ? "current"
+        : "upcoming";
 
   return (
     <ol
-      className={cx('du_stepper', `du_stepper_${orientation}`, className)}
+      className={cx("du_stepper", `du_stepper_${orientation}`, className)}
       aria-label={ariaLabel}
     >
       {steps.map((step, index) => {
         const status = statusOf(index);
-        const isCurrent = status === 'current';
-        const interactive = Boolean(onStepChange) && status !== 'upcoming';
+        const isCurrent = status === "current";
+        const interactive = Boolean(onStepChange) && status !== "upcoming";
 
         const marker = (
           <span className="du_stepper_marker" aria-hidden="true">
-            {status === 'complete' ? (
+            {status === "complete" ? (
               <span className="du_stepper_check" />
             ) : (
               index + 1
@@ -73,7 +77,7 @@ export function Stepper({
             key={index}
             className="du_stepper_item"
             data-status={status}
-            aria-current={isCurrent ? 'step' : undefined}
+            aria-current={isCurrent ? "step" : undefined}
           >
             {interactive ? (
               <button

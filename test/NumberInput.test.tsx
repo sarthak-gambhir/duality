@@ -41,7 +41,11 @@ describe("NumberInput", () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
     render(
-      <NumberInput aria-label="qty" defaultValue={2} onValueChange={onValueChange} />,
+      <NumberInput
+        aria-label="qty"
+        defaultValue={2}
+        onValueChange={onValueChange}
+      />,
     );
     const field = screen.getByRole("spinbutton", { name: "qty" });
     field.focus();

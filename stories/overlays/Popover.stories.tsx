@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Popover, Stack, Text } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button, Popover, Stack, Text } from "../../src";
 
 const meta: Meta<typeof Popover> = {
-  title: 'Overlays/Popover',
+  title: "Overlays/Popover",
   component: Popover,
   parameters: { docsMinHeight: 220 },
 };
@@ -15,7 +15,9 @@ export const Default: Story = {
     <Popover trigger={<Button>Open popover</Button>}>
       <Stack gap={2}>
         <Text weight="bold">Popover title</Text>
-        <Text size="sm">Anchored to the trigger; closes on outside click or Escape.</Text>
+        <Text size="sm">
+          Anchored to the trigger; closes on outside click or Escape.
+        </Text>
       </Stack>
     </Popover>
   ),

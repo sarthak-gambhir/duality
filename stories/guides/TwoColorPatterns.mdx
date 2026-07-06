@@ -5,10 +5,7 @@ import { ThemeProvider, Button, Badge, Alert, Inline, Stack } from "../../src";
 
 # Two-Color Patterns
 
-Duality draws everything with exactly two themeable colors, `--fg` (foreground)
-and `--bg` (background). There are no intermediate shades, no hue variants, and
-no transparency. This page collects the recurring techniques used to express
-depth and state within that constraint.
+Duality draws everything with exactly two themeable colors, `--fg` (foreground) and `--bg` (background). There are no intermediate shades, no hue variants, and no transparency. This page collects the recurring techniques used to express depth and state within that constraint.
 
 export const Demo = ({ children }) => (
   <ThemeProvider defaultTheme="classic">
@@ -18,9 +15,7 @@ export const Demo = ({ children }) => (
 
 ## 1. Inversion
 
-The primary tool. Hover, selection, and "filled" surfaces swap the pair so
-`--fg` becomes the background and `--bg` becomes the text. A solid button is
-already inverted relative to the page; hovering it inverts again.
+The primary tool. Hover, selection, and "filled" surfaces swap the pair so `--fg` becomes the background and `--bg` becomes the text. A solid button is already inverted relative to the page; hovering it inverts again.
 
 <Demo>
   <Inline gap={3}>
@@ -38,10 +33,7 @@ Implemented with the `du_invert` mixin:
 
 ## 2. Dither
 
-A checkerboard built from the two colors acts as the system's "gray". It marks
-disabled surfaces and indeterminate/placeholder states (Skeleton, indeterminate
-Progress). Because it is literally the two colors interleaved, it reads as a
-muted tone without introducing a third value.
+A checkerboard built from the two colors acts as the system's "gray". It marks disabled surfaces and indeterminate/placeholder states (Skeleton, indeterminate Progress). Because it is literally the two colors interleaved, it reads as a muted tone without introducing a third value.
 
 <Demo>
   <Inline gap={3}>
@@ -56,9 +48,7 @@ muted tone without introducing a third value.
 
 ## 3. Text outline
 
-Text placed over a dither can lose legibility, so disabled labels get a crisp
-two-color outline (`du_text_outline`) that rings each glyph in `--bg`. No blur,
-no intermediate tone.
+Text placed over a dither can lose legibility, so disabled labels get a crisp two-color outline (`du_text_outline`) that rings each glyph in `--bg`. No blur, no intermediate tone.
 
 ```scss
 &:disabled {
@@ -69,31 +59,30 @@ no intermediate tone.
 
 ## 4. Border style, not color
 
-Status and validity change the **border style** rather than the color. Invalid
-fields use a dashed border; Alert/Banner tones use solid / dashed / double
-borders plus a differently shaped marker.
+Status and validity change the **border style** rather than the color. Invalid fields use a dashed border; Alert/Banner tones use solid / dashed / double borders plus a differently shaped marker.
 
 <Demo>
   <Stack gap={3}>
-    <Alert tone="info" title="Info">Solid border, filled square marker.</Alert>
-    <Alert tone="warning" title="Warning">Dashed border, hollow marker.</Alert>
-    <Alert tone="error" title="Error">Double border, rotated marker.</Alert>
+    <Alert tone="info" title="Info">
+      Solid border, filled square marker.
+    </Alert>
+    <Alert tone="warning" title="Warning">
+      Dashed border, hollow marker.
+    </Alert>
+    <Alert tone="error" title="Error">
+      Double border, rotated marker.
+    </Alert>
   </Stack>
 </Demo>
 
 ## 5. Marker shape
 
-When a status needs an icon, its **shape** carries the meaning (filled square vs.
-hollow square vs. rotated diamond), never a color. This keeps information intact
-for users who cannot distinguish the two colors.
+When a status needs an icon, its **shape** carries the meaning (filled square vs. hollow square vs. rotated diamond), never a color. This keeps information intact for users who cannot distinguish the two colors.
 
 ## 6. Focus rings
 
-Focus is shown with an outline in `--fg` (or `--bg` on inverted surfaces via
-`du_focus_inset`), offset from the control. It is additive to whatever other
-state is present, so focus is always visible.
+Focus is shown with an outline in `--fg` (or `--bg` on inverted surfaces via `du_focus_inset`), offset from the control. It is additive to whatever other state is present, so focus is always visible.
 
 ---
 
-Together these six patterns cover every state in the library without ever
-reaching for a third color, a hue, or transparency.
+Together these six patterns cover every state in the library without ever reaching for a third color, a hue, or transparency.

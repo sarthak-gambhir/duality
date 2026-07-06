@@ -126,7 +126,8 @@
   border-color: var(--bg);
 }
 
-.du_multi_select_option[data-active][aria-selected="true"] .du_multi_select_option_mark {
+.du_multi_select_option[data-active][aria-selected="true"]
+  .du_multi_select_option_mark {
   background-color: var(--bg);
 }
 

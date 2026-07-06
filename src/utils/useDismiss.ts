@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, type RefObject } from "react";
 
 export interface UseDismissOptions {
   /** Whether the dismissable element is currently open. */
@@ -32,14 +32,14 @@ export function useDismiss({
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (escape && event.key === 'Escape') onDismiss();
+      if (escape && event.key === "Escape") onDismiss();
     };
 
-    document.addEventListener('mousedown', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, onDismiss, escape, outsidePress]);

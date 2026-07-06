@@ -7,9 +7,18 @@ describe("Rating", () => {
   it("exposes a radiogroup of blocks and selects on click", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
-    render(<Rating defaultValue={2} max={5} label="Score" onValueChange={onValueChange} />);
+    render(
+      <Rating
+        defaultValue={2}
+        max={5}
+        label="Score"
+        onValueChange={onValueChange}
+      />,
+    );
 
-    expect(screen.getByRole("radiogroup", { name: "Score" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("radiogroup", { name: "Score" }),
+    ).toBeInTheDocument();
     expect(screen.getAllByRole("radio")).toHaveLength(5);
 
     await user.click(screen.getByRole("radio", { name: "4 of 5" }));
@@ -19,7 +28,14 @@ describe("Rating", () => {
   it("changes value with arrow keys", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();
-    render(<Rating defaultValue={2} max={5} label="Score" onValueChange={onValueChange} />);
+    render(
+      <Rating
+        defaultValue={2}
+        max={5}
+        label="Score"
+        onValueChange={onValueChange}
+      />,
+    );
 
     screen.getByRole("radio", { name: "2 of 5" }).focus();
     await user.keyboard("{ArrowRight}");

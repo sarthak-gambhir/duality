@@ -9,8 +9,10 @@ import { useControllableState } from "../../utils/useControllableState";
 
 type Range = [number, number];
 
-export interface RangeSliderProps
-  extends Omit<ComponentPropsWithoutRef<"div">, "onChange" | "defaultValue"> {
+export interface RangeSliderProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "onChange" | "defaultValue"
+> {
   /** Current `[low, high]` values (controlled). */
   value?: Range;
   /** Initial `[low, high]` values (uncontrolled). */
@@ -72,10 +74,13 @@ export function RangeSlider({
   const clampPair = (index: number, raw: number): Range => {
     const snapped = Math.round((raw - min) / step) * step + min;
     const bounded = Math.min(max, Math.max(min, snapped));
-    return index === 0 ? [Math.min(bounded, high), high] : [low, Math.max(bounded, low)];
+    return index === 0
+      ? [Math.min(bounded, high), high]
+      : [low, Math.max(bounded, low)];
   };
 
-  const setThumb = (index: number, raw: number) => setRange(clampPair(index, raw));
+  const setThumb = (index: number, raw: number) =>
+    setRange(clampPair(index, raw));
 
   const valueFromClientX = (clientX: number): number => {
     const rect = trackRef.current?.getBoundingClientRect();
@@ -109,7 +114,8 @@ export function RangeSlider({
       if (disabled) return;
       const cur = index === 0 ? low : high;
       let next = cur;
-      if (event.key === "ArrowRight" || event.key === "ArrowUp") next = cur + step;
+      if (event.key === "ArrowRight" || event.key === "ArrowUp")
+        next = cur + step;
       else if (event.key === "ArrowLeft" || event.key === "ArrowDown")
         next = cur - step;
       else if (event.key === "Home") next = min;
@@ -119,7 +125,13 @@ export function RangeSlider({
       setThumb(index, next);
     };
 
-  const thumbs: Array<{ index: number; value: number; label: string; vmin: number; vmax: number }> = [
+  const thumbs: Array<{
+    index: number;
+    value: number;
+    label: string;
+    vmin: number;
+    vmax: number;
+  }> = [
     { index: 0, value: low, label: minLabel, vmin: min, vmax: high },
     { index: 1, value: high, label: maxLabel, vmin: low, vmax: max },
   ];

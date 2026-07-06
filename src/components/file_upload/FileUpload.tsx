@@ -5,9 +5,9 @@ import {
   type ChangeEvent,
   type DragEvent,
   type KeyboardEvent,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
+} from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
 
 export interface FileUploadProps {
   /** Selected files (controlled). */
@@ -25,7 +25,7 @@ export interface FileUploadProps {
   label?: string;
   id?: string;
   className?: string;
-  'aria-describedby'?: string;
+  "aria-describedby"?: string;
 }
 
 function formatSize(bytes: number): string {
@@ -42,10 +42,10 @@ export function FileUpload({
   accept,
   multiple,
   disabled,
-  label = 'Drop files here or click to browse',
+  label = "Drop files here or click to browse",
   id,
   className,
-  'aria-describedby': ariaDescribedby,
+  "aria-describedby": ariaDescribedby,
 }: FileUploadProps) {
   const [files, setFiles] = useControllableState<File[]>({
     value,
@@ -60,13 +60,15 @@ export function FileUpload({
 
   const addFiles = (incoming: FileList | null) => {
     if (!incoming || incoming.length === 0) return;
-    const next = multiple ? [...(files ?? []), ...Array.from(incoming)] : [Array.from(incoming)[0]!];
+    const next = multiple
+      ? [...(files ?? []), ...Array.from(incoming)]
+      : [Array.from(incoming)[0]!];
     setFiles(next);
   };
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     addFiles(event.target.files);
-    event.target.value = '';
+    event.target.value = "";
   };
 
   const onDrop = (event: DragEvent<HTMLDivElement>) => {
@@ -86,7 +88,7 @@ export function FileUpload({
   };
 
   const onZoneKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       openPicker();
     }
@@ -99,7 +101,7 @@ export function FileUpload({
   const current = files ?? [];
 
   return (
-    <div className={cx('du_file_upload', className)}>
+    <div className={cx("du_file_upload", className)}>
       <input
         ref={inputRef}
         id={inputId}
@@ -116,7 +118,10 @@ export function FileUpload({
         tabIndex={disabled ? -1 : 0}
         aria-disabled={disabled || undefined}
         aria-controls={current.length > 0 ? listId : undefined}
-        className={cx('du_file_upload_zone', dragOver && 'du_file_upload_zone_over')}
+        className={cx(
+          "du_file_upload_zone",
+          dragOver && "du_file_upload_zone_over",
+        )}
         onClick={openPicker}
         onKeyDown={onZoneKeyDown}
         onDrop={onDrop}
@@ -131,7 +136,9 @@ export function FileUpload({
           {current.map((file, index) => (
             <li key={`${file.name}_${index}`} className="du_file_upload_item">
               <span className="du_file_upload_name">{file.name}</span>
-              <span className="du_file_upload_size">{formatSize(file.size)}</span>
+              <span className="du_file_upload_size">
+                {formatSize(file.size)}
+              </span>
               <button
                 type="button"
                 className="du_file_upload_remove"

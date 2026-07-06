@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Accordion, AccordionItem, Text } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Accordion, AccordionItem, Text } from "../../src";
 
 const meta: Meta<typeof Accordion> = {
-  title: 'Disclosure/Accordion',
+  title: "Disclosure/Accordion",
   component: Accordion,
 };
 
@@ -16,7 +16,9 @@ export const Single: Story = {
         <Text>A strict two-color design system.</Text>
       </AccordionItem>
       <AccordionItem value="b" title="How are states shown?">
-        <Text>Via inversion, dither, and border-style changes - never color alone.</Text>
+        <Text>
+          Via inversion, dither, and border-style changes - never color alone.
+        </Text>
       </AccordionItem>
       <AccordionItem value="c" title="Is it accessible?">
         <Text>Palettes meet WCAG AAA contrast.</Text>
@@ -27,7 +29,7 @@ export const Single: Story = {
 
 export const Multiple: Story = {
   render: () => (
-    <Accordion type="multiple" defaultValue={['a', 'b']}>
+    <Accordion type="multiple" defaultValue={["a", "b"]}>
       <AccordionItem value="a" title="First">
         <Text>Open by default.</Text>
       </AccordionItem>

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Button,
   Drawer,
@@ -11,10 +11,10 @@ import {
   ToggleGroupItem,
   useDisclosure,
   type DrawerSide,
-} from '../../src';
+} from "../../src";
 
 const meta: Meta<typeof Drawer> = {
-  title: 'Overlays/Drawer',
+  title: "Overlays/Drawer",
   component: Drawer,
   parameters: { docsMinHeight: 480 },
 };
@@ -24,7 +24,7 @@ type Story = StoryObj<typeof Drawer>;
 
 function Demo() {
   const { isOpen, open, close } = useDisclosure();
-  const [side, setSide] = useState<DrawerSide>('end');
+  const [side, setSide] = useState<DrawerSide>("end");
   return (
     <>
       <ToggleGroup
@@ -38,10 +38,15 @@ function Demo() {
         <ToggleGroupItem value="top">Top</ToggleGroupItem>
         <ToggleGroupItem value="bottom">Bottom</ToggleGroupItem>
       </ToggleGroup>
-      <div style={{ marginBlockStart: 'var(--space-3)' }}>
+      <div style={{ marginBlockStart: "var(--space-3)" }}>
         <Button onClick={open}>Open drawer</Button>
       </div>
-      <Drawer isOpen={isOpen} onClose={close} side={side} aria-labelledby="demo_drawer_title">
+      <Drawer
+        isOpen={isOpen}
+        onClose={close}
+        side={side}
+        aria-labelledby="demo_drawer_title"
+      >
         <DrawerHeader>
           <Text id="demo_drawer_title" weight="bold" size="lg">
             Settings
@@ -49,8 +54,8 @@ function Demo() {
         </DrawerHeader>
         <DrawerBody>
           <Text>
-            An edge-anchored panel that traps focus, closes on Escape, and dims the page with a
-            dither scrim.
+            An edge-anchored panel that traps focus, closes on Escape, and dims
+            the page with a dither scrim.
           </Text>
         </DrawerBody>
         <DrawerFooter>

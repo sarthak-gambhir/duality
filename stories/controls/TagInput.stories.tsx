@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { TagInput } from '../../src';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { TagInput } from "../../src";
 
 const meta: Meta<typeof TagInput> = {
-  title: 'Controls/TagInput',
+  title: "Controls/TagInput",
   component: TagInput,
 };
 
@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof TagInput>;
 
 function Controlled() {
-  const [tags, setTags] = useState<string[]>(['design', 'system']);
+  const [tags, setTags] = useState<string[]>(["design", "system"]);
   return (
     <div style={{ maxInlineSize: 360 }}>
       <TagInput
@@ -29,7 +29,11 @@ export const Default: Story = { render: () => <Controlled /> };
 export const Disabled: Story = {
   render: () => (
     <div style={{ maxInlineSize: 360 }}>
-      <TagInput defaultValue={['locked', 'readonly']} disabled aria-label="Tags" />
+      <TagInput
+        defaultValue={["locked", "readonly"]}
+        disabled
+        aria-label="Tags"
+      />
     </div>
   ),
 };
@@ -37,7 +41,7 @@ export const Disabled: Story = {
 export const Invalid: Story = {
   render: () => (
     <div style={{ maxInlineSize: 360 }}>
-      <TagInput defaultValue={['oops']} invalid aria-label="Tags" />
+      <TagInput defaultValue={["oops"]} invalid aria-label="Tags" />
     </div>
   ),
 };

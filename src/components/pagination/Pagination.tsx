@@ -1,8 +1,11 @@
-import { type ComponentPropsWithoutRef } from 'react';
-import { cx } from '../../utils/cx';
-import { Button } from '../button/Button';
+import { type ComponentPropsWithoutRef } from "react";
+import { cx } from "../../utils/cx";
+import { Button } from "../button/Button";
 
-export interface PaginationProps extends Omit<ComponentPropsWithoutRef<'nav'>, 'onChange'> {
+export interface PaginationProps extends Omit<
+  ComponentPropsWithoutRef<"nav">,
+  "onChange"
+> {
   /** Current page (1-based). */
   page: number;
   /** Total number of pages. */
@@ -13,7 +16,11 @@ export interface PaginationProps extends Omit<ComponentPropsWithoutRef<'nav'>, '
   siblingCount?: number;
 }
 
-function buildRange(page: number, count: number, siblingCount: number): Array<number | string> {
+function buildRange(
+  page: number,
+  count: number,
+  siblingCount: number,
+): Array<number | string> {
   const total = siblingCount * 2 + 5;
   if (count <= total) {
     return Array.from({ length: count }, (_, i) => i + 1);
@@ -43,13 +50,17 @@ export function Pagination({
   onPageChange,
   siblingCount = 1,
   className,
-  'aria-label': ariaLabel = 'Pagination',
+  "aria-label": ariaLabel = "Pagination",
   ...rest
 }: PaginationProps) {
   const items = buildRange(page, count, siblingCount);
 
   return (
-    <nav aria-label={ariaLabel} className={cx('du_pagination', className)} {...rest}>
+    <nav
+      aria-label={ariaLabel}
+      className={cx("du_pagination", className)}
+      {...rest}
+    >
       <ul className="du_pagination_list">
         <li>
           <Button
@@ -63,12 +74,12 @@ export function Pagination({
           </Button>
         </li>
         {items.map((item, index) => (
-          <li key={typeof item === 'number' ? `p${item}` : `${item}_${index}`}>
-            {typeof item === 'number' ? (
+          <li key={typeof item === "number" ? `p${item}` : `${item}_${index}`}>
+            {typeof item === "number" ? (
               <Button
-                variant={item === page ? 'solid' : 'inverse'}
+                variant={item === page ? "solid" : "inverse"}
                 size="sm"
-                aria-current={item === page ? 'page' : undefined}
+                aria-current={item === page ? "page" : undefined}
                 aria-label={`Page ${item}`}
                 onClick={() => onPageChange(item)}
               >

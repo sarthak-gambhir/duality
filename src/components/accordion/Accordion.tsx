@@ -5,8 +5,8 @@ import {
   useState,
   type ComponentPropsWithoutRef,
   type ReactNode,
-} from 'react';
-import { cx } from '../../utils/cx';
+} from "react";
+import { cx } from "../../utils/cx";
 
 interface AccordionContextValue {
   isOpen: (value: string) => boolean;
@@ -18,20 +18,20 @@ const AccordionContext = createContext<AccordionContextValue | null>(null);
 
 function useAccordion(): AccordionContextValue {
   const ctx = useContext(AccordionContext);
-  if (!ctx) throw new Error('AccordionItem must be used within <Accordion>.');
+  if (!ctx) throw new Error("AccordionItem must be used within <Accordion>.");
   return ctx;
 }
 
-export interface AccordionProps extends ComponentPropsWithoutRef<'div'> {
+export interface AccordionProps extends ComponentPropsWithoutRef<"div"> {
   /** `single` allows one open item; `multiple` allows many. Defaults to single. */
-  type?: 'single' | 'multiple';
+  type?: "single" | "multiple";
   /** Initially open item value(s). */
   defaultValue?: string | string[];
 }
 
 /** Vertically stacked, collapsible disclosure sections. */
 export function Accordion({
-  type = 'single',
+  type = "single",
   defaultValue,
   className,
   children,
@@ -47,7 +47,7 @@ export function Accordion({
   const toggle = (value: string) => {
     setOpen((prev) => {
       const has = prev.includes(value);
-      if (type === 'multiple') {
+      if (type === "multiple") {
         return has ? prev.filter((v) => v !== value) : [...prev, value];
       }
       return has ? [] : [value];
@@ -56,14 +56,17 @@ export function Accordion({
 
   return (
     <AccordionContext.Provider value={{ isOpen, toggle, idBase }}>
-      <div className={cx('du_accordion', className)} {...rest}>
+      <div className={cx("du_accordion", className)} {...rest}>
         {children}
       </div>
     </AccordionContext.Provider>
   );
 }
 
-export interface AccordionItemProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title'> {
+export interface AccordionItemProps extends Omit<
+  ComponentPropsWithoutRef<"div">,
+  "title"
+> {
   /** Unique value identifying this section. */
   value: string;
   /** Header content. */
@@ -71,14 +74,20 @@ export interface AccordionItemProps extends Omit<ComponentPropsWithoutRef<'div'>
 }
 
 /** A single collapsible section within an Accordion. */
-export function AccordionItem({ value, title, className, children, ...rest }: AccordionItemProps) {
+export function AccordionItem({
+  value,
+  title,
+  className,
+  children,
+  ...rest
+}: AccordionItemProps) {
   const ctx = useAccordion();
   const open = ctx.isOpen(value);
   const headerId = `${ctx.idBase}_header_${value}`;
   const panelId = `${ctx.idBase}_panel_${value}`;
 
   return (
-    <div className={cx('du_accordion_item', className)} {...rest}>
+    <div className={cx("du_accordion_item", className)} {...rest}>
       <h3 className="du_accordion_heading">
         <button
           type="button"

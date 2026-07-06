@@ -1,5 +1,5 @@
-import { useTheme } from '../../theme/ThemeProvider';
-import { Switch } from '../switch/Switch';
+import { useTheme } from "../../theme/ThemeProvider";
+import { Switch } from "../switch/Switch";
 
 export interface ThemeToggleProps {
   /** Label shown next to the switch. */
@@ -8,7 +8,10 @@ export interface ThemeToggleProps {
 }
 
 /** A Switch bound to the current theme's inversion state. */
-export function ThemeToggle({ label = 'Invert colors', className }: ThemeToggleProps) {
+export function ThemeToggle({
+  label = "Invert colors",
+  className,
+}: ThemeToggleProps) {
   const { inverted, toggleInverted } = useTheme();
   return (
     <Switch

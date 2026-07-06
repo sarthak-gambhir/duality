@@ -23,5 +23,11 @@ function Demo() {
 
 export const Default: Story = { render: () => <Demo /> };
 export const Disabled: Story = {
-  render: () => <DatePicker defaultValue={new Date(2026, 6, 15)} disabled aria-label="date" />,
+  render: () => (
+    <DatePicker
+      defaultValue={new Date(2026, 6, 15)}
+      disabled
+      aria-label="date"
+    />
+  ),
 };

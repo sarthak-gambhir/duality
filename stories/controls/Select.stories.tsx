@@ -26,7 +26,10 @@ const meta: Meta<typeof Select> = {
       control: "boolean",
       description: "Marks the field invalid (dashed border + `aria-invalid`).",
     },
-    options: { control: false, description: "Options array (or pass `<option>` children)." },
+    options: {
+      control: false,
+      description: "Options array (or pass `<option>` children).",
+    },
   },
 };
 

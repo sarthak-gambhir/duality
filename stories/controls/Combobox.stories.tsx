@@ -15,7 +15,10 @@ const meta: Meta<typeof Combobox> = {
     },
   },
   argTypes: {
-    options: { control: false, description: "Options to filter and choose from." },
+    options: {
+      control: false,
+      description: "Options to filter and choose from.",
+    },
     size: {
       control: "inline-radio",
       options: ["sm", "md", "lg"],

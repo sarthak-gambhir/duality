@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Menu, MenuItem, MenuSeparator } from '../../src';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button, Menu, MenuItem, MenuSeparator } from "../../src";
 
 const meta: Meta<typeof Menu> = {
-  title: 'Overlays/Menu',
+  title: "Overlays/Menu",
   component: Menu,
   parameters: { docsMinHeight: 240 },
 };

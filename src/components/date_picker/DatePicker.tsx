@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
@@ -26,15 +20,18 @@ const MONTHS = [
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const toISO = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const toISO = (d: Date) =>
+  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const startOfDay = (d: Date) =>
+  new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const startOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
 const addDays = (d: Date, n: number) =>
   new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
 const addMonths = (d: Date, n: number) =>
   new Date(d.getFullYear(), d.getMonth() + n, d.getDate());
 const isSameDay = (a: Date, b: Date) => toISO(a) === toISO(b);
-const dayLabel = (d: Date) => `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+const dayLabel = (d: Date) =>
+  `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 export interface DatePickerProps {
   /** Selected date (controlled). */
@@ -111,7 +108,11 @@ export function DatePicker({
   const baseId = useId();
   const gridLabelId = `${baseId}_grid_label`;
 
-  useDismiss({ enabled: open, onDismiss: () => setOpen(false), refs: [rootRef] });
+  useDismiss({
+    enabled: open,
+    onDismiss: () => setOpen(false),
+    refs: [rootRef],
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -158,7 +159,11 @@ export function DatePicker({
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (disabled) return;
-    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+    if (
+      event.key === "ArrowDown" ||
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
       event.preventDefault();
       openCalendar();
     }
@@ -213,7 +218,10 @@ export function DatePicker({
   };
 
   // Build a stable 6-week grid starting on Sunday.
-  const gridStart = addDays(startOfMonth(viewMonth), -startOfMonth(viewMonth).getDay());
+  const gridStart = addDays(
+    startOfMonth(viewMonth),
+    -startOfMonth(viewMonth).getDay(),
+  );
   const weeks = Array.from({ length: 6 }, (_, w) =>
     Array.from({ length: 7 }, (_, d) => addDays(gridStart, w * 7 + d)),
   );
@@ -224,7 +232,11 @@ export function DatePicker({
   return (
     <div
       ref={rootRef}
-      className={cx("du_date_picker", invalid && "du_date_picker_invalid", className)}
+      className={cx(
+        "du_date_picker",
+        invalid && "du_date_picker_invalid",
+        className,
+      )}
     >
       <button
         ref={triggerRef}
@@ -296,7 +308,11 @@ export function DatePicker({
               ))}
             </div>
             {weeks.map((week) => (
-              <div role="row" className="du_date_picker_row" key={toISO(week[0] as Date)}>
+              <div
+                role="row"
+                className="du_date_picker_row"
+                key={toISO(week[0] as Date)}
+              >
                 {week.map((date) => {
                   const outside = date.getMonth() !== viewMonth.getMonth();
                   const dateDisabled = isDisabledDate(date);
@@ -329,7 +345,11 @@ export function DatePicker({
       )}
 
       {name && (
-        <input type="hidden" name={name} value={current ? toISO(current) : ""} />
+        <input
+          type="hidden"
+          name={name}
+          value={current ? toISO(current) : ""}
+        />
       )}
     </div>
   );

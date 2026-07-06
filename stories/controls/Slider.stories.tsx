@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Slider } from '../../src';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Slider } from "../../src";
 
 const meta: Meta<typeof Slider> = {
-  title: 'Controls/Slider',
+  title: "Controls/Slider",
   component: Slider,
 };
 

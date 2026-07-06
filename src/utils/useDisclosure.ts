@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from "react";
 
 export interface Disclosure {
   isOpen: boolean;
@@ -15,5 +15,8 @@ export function useDisclosure(defaultOpen = false): Disclosure {
   const close = useCallback(() => setIsOpen(false), []);
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
-  return useMemo(() => ({ isOpen, open, close, toggle }), [isOpen, open, close, toggle]);
+  return useMemo(
+    () => ({ isOpen, open, close, toggle }),
+    [isOpen, open, close, toggle],
+  );
 }

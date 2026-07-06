@@ -6,12 +6,12 @@ import {
   type ChangeEvent,
   type FocusEvent,
   type KeyboardEvent,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { useControllableState } from '../../utils/useControllableState';
-import { useDismiss } from '../../utils/useDismiss';
-import { Badge } from '../badge/Badge';
-import type { SelectOption } from '../select/Select';
+} from "react";
+import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
+import { useDismiss } from "../../utils/useDismiss";
+import { Badge } from "../badge/Badge";
+import type { SelectOption } from "../select/Select";
 
 export interface MultiSelectProps {
   /** Options to choose from. */
@@ -33,16 +33,20 @@ export interface MultiSelectProps {
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
   id?: string;
   className?: string;
-  'aria-label'?: string;
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 function labelText(option: SelectOption): string {
-  return typeof option.label === 'string' ? option.label : String(option.value);
+  return typeof option.label === "string" ? option.label : String(option.value);
 }
 
-function nextEnabledIndex(items: SelectOption[], from: number, step: 1 | -1): number {
+function nextEnabledIndex(
+  items: SelectOption[],
+  from: number,
+  step: 1 | -1,
+): number {
   const count = items.length;
   if (count === 0) return -1;
   let index = from;
@@ -59,16 +63,16 @@ export function MultiSelect({
   value,
   defaultValue,
   onValueChange,
-  placeholder = 'Select...',
+  placeholder = "Select...",
   invalid,
   disabled,
   name,
   onBlur,
   id,
   className,
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  'aria-describedby': ariaDescribedby,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
 }: MultiSelectProps) {
   const [selected, setSelected] = useControllableState<string[]>({
     value,
@@ -76,7 +80,7 @@ export function MultiSelect({
     onChange: onValueChange,
   });
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -89,12 +93,16 @@ export function MultiSelect({
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q === ''
+    return q === ""
       ? options
       : options.filter((o) => labelText(o).toLowerCase().includes(q));
   }, [options, query]);
 
-  useDismiss({ enabled: open, onDismiss: () => setOpen(false), refs: [rootRef] });
+  useDismiss({
+    enabled: open,
+    onDismiss: () => setOpen(false),
+    refs: [rootRef],
+  });
 
   const selectedSet = new Set(selected ?? []);
 
@@ -105,7 +113,7 @@ export function MultiSelect({
       ? current.filter((v) => v !== option.value)
       : [...current, option.value];
     setSelected(next);
-    setQuery('');
+    setQuery("");
     inputRef.current?.focus();
   };
 
@@ -122,7 +130,7 @@ export function MultiSelect({
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     switch (event.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         event.preventDefault();
         if (!open) {
           setOpen(true);
@@ -131,24 +139,25 @@ export function MultiSelect({
           setActiveIndex((index) => nextEnabledIndex(filtered, index, 1));
         }
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         event.preventDefault();
-        if (open) setActiveIndex((index) => nextEnabledIndex(filtered, index, -1));
+        if (open)
+          setActiveIndex((index) => nextEnabledIndex(filtered, index, -1));
         break;
-      case 'Enter':
+      case "Enter":
         if (open && activeIndex >= 0) {
           event.preventDefault();
           toggle(filtered[activeIndex]);
         }
         break;
-      case 'Escape':
+      case "Escape":
         if (open) {
           event.preventDefault();
           setOpen(false);
         }
         break;
-      case 'Backspace':
-        if (query === '' && (selected?.length ?? 0) > 0) {
+      case "Backspace":
+        if (query === "" && (selected?.length ?? 0) > 0) {
           remove(selected![selected!.length - 1]!);
         }
         break;
@@ -164,10 +173,17 @@ export function MultiSelect({
   return (
     <div
       ref={rootRef}
-      className={cx('du_multi_select', invalid && 'du_multi_select_invalid', className)}
+      className={cx(
+        "du_multi_select",
+        invalid && "du_multi_select_invalid",
+        className,
+      )}
     >
       <div
-        className={cx('du_multi_select_control', disabled && 'du_multi_select_disabled')}
+        className={cx(
+          "du_multi_select_control",
+          disabled && "du_multi_select_disabled",
+        )}
         onClick={() => {
           if (!disabled) {
             setOpen(true);
@@ -201,7 +217,9 @@ export function MultiSelect({
           aria-autocomplete="list"
           aria-expanded={open}
           aria-controls={listboxId}
-          aria-activedescendant={open && activeIndex >= 0 ? optionId(activeIndex) : undefined}
+          aria-activedescendant={
+            open && activeIndex >= 0 ? optionId(activeIndex) : undefined
+          }
           aria-invalid={invalid || undefined}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
@@ -218,7 +236,12 @@ export function MultiSelect({
       </div>
 
       {open && (
-        <ul id={listboxId} role="listbox" aria-multiselectable="true" className="du_multi_select_listbox">
+        <ul
+          id={listboxId}
+          role="listbox"
+          aria-multiselectable="true"
+          className="du_multi_select_listbox"
+        >
           {filtered.length === 0 && (
             <li className="du_multi_select_empty" aria-disabled="true">
               No matches
@@ -237,7 +260,10 @@ export function MultiSelect({
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => toggle(option)}
             >
-              <span className="du_multi_select_option_mark" aria-hidden="true" />
+              <span
+                className="du_multi_select_option_mark"
+                aria-hidden="true"
+              />
               <span>{option.label}</span>
             </li>
           ))}

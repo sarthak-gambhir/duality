@@ -5,10 +5,10 @@ import {
   type KeyboardEvent,
   type MouseEvent,
   type ReactNode,
-} from 'react';
-import { cx } from '../../utils/cx';
-import { Portal } from '../../utils/Portal';
-import { useDismiss } from '../../utils/useDismiss';
+} from "react";
+import { cx } from "../../utils/cx";
+import { Portal } from "../../utils/Portal";
+import { useDismiss } from "../../utils/useDismiss";
 
 export interface ContextMenuItem {
   /** Stable identity. */
@@ -28,7 +28,7 @@ export interface ContextMenuProps {
   /** Region that opens the menu on right-click. */
   children: ReactNode;
   /** Accessible name for the menu. */
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
 }
 
@@ -36,14 +36,18 @@ export interface ContextMenuProps {
 export function ContextMenu({
   items,
   children,
-  'aria-label': ariaLabel = 'Context menu',
+  "aria-label": ariaLabel = "Context menu",
   className,
 }: ContextMenuProps) {
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useDismiss({ enabled: open, onDismiss: () => setOpen(false), refs: [menuRef] });
+  useDismiss({
+    enabled: open,
+    onDismiss: () => setOpen(false),
+    refs: [menuRef],
+  });
 
   const openAt = (event: MouseEvent) => {
     event.preventDefault();
@@ -64,7 +68,9 @@ export function ContextMenu({
       const y = Math.max(0, Math.min(prev.y, maxY));
       return x === prev.x && y === prev.y ? prev : { x, y };
     });
-    el.querySelector<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])')?.focus();
+    el.querySelector<HTMLElement>(
+      '[role="menuitem"]:not([aria-disabled="true"])',
+    )?.focus();
   }, [open]);
 
   const focusableItems = () =>
@@ -78,27 +84,27 @@ export function ContextMenu({
     const list = focusableItems();
     const index = list.indexOf(document.activeElement as HTMLElement);
     switch (event.key) {
-      case 'ArrowDown':
+      case "ArrowDown":
         event.preventDefault();
         list[(index + 1) % list.length]?.focus();
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         event.preventDefault();
         list[(index - 1 + list.length) % list.length]?.focus();
         break;
-      case 'Home':
+      case "Home":
         event.preventDefault();
         list[0]?.focus();
         break;
-      case 'End':
+      case "End":
         event.preventDefault();
         list[list.length - 1]?.focus();
         break;
-      case 'Escape':
+      case "Escape":
         event.preventDefault();
         setOpen(false);
         break;
-      case 'Tab':
+      case "Tab":
         setOpen(false);
         break;
       default:
@@ -114,7 +120,10 @@ export function ContextMenu({
 
   return (
     <>
-      <div className={cx('du_context_menu_target', className)} onContextMenu={openAt}>
+      <div
+        className={cx("du_context_menu_target", className)}
+        onContextMenu={openAt}
+      >
         {children}
       </div>
       {open && (
@@ -129,7 +138,11 @@ export function ContextMenu({
           >
             {items.map((item) =>
               item.separator ? (
-                <div key={item.id} role="separator" className="du_menu_separator" />
+                <div
+                  key={item.id}
+                  role="separator"
+                  className="du_menu_separator"
+                />
               ) : (
                 <button
                   key={item.id}

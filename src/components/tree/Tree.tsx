@@ -26,8 +26,10 @@ interface FlatNode {
   hasChildren: boolean;
 }
 
-export interface TreeProps
-  extends Omit<ComponentPropsWithoutRef<"ul">, "onChange"> {
+export interface TreeProps extends Omit<
+  ComponentPropsWithoutRef<"ul">,
+  "onChange"
+> {
   /** Tree data. */
   items: TreeNode[];
   /** Expanded node ids (controlled). */
@@ -91,10 +93,7 @@ export function Tree({
   });
 
   const expandedSet = useMemo(() => new Set(expandedList), [expandedList]);
-  const flat = useMemo(
-    () => flatten(items, expandedSet),
-    [items, expandedSet],
-  );
+  const flat = useMemo(() => flatten(items, expandedSet), [items, expandedSet]);
 
   const [activeId, setActiveId] = useState<string | undefined>(items[0]?.id);
   const rootRef = useRef<HTMLUListElement>(null);
@@ -120,7 +119,8 @@ export function Tree({
     if (!expandedSet.has(id)) setExpandedList([...expandedList, id]);
   };
   const collapseNode = (id: string) => {
-    if (expandedSet.has(id)) setExpandedList(expandedList.filter((x) => x !== id));
+    if (expandedSet.has(id))
+      setExpandedList(expandedList.filter((x) => x !== id));
   };
 
   const select = (node: TreeNode) => {
@@ -175,7 +175,8 @@ export function Tree({
         if (hasChildren) {
           event.preventDefault();
           if (!expandedSet.has(node.id)) expandNode(node.id);
-          else if (flat[index + 1]) setActive((flat[index + 1] as FlatNode).node.id);
+          else if (flat[index + 1])
+            setActive((flat[index + 1] as FlatNode).node.id);
         }
         break;
       }
@@ -241,7 +242,9 @@ export function Tree({
           >
             <div
               className="du_tree_row"
-              style={{ paddingInlineStart: `calc(${level - 1} * var(--space-4))` }}
+              style={{
+                paddingInlineStart: `calc(${level - 1} * var(--space-4))`,
+              }}
             >
               {hasChildren ? (
                 <span
@@ -254,7 +257,8 @@ export function Tree({
               )}
               <span className="du_tree_label">{node.label}</span>
             </div>
-            {hasChildren && isExpanded &&
+            {hasChildren &&
+              isExpanded &&
               renderNodes(node.children as TreeNode[], level + 1)}
           </li>
         );

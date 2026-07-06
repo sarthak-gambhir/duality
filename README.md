@@ -45,6 +45,8 @@ All components are drawn with the two-color model: base is `--fg` on `--bg`, hov
 
 Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence and `defaultInverted="system"` to follow the OS color scheme. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage. In-depth guides (Accessibility, Theming and Density, Two-Color Patterns) live under **Guides** in Storybook.
 
+Full composed demo pages — Dashboard, Settings, Email, File Manager, Checkout, and a retro Command Center — live under **Examples** in Storybook. Each is built entirely from public exports and doubles as a copy-paste usage reference.
+
 ## Theming, density, RTL, and motion
 
 - **Palettes + inversion:** `ThemeProvider` sets `data-theme` / `data-inverted` on a `du_theme_root`; the tokens stylesheet derives `--fg` / `--bg` from the active pair. Inversion swaps them for the whole scope.

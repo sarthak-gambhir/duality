@@ -5,10 +5,10 @@ import {
   useState,
   type ReactElement,
   type ReactNode,
-} from 'react';
-import { cx } from '../../utils/cx';
+} from "react";
+import { cx } from "../../utils/cx";
 
-export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+export type TooltipPlacement = "top" | "bottom" | "left" | "right";
 
 export interface TooltipProps {
   /** Tooltip contents. */
@@ -26,7 +26,7 @@ export interface TooltipProps {
 export function Tooltip({
   content,
   children,
-  placement = 'top',
+  placement = "top",
   openDelay = 150,
   className,
 }: TooltipProps) {
@@ -44,7 +44,7 @@ export function Tooltip({
     setOpen(false);
   };
 
-  const trigger = cloneElement(children, { 'aria-describedby': tooltipId });
+  const trigger = cloneElement(children, { "aria-describedby": tooltipId });
 
   return (
     <span
@@ -59,7 +59,7 @@ export function Tooltip({
         <span
           role="tooltip"
           id={tooltipId}
-          className={cx('du_tooltip', `du_tooltip_${placement}`, className)}
+          className={cx("du_tooltip", `du_tooltip_${placement}`, className)}
         >
           {content}
         </span>
