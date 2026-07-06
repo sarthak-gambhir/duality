@@ -5,7 +5,23 @@ import { Combobox, type SelectOption } from "../../src";
 const meta: Meta<typeof Combobox> = {
   title: "Controls/Combobox",
   component: Combobox,
-  parameters: { docsMinHeight: 300 },
+  parameters: {
+    docsMinHeight: 300,
+    docs: {
+      description: {
+        component:
+          "Editable ARIA combobox over a filtered listbox. Filters options as you type (custom `filter` supported), supports controlled/uncontrolled value and input text, and mirrors the value to a hidden input when `name` is set. Reuses the Select listbox styling under the two-color model.",
+      },
+    },
+  },
+  argTypes: {
+    options: { control: false, description: "Options to filter and choose from." },
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      table: { defaultValue: { summary: "md" } },
+    },
+  },
 };
 
 export default meta;

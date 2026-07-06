@@ -1,0 +1,70 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Guides/Accessibility" />
+
+# Accessibility
+
+Duality targets **WCAG AAA**. Because the whole system is built from exactly two
+colors, accessibility is baked into the visual language rather than bolted on:
+state is never signalled by color alone, and every interactive component ships
+with the correct roles, keyboard support, and focus management.
+
+## Contrast
+
+Every palette is a pair of colors that meets the AAA **7:1** contrast ratio, in
+both normal and inverted modes. The pairs are verified by automated tests
+(`test/contrast.test.ts`) and mirrored between the SCSS tokens and
+`src/theme/palettes.ts`. You cannot introduce an intermediate shade, so text and
+UI can never drop below the guaranteed ratio.
+
+## State is never color-only
+
+| State    | How it is expressed (in addition to any ARIA) |
+| -------- | ---------------------------------------------- |
+| Hover / selected | Full **inversion** of the `--fg` / `--bg` pair |
+| Focus    | A visible **outline** ring (color-safe, offset)  |
+| Disabled | A **dither** fill plus a `du_text_outline` so the label stays legible |
+| Invalid  | A **border-style** change (dashed), plus `aria-invalid` |
+| Status (info/warning/error) | **Marker shape** + **border style**, e.g. Alert / Banner |
+
+Because each of these also changes shape, texture, or an ARIA attribute, users
+who cannot distinguish the two colors still perceive the state.
+
+## Focus management
+
+- **Focus ring everywhere.** A global `:focus-visible` rule in
+  `src/styles/global.scss` gives every focusable element a visible outline.
+  Edge-filling controls (tabs, accordion headers) use the `du_focus_inset` mixin
+  so the ring stays inside the filled surface.
+- **Focus traps.** `Modal`, `Drawer`, `ConfirmDialog`, and `CommandPalette` trap
+  Tab focus while open (`useFocusTrap`) and restore focus to the trigger on
+  close.
+- **Roving focus.** `Menu`, `ContextMenu`, `Tabs`, and `Tree` move focus with the
+  arrow keys and keep a single tab stop.
+- **Dismissal.** Overlays close on `Escape` and outside press via `useDismiss`.
+
+## Keyboard model
+
+| Component | Keys |
+| --------- | ---- |
+| Menu / ContextMenu | Arrow Up/Down, Home/End, Enter, Escape |
+| Select / Combobox / MultiSelect | Arrow Up/Down, Home/End, Enter, Escape, type-ahead |
+| Tabs | Arrow Left/Right, Home/End |
+| Tree | Arrow keys (navigate + expand/collapse), Enter |
+| Slider / RangeSlider | Arrow keys, Home/End, Page Up/Down |
+| PinInput | Digit entry auto-advances, Backspace steps back, paste distributes |
+| DatePicker / TimePicker | Arrow keys within the panel, Escape to close |
+
+## Reduced motion
+
+Motion is only ever a **secondary** cue. When a user requests
+`prefers-reduced-motion: reduce`, all animations and transitions collapse to an
+equivalent static two-color state (the spinner stops rotating but remains a busy
+indicator, the indeterminate progress bar becomes a static dither, the skeleton
+keeps its dither without pulsing). See **Guides → Theming and Density**.
+
+## Right-to-left
+
+All component styles use CSS **logical properties** (`inset-inline-start`,
+`border-block-end`, and so on), so the library mirrors correctly under
+`dir="rtl"`. Use the **Direction** toolbar toggle to preview any story in RTL.

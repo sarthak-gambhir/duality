@@ -6,7 +6,28 @@ const meta: Meta<typeof Select> = {
   title: "Controls/Select",
   component: Select,
   args: { selectSize: "md" },
-  parameters: { docsMinHeight: 280 },
+  parameters: {
+    docsMinHeight: 280,
+    docs: {
+      description: {
+        component:
+          "Custom accessible single-select built on the ARIA combobox/listbox pattern (not a native `<select>`), so it fully follows the two-color model. Accepts an `options` array or `<option>` children, supports controlled (`value` + `onValueChange`) and uncontrolled (`defaultValue`) use, and mirrors the value to a hidden input when `name` is set. Keyboard: arrows, Home/End, type-ahead, Enter, Escape.",
+      },
+    },
+  },
+  argTypes: {
+    selectSize: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      description: "Control size.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    invalid: {
+      control: "boolean",
+      description: "Marks the field invalid (dashed border + `aria-invalid`).",
+    },
+    options: { control: false, description: "Options array (or pass `<option>` children)." },
+  },
 };
 
 export default meta;

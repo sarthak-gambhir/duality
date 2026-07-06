@@ -43,7 +43,15 @@ All components are drawn with the two-color model: base is `--fg` on `--bg`, hov
 - **Overlays:** `Modal` (+ sections), `Drawer` (+ sections), `ConfirmDialog`, `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `ContextMenu`, `CommandPalette`, `Toast` (`ToastProvider` / `useToast`)
 - **Theming:** `ThemeToggle`, `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
 
-Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence and `defaultInverted="system"` to follow the OS color scheme. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage.
+Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence and `defaultInverted="system"` to follow the OS color scheme. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage. In-depth guides (Accessibility, Theming and Density, Two-Color Patterns) live under **Guides** in Storybook.
+
+## Theming, density, RTL, and motion
+
+- **Palettes + inversion:** `ThemeProvider` sets `data-theme` / `data-inverted` on a `du_theme_root`; the tokens stylesheet derives `--fg` / `--bg` from the active pair. Inversion swaps them for the whole scope.
+- **Density:** `defaultDensity="compact"` (or `useTheme().setDensity`) sets `data-density="compact"`, which applies a tighter spacing/sizing scale. Colors and border widths are unchanged; per-component `size` props are independent.
+- **Right-to-left:** all component styles use CSS logical properties, so setting `dir="rtl"` on any ancestor mirrors the layout correctly.
+- **Reduced motion:** under `prefers-reduced-motion: reduce`, animations/transitions collapse to a static two-color equivalent (spinner stops rotating, indeterminate progress becomes a static dither, skeleton keeps its dither without pulsing).
+- **Forms:** value controls expose a `name` prop that mirrors their value to hidden input(s) for native form submission and libraries like react-hook-form; `useControllableState` accepts an updater function like `useState`.
 
 ## Conventions
 

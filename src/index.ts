@@ -7,6 +7,7 @@ export { ThemeProvider, useTheme } from "./theme/ThemeProvider";
 export type {
   ThemeProviderProps,
   ThemeContextValue,
+  Density,
 } from "./theme/ThemeProvider";
 export { palettes, paletteNames, defaultPalette } from "./theme/palettes";
 export type { Palette, PaletteName } from "./theme/palettes";

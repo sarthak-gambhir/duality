@@ -1,13 +1,13 @@
 .du_divider {
   border: 0;
-  border-top: var(--border-width) solid var(--fg);
+  border-block-start: var(--border-width) solid var(--fg);
   block-size: 0;
   inline-size: 100%;
 }
 
 .du_divider_vertical {
-  border-top: 0;
-  border-left: var(--border-width) solid var(--fg);
+  border-block-start: 0;
+  border-inline-start: var(--border-width) solid var(--fg);
   align-self: stretch;
   block-size: auto;
   inline-size: 0;

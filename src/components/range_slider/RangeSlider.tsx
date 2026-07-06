@@ -26,6 +26,11 @@ export interface RangeSliderProps
   minLabel?: string;
   /** Accessible label for the upper thumb. */
   maxLabel?: string;
+  /**
+   * When set, the `[low, high]` values are mirrored to two hidden inputs of this
+   * name so the range participates in form submission (as an array).
+   */
+  name?: string;
 }
 
 /**
@@ -43,6 +48,7 @@ export function RangeSlider({
   invalid,
   minLabel = "Minimum",
   maxLabel = "Maximum",
+  name,
   className,
   ...rest
 }: RangeSliderProps) {
@@ -155,6 +161,12 @@ export function RangeSlider({
           />
         ))}
       </div>
+      {name && (
+        <>
+          <input type="hidden" name={name} value={low} />
+          <input type="hidden" name={name} value={high} />
+        </>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import {
   useRef,
   type ClipboardEvent,
+  type FocusEvent,
   type KeyboardEvent,
   type ChangeEvent,
 } from 'react';
@@ -23,6 +24,10 @@ export interface PinInputProps {
   /** Obscure entered characters. */
   mask?: boolean;
   disabled?: boolean;
+  /** When set, the assembled value is mirrored to a hidden input of this name. */
+  name?: string;
+  /** Called when focus leaves the group (for form-library integration). */
+  onBlur?: (event: FocusEvent<HTMLDivElement>) => void;
   /** Base accessible name; each cell is labelled "<label>, digit N of M". */
   'aria-label'?: string;
   className?: string;
@@ -43,6 +48,8 @@ export function PinInput({
   type = 'numeric',
   mask,
   disabled,
+  name,
+  onBlur,
   'aria-label': ariaLabel = 'Verification code',
   className,
 }: PinInputProps) {
@@ -125,8 +132,21 @@ export function PinInput({
     focusCell(Math.min(index + pasted.length, length - 1));
   };
 
+  const onGroupBlur = (event: FocusEvent<HTMLDivElement>) => {
+    // Only fire when focus leaves the whole group, not when moving between cells.
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      onBlur?.(event);
+    }
+  };
+
   return (
-    <div role="group" aria-label={ariaLabel} className={cx('du_pin_input', className)}>
+    <div
+      role="group"
+      aria-label={ariaLabel}
+      className={cx('du_pin_input', className)}
+      onBlur={onGroupBlur}
+    >
+      {name && <input type="hidden" name={name} value={current ?? ''} />}
       {Array.from({ length }, (_, index) => (
         <input
           key={index}

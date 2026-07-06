@@ -36,6 +36,27 @@ $size_scale: (
   xl: 40px,
 );
 
+// Compact density: a tighter spacing/sizing scale applied under
+// [data-density="compact"]. Colors and borders are unaffected.
+$space_scale_compact: (
+  0: 0,
+  1: 2px,
+  2: 6px,
+  3: 8px,
+  4: 12px,
+  5: 16px,
+  6: 24px,
+  7: 32px,
+  8: 48px,
+);
+
+$size_scale_compact: (
+  sm: 16px,
+  md: 20px,
+  lg: 28px,
+  xl: 36px,
+);
+
 $font_sans:
   ui-sans-serif,
   system-ui,
@@ -142,4 +163,23 @@ $default_palette: "classic";
 [data-inverted="true"] {
   --fg: var(--surface);
   --bg: var(--ink);
+}
+
+// Compact density: re-declare the spacing/sizing tokens on the density scope so
+// every descendant picks up the tighter scale. Purely dimensional - the two
+// colors and border widths are unchanged.
+[data-density="compact"] {
+  --space-0: #{map.get($space_scale_compact, 0)};
+  --space-1: #{map.get($space_scale_compact, 1)};
+  --space-2: #{map.get($space_scale_compact, 2)};
+  --space-3: #{map.get($space_scale_compact, 3)};
+  --space-4: #{map.get($space_scale_compact, 4)};
+  --space-5: #{map.get($space_scale_compact, 5)};
+  --space-6: #{map.get($space_scale_compact, 6)};
+  --space-7: #{map.get($space_scale_compact, 7)};
+  --space-8: #{map.get($space_scale_compact, 8)};
+  --size-sm: #{map.get($size_scale_compact, sm)};
+  --size-md: #{map.get($size_scale_compact, md)};
+  --size-lg: #{map.get($size_scale_compact, lg)};
+  --size-xl: #{map.get($size_scale_compact, xl)};
 }

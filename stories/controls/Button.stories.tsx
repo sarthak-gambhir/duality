@@ -5,6 +5,29 @@ const meta: Meta<typeof Button> = {
   title: "Controls/Button",
   component: Button,
   args: { children: "Button", variant: "solid", size: "md" },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Primary action control. `solid` is filled, `inverse` is outlined, `ghost` is borderless; all invert on hover. Disabled uses a dither fill with an outlined label. Forwards all native `button` attributes and a `ref`.",
+      },
+    },
+  },
+  argTypes: {
+    variant: {
+      control: "inline-radio",
+      options: ["solid", "inverse", "ghost"],
+      description: "Visual style.",
+      table: { defaultValue: { summary: "solid" } },
+    },
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      description: "Control size.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    children: { control: "text", description: "Button label." },
+  },
 };
 
 export default meta;

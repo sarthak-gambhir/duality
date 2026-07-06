@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   type ChangeEvent,
+  type FocusEvent,
   type KeyboardEvent,
 } from 'react';
 import { cx } from '../../utils/cx';
@@ -26,6 +27,10 @@ export interface MultiSelectProps {
   /** Marks the field invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   disabled?: boolean;
+  /** When set, each selected value is mirrored to a hidden input of this name. */
+  name?: string;
+  /** Called when the text input loses focus (for form-library integration). */
+  onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
   id?: string;
   className?: string;
   'aria-label'?: string;
@@ -57,6 +62,8 @@ export function MultiSelect({
   placeholder = 'Select...',
   invalid,
   disabled,
+  name,
+  onBlur,
   id,
   className,
   'aria-label': ariaLabel,
@@ -206,6 +213,7 @@ export function MultiSelect({
           onChange={onInputChange}
           onKeyDown={onKeyDown}
           onFocus={() => setOpen(true)}
+          onBlur={onBlur}
         />
       </div>
 
@@ -235,6 +243,11 @@ export function MultiSelect({
           ))}
         </ul>
       )}
+
+      {name &&
+        (selected ?? []).map((value) => (
+          <input key={value} type="hidden" name={name} value={value} />
+        ))}
     </div>
   );
 }

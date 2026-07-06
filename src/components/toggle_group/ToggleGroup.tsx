@@ -43,6 +43,11 @@ export interface ToggleGroupProps
   disabled?: boolean;
   /** Accessible group label. */
   label?: ReactNode;
+  /**
+   * When set, the selection is mirrored to hidden input(s) of this name so it
+   * participates in form submission (one input per value in `multiple` mode).
+   */
+  name?: string;
   children?: ReactNode;
 }
 
@@ -57,6 +62,7 @@ export function ToggleGroup({
   onValueChange,
   disabled,
   label,
+  name,
   className,
   children,
   ...rest
@@ -141,7 +147,25 @@ export function ToggleGroup({
       >
         {children}
       </ToggleGroupContext.Provider>
+      {name && <ToggleGroupHiddenInputs name={name} value={current} />}
     </div>
+  );
+}
+
+function ToggleGroupHiddenInputs({
+  name,
+  value,
+}: {
+  name: string;
+  value: ToggleValue;
+}) {
+  const values = Array.isArray(value) ? value : value ? [value] : [];
+  return (
+    <>
+      {values.map((v) => (
+        <input key={v} type="hidden" name={name} value={v} />
+      ))}
+    </>
   );
 }
 

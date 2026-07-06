@@ -5,7 +5,18 @@ import { MultiSelect, type SelectOption } from '../../src';
 const meta: Meta<typeof MultiSelect> = {
   title: 'Controls/MultiSelect',
   component: MultiSelect,
-  parameters: { docsMinHeight: 320 },
+  parameters: {
+    docsMinHeight: 320,
+    docs: {
+      description: {
+        component:
+          'Multi-value combobox. Selected options appear as removable Badge chips; the listbox stays open (aria-multiselectable) so you can toggle several, and Backspace on an empty input removes the last chip. Mirrors the selected values to hidden inputs when name is set.',
+      },
+    },
+  },
+  argTypes: {
+    options: { control: false, description: 'Options to choose from.' },
+  },
 };
 
 export default meta;

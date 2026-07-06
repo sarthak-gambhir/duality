@@ -19,9 +19,12 @@ function prefersDark(): boolean {
   );
 }
 
+export type Density = "comfortable" | "compact";
+
 interface PersistedTheme {
   theme?: PaletteName;
   inverted?: boolean;
+  density?: Density;
 }
 
 function readPersisted(storageKey?: string): PersistedTheme | null {
@@ -49,9 +52,12 @@ export interface ThemeContextValue {
   theme: PaletteName;
   /** Whether the two colors are currently swapped. */
   inverted: boolean;
+  /** Active spacing/sizing density. */
+  density: Density;
   setTheme: (theme: PaletteName) => void;
   setInverted: (inverted: boolean) => void;
   toggleInverted: () => void;
+  setDensity: (density: Density) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -65,9 +71,11 @@ export interface ThemeProviderProps {
    * `prefers-color-scheme` and follow live changes. Defaults to `false`.
    */
   defaultInverted?: boolean | "system";
+  /** Initial spacing/sizing density. Defaults to `comfortable`. */
+  defaultDensity?: Density;
   /**
-   * When set, the active theme + inversion are persisted to `localStorage`
-   * under this key and restored on next load.
+   * When set, the active theme, inversion, and density are persisted to
+   * `localStorage` under this key and restored on next load.
    */
   storageKey?: string;
   /** Element type for the theme root. Defaults to `div`. */
@@ -84,6 +92,7 @@ export function ThemeProvider({
   children,
   defaultTheme = defaultPalette,
   defaultInverted = false,
+  defaultDensity = "comfortable",
   storageKey,
   as: Element = "div",
   className,
@@ -98,6 +107,9 @@ export function ThemeProvider({
     if (persisted !== undefined) return persisted;
     return followSystem ? prefersDark() : defaultInverted === true;
   });
+  const [density, setDensity] = useState<Density>(
+    () => readPersisted(storageKey)?.density ?? defaultDensity,
+  );
   const [rootEl, setRootEl] = useState<HTMLElement | null>(null);
 
   const toggleInverted = useCallback(() => setInverted((prev) => !prev), []);
@@ -106,11 +118,14 @@ export function ThemeProvider({
   useEffect(() => {
     if (!storageKey || typeof window === "undefined") return;
     try {
-      window.localStorage.setItem(storageKey, JSON.stringify({ theme, inverted }));
+      window.localStorage.setItem(
+        storageKey,
+        JSON.stringify({ theme, inverted, density }),
+      );
     } catch {
       // Ignore storage failures (private mode, quota, etc.).
     }
-  }, [storageKey, theme, inverted]);
+  }, [storageKey, theme, inverted, density]);
 
   // Follow live OS scheme changes when requested and not persisted.
   useEffect(() => {
@@ -123,8 +138,16 @@ export function ThemeProvider({
   }, [followSystem, storageKey]);
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ theme, inverted, setTheme, setInverted, toggleInverted }),
-    [theme, inverted, toggleInverted],
+    () => ({
+      theme,
+      inverted,
+      density,
+      setTheme,
+      setInverted,
+      toggleInverted,
+      setDensity,
+    }),
+    [theme, inverted, density, toggleInverted],
   );
 
   const rootClassName = className
@@ -138,6 +161,7 @@ export function ThemeProvider({
         className={rootClassName}
         data-theme={theme}
         data-inverted={inverted}
+        data-density={density}
       >
         <PortalContainerContext.Provider value={rootEl}>
           {children}

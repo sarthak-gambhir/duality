@@ -40,8 +40,8 @@
   inset-inline-start: 6px;
   inline-size: 4px;
   block-size: 9px;
-  border-right: var(--border-width) solid var(--bg);
-  border-bottom: var(--border-width) solid var(--bg);
+  border-inline-end: var(--border-width) solid var(--bg);
+  border-block-end: var(--border-width) solid var(--bg);
   transform: rotate(45deg);
 }
 

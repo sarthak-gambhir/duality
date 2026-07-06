@@ -13,3 +13,36 @@
     outline-offset: 2px;
   }
 }
+
+// Respect reduced-motion preferences. Duality only uses motion as a secondary
+// cue, so we can drop every animation/transition and fall back to an equivalent
+// static two-color state without losing meaning.
+@media (prefers-reduced-motion: reduce) {
+  .du_theme_root {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  // Spinner: stop rotating; the bordered square with a filled corner still
+  // reads as a busy indicator (paired with role="status" + label).
+  .du_spinner {
+    animation: none;
+  }
+
+  // Progress (indeterminate): fill the whole track with a static dither instead
+  // of sliding a segment, so it still communicates ongoing work.
+  .du_progress_indeterminate .du_progress_fill {
+    inline-size: 100%;
+    animation: none;
+  }
+
+  // Skeleton: keep the static dither, drop the pulse.
+  .du_skeleton {
+    animation: none;
+  }
+}

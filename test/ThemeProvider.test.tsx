@@ -27,6 +27,7 @@ describe("ThemeProvider", () => {
     expect(root).not.toBeNull();
     expect(root?.getAttribute("data-theme")).toBe("classic");
     expect(root?.getAttribute("data-inverted")).toBe("false");
+    expect(root?.getAttribute("data-density")).toBe("comfortable");
   });
 
   it("honors default theme and inversion", () => {

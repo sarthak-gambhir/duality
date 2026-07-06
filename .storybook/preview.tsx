@@ -35,11 +35,39 @@ export const globalTypes = {
       ],
     },
   },
+  direction: {
+    description: "Text direction",
+    defaultValue: "ltr",
+    toolbar: {
+      title: "Direction",
+      icon: "transfer",
+      dynamicTitle: true,
+      items: [
+        { value: "ltr", title: "LTR" },
+        { value: "rtl", title: "RTL" },
+      ],
+    },
+  },
+  density: {
+    description: "Spacing / sizing density",
+    defaultValue: "comfortable",
+    toolbar: {
+      title: "Density",
+      icon: "grow",
+      dynamicTitle: true,
+      items: [
+        { value: "comfortable", title: "Comfortable" },
+        { value: "compact", title: "Compact" },
+      ],
+    },
+  },
 };
 
 const withTheme: Decorator = (Story, context) => {
   const theme = context.globals.theme as PaletteName;
   const inverted = context.globals.inverted === "true";
+  const direction = context.globals.direction === "rtl" ? "rtl" : "ltr";
+  const density = context.globals.density === "compact" ? "compact" : "comfortable";
   // In Docs, stories are embedded previews that should hug their content; only
   // fill the viewport in the standalone canvas view. Overlay-heavy stories can
   // reserve space via a `docsMinHeight` parameter so their panels (portaled or
@@ -51,11 +79,13 @@ const withTheme: Decorator = (Story, context) => {
     // Remount when the toolbar changes so the uncontrolled ThemeProvider picks
     // up the new defaults.
     <ThemeProvider
-      key={`${theme}-${inverted}`}
+      key={`${theme}-${inverted}-${density}`}
       defaultTheme={theme}
       defaultInverted={inverted}
+      defaultDensity={density}
     >
       <div
+        dir={direction}
         style={{
           padding: "var(--space-5)",
           minHeight: isDocs ? docsMinHeight : "100vh",
@@ -78,6 +108,7 @@ const preview: Preview = {
         order: [
           "Introduction",
           "Foundations",
+          "Guides",
           "Layout",
           "Typography",
           "Controls",
