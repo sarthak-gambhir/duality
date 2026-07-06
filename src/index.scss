@@ -35,6 +35,9 @@
 @use "components/range_slider/range_slider";
 @use "components/tag_input/tag_input";
 @use "components/time_picker/time_picker";
+@use "components/multi_select/multi_select";
+@use "components/file_upload/file_upload";
+@use "components/pin_input/pin_input";
 
 // Form composition
 @use "components/label/label";
@@ -48,16 +51,21 @@
 @use "components/progress/progress";
 @use "components/spinner/spinner";
 @use "components/skeleton/skeleton";
+@use "components/stat/stat";
+@use "components/empty_state/empty_state";
+@use "components/banner/banner";
 
 // Data
 @use "components/table/table";
 @use "components/data_table/data_table";
 @use "components/tree/tree";
+@use "components/timeline/timeline";
 
 // Navigation
 @use "components/breadcrumbs/breadcrumbs";
 @use "components/pagination/pagination";
 @use "components/stepper/stepper";
+@use "components/side_nav/side_nav";
 
 // Disclosure
 @use "components/tabs/tabs";
@@ -66,8 +74,10 @@
 // Overlays
 @use "components/modal/modal";
 @use "components/drawer/drawer";
+@use "components/confirm_dialog/confirm_dialog";
 @use "components/tooltip/tooltip";
 @use "components/popover/popover";
 @use "components/menu/menu";
+@use "components/context_menu/context_menu";
 @use "components/command_palette/command_palette";
 @use "components/toast/toast";

@@ -1,0 +1,40 @@
+@use "../../styles/mixins" as m;
+
+.du_stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  color: var(--fg);
+  background-color: var(--bg);
+
+  @include m.du_border;
+}
+
+.du_stat_label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.du_stat_value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.du_stat_delta {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+.du_stat_delta_arrow {
+  font-size: 10px;
+  line-height: 1;
+}

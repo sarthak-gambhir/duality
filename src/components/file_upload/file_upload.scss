@@ -1,0 +1,110 @@
+@use "../../styles/mixins" as m;
+
+.du_file_upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  inline-size: 100%;
+}
+
+// The native input is hidden but still reachable via the label/zone click.
+.du_file_upload_input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.du_file_upload_zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--size-xl);
+  padding: var(--space-4);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: center;
+  cursor: pointer;
+  border: var(--border-width) dashed var(--fg);
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+}
+
+// Drag-over affordance uses inversion, not color.
+.du_file_upload_zone_over {
+  @include m.du_invert;
+
+  border-style: solid;
+}
+
+.du_file_upload_list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.du_file_upload_item {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  color: var(--fg);
+  font-family: var(--font-sans);
+
+  @include m.du_border;
+}
+
+.du_file_upload_name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.du_file_upload_size {
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.du_file_upload_remove {
+  @include m.du_reset_control;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 20px;
+  block-size: 20px;
+  color: var(--fg);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &:hover:not(:disabled) {
+    @include m.du_invert;
+  }
+}

@@ -1,0 +1,38 @@
+.du_empty_state {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-7) var(--space-5);
+  color: var(--fg);
+  text-align: center;
+}
+
+// Default decorative marker: an outlined pixel diamond.
+.du_empty_state_marker {
+  inline-size: 24px;
+  block-size: 24px;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  transform: rotate(45deg);
+}
+
+.du_empty_state_icon {
+  display: inline-flex;
+}
+
+.du_empty_state_title {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.du_empty_state_description {
+  max-inline-size: 42ch;
+  font-family: var(--font-sans);
+}
+
+.du_empty_state_action {
+  margin-block-start: var(--space-2);
+}

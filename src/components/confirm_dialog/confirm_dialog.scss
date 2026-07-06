@@ -1,0 +1,12 @@
+.du_confirm_dialog_title {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+// Destructive actions get a heavier, doubled confirm border - severity is shown
+// by border style, never by color.
+.du_confirm_dialog_danger .du_confirm_dialog_confirm {
+  border-style: double;
+  border-width: var(--border-width-thick);
+}

@@ -1,0 +1,138 @@
+@use "../../styles/mixins" as m;
+
+.du_multi_select {
+  position: relative;
+  display: inline-block;
+  inline-size: 100%;
+}
+
+.du_multi_select_control {
+  @include m.du_border;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  align-items: center;
+  min-block-size: var(--size-lg);
+  padding: var(--space-1) var(--space-2);
+  color: var(--fg);
+  background-color: var(--bg);
+  cursor: text;
+
+  &:focus-within {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
+.du_multi_select_invalid .du_multi_select_control {
+  border-style: dashed;
+}
+
+.du_multi_select_disabled {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+  @include m.du_text_outline(2);
+}
+
+.du_multi_select_chip {
+  gap: var(--space-1);
+}
+
+.du_multi_select_chip_remove {
+  @include m.du_reset_control;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 16px;
+  block-size: 16px;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--bg);
+    outline-offset: 0;
+  }
+}
+
+.du_multi_select_input {
+  @include m.du_reset_control;
+
+  flex: 1 1 60px;
+  min-inline-size: 60px;
+  color: var(--fg);
+  background: none;
+  font-family: var(--font-sans);
+
+  &::placeholder {
+    color: var(--fg);
+    font-style: italic;
+  }
+}
+
+.du_multi_select_listbox {
+  position: absolute;
+  z-index: 10;
+  inset-inline: 0;
+  inset-block-start: calc(100% - var(--border-width));
+  max-block-size: 240px;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  list-style: none;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_multi_select_empty {
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-style: italic;
+}
+
+.du_multi_select_option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+.du_multi_select_option_mark {
+  flex: 0 0 auto;
+  inline-size: 10px;
+  block-size: 10px;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_multi_select_option[aria-selected="true"] .du_multi_select_option_mark {
+  background-color: var(--fg);
+}
+
+.du_multi_select_option[data-active] {
+  color: var(--bg);
+  background-color: var(--fg);
+}
+
+.du_multi_select_option[data-active] .du_multi_select_option_mark {
+  border-color: var(--bg);
+}
+
+.du_multi_select_option[data-active][aria-selected="true"] .du_multi_select_option_mark {
+  background-color: var(--bg);
+}
+
+.du_multi_select_option[aria-disabled="true"] {
+  cursor: not-allowed;
+
+  @include m.du_dither;
+  @include m.du_text_outline(2);
+}

@@ -1,0 +1,71 @@
+@use "../../styles/mixins" as m;
+
+.du_side_nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  inline-size: 100%;
+  min-inline-size: 180px;
+}
+
+.du_side_nav_section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.du_side_nav_heading {
+  padding: var(--space-1) var(--space-2);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.du_side_nav_list {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.du_side_nav_item {
+  @include m.du_reset_control;
+
+  display: block;
+  inline-size: 100%;
+  padding: var(--space-2) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  border-inline-start: var(--border-width-thick) solid transparent;
+
+  &:focus-visible,
+  &:hover:not([aria-disabled="true"]) {
+    @include m.du_invert;
+
+    outline: none;
+  }
+
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+}
+
+// Active item inverts and gains a leading marker bar (shape, not color). The
+// bar is drawn in --bg so it stays visible against the inverted --fg fill.
+.du_side_nav_item_active {
+  @include m.du_invert;
+
+  font-weight: 700;
+  border-inline-start-color: var(--bg);
+}

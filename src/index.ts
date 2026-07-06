@@ -99,6 +99,12 @@ export { TagInput } from "./components/tag_input/TagInput";
 export type { TagInputProps } from "./components/tag_input/TagInput";
 export { TimePicker } from "./components/time_picker/TimePicker";
 export type { TimePickerProps } from "./components/time_picker/TimePicker";
+export { MultiSelect } from "./components/multi_select/MultiSelect";
+export type { MultiSelectProps } from "./components/multi_select/MultiSelect";
+export { FileUpload } from "./components/file_upload/FileUpload";
+export type { FileUploadProps } from "./components/file_upload/FileUpload";
+export { PinInput } from "./components/pin_input/PinInput";
+export type { PinInputProps } from "./components/pin_input/PinInput";
 
 // Form composition
 export { Label } from "./components/label/Label";
@@ -125,6 +131,12 @@ export { Spinner } from "./components/spinner/Spinner";
 export type { SpinnerProps } from "./components/spinner/Spinner";
 export { Skeleton } from "./components/skeleton/Skeleton";
 export type { SkeletonProps } from "./components/skeleton/Skeleton";
+export { Stat } from "./components/stat/Stat";
+export type { StatProps } from "./components/stat/Stat";
+export { EmptyState } from "./components/empty_state/EmptyState";
+export type { EmptyStateProps } from "./components/empty_state/EmptyState";
+export { Banner } from "./components/banner/Banner";
+export type { BannerProps } from "./components/banner/Banner";
 
 // Data
 export { Table, THead, TBody, Tr, Th, Td } from "./components/table/Table";
@@ -133,6 +145,8 @@ export { DataTable } from "./components/data_table/DataTable";
 export type { DataTableProps, DataTableColumn } from "./components/data_table/DataTable";
 export { Tree } from "./components/tree/Tree";
 export type { TreeProps, TreeNode } from "./components/tree/Tree";
+export { Timeline } from "./components/timeline/Timeline";
+export type { TimelineProps, TimelineItem } from "./components/timeline/Timeline";
 
 // Navigation
 export { Breadcrumbs } from "./components/breadcrumbs/Breadcrumbs";
@@ -141,6 +155,8 @@ export { Pagination } from "./components/pagination/Pagination";
 export type { PaginationProps } from "./components/pagination/Pagination";
 export { Stepper } from "./components/stepper/Stepper";
 export type { StepperProps, StepperStep } from "./components/stepper/Stepper";
+export { SideNav } from "./components/side_nav/SideNav";
+export type { SideNavProps, SideNavItem, SideNavSection } from "./components/side_nav/SideNav";
 
 // Disclosure
 export { Tabs, TabList, Tab, TabPanel } from "./components/tabs/Tabs";
@@ -153,12 +169,16 @@ export { Modal, ModalHeader, ModalBody, ModalFooter } from "./components/modal/M
 export type { ModalProps, ModalSectionProps } from "./components/modal/Modal";
 export { Drawer, DrawerHeader, DrawerBody, DrawerFooter } from "./components/drawer/Drawer";
 export type { DrawerProps, DrawerSectionProps, DrawerSide } from "./components/drawer/Drawer";
+export { ConfirmDialog } from "./components/confirm_dialog/ConfirmDialog";
+export type { ConfirmDialogProps } from "./components/confirm_dialog/ConfirmDialog";
 export { Tooltip } from "./components/tooltip/Tooltip";
 export type { TooltipProps, TooltipPlacement } from "./components/tooltip/Tooltip";
 export { Popover } from "./components/popover/Popover";
 export type { PopoverProps, PopoverPlacement } from "./components/popover/Popover";
 export { Menu, MenuItem, MenuSeparator } from "./components/menu/Menu";
 export type { MenuProps, MenuItemProps, MenuPlacement } from "./components/menu/Menu";
+export { ContextMenu } from "./components/context_menu/ContextMenu";
+export type { ContextMenuProps, ContextMenuItem } from "./components/context_menu/ContextMenu";
 export { CommandPalette } from "./components/command_palette/CommandPalette";
 export type { CommandPaletteProps, Command } from "./components/command_palette/CommandPalette";
 export { ToastProvider, useToast } from "./components/toast/ToastProvider";

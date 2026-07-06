@@ -1,0 +1,83 @@
+@use "../../styles/mixins" as m;
+
+.du_banner {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  inline-size: 100%;
+  padding: var(--space-3) var(--space-4);
+  color: var(--fg);
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_banner_marker {
+  flex: 0 0 auto;
+  inline-size: 12px;
+  block-size: 12px;
+  background-color: var(--fg);
+}
+
+.du_banner_content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: baseline;
+  font-family: var(--font-sans);
+}
+
+.du_banner_title {
+  font-weight: 700;
+}
+
+.du_banner_action {
+  flex: 0 0 auto;
+}
+
+.du_banner_close {
+  @include m.du_reset_control;
+
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  color: var(--fg);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    @include m.du_invert;
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
+// Tone: shape of the marker + border style, never color.
+.du_banner_info {
+  border-style: solid;
+}
+
+.du_banner_warning {
+  border-style: dashed;
+
+  .du_banner_marker {
+    background-color: var(--bg);
+    border: var(--border-width) solid var(--fg);
+  }
+}
+
+.du_banner_error {
+  border-style: double;
+  border-width: var(--border-width-thick);
+
+  .du_banner_marker {
+    transform: rotate(45deg);
+  }
+}
