@@ -3,10 +3,14 @@
 .du_kbd {
   display: inline-block;
   padding: 0 var(--space-1);
-  color: var(--fg);
+  color: inherit;
   font-family: var(--font-mono);
   font-size: 0.85em;
   line-height: 1.6;
 
   @include m.du_border;
+
+  // Track the surrounding text color so the key cap stays legible on any
+  // surface (e.g. inside a filled/inverse button or a selected row).
+  border-color: currentColor;
 }

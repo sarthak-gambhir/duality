@@ -1,7 +1,7 @@
 @use "../../styles/mixins" as m;
 
 .du_link {
-  color: var(--fg);
+  color: inherit;
   text-decoration: underline;
   text-decoration-thickness: var(--border-width);
   text-underline-offset: 2px;

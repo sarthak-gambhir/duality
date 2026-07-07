@@ -285,7 +285,20 @@ function Client() {
                               <Text size="sm">{m.time}</Text>
                             </Inline>
                             <Inline gap={2} wrap={false}>
-                              {m.unread && <Badge>new</Badge>}
+                              {m.unread && (
+                                <Badge
+                                  style={
+                                    m.id === selectedId
+                                      ? {
+                                          backgroundColor: "var(--bg)",
+                                          color: "var(--fg)",
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  new
+                                </Badge>
+                              )}
                               <Text weight={m.unread ? "bold" : "normal"}>
                                 {m.subject}
                               </Text>
