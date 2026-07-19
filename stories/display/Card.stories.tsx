@@ -5,6 +5,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  CardMedia,
   Heading,
   Text,
 } from "../../src";
@@ -32,6 +33,38 @@ export const WithSections: Story = {
       <CardFooter>
         <Button size="sm">Action</Button>
       </CardFooter>
+    </Card>
+  ),
+};
+
+export const WithMedia: Story = {
+  render: () => (
+    <Card style={{ maxWidth: 360 }}>
+      <CardMedia>
+        <svg viewBox="0 0 360 160" role="img" aria-label="Placeholder">
+          <rect width="360" height="160" fill="var(--fg)" />
+        </svg>
+      </CardMedia>
+      <CardBody>
+        <Heading level={3}>With media</Heading>
+        <Text>A full-bleed media region framed by a pixel rule.</Text>
+      </CardBody>
+    </Card>
+  ),
+};
+
+export const Interactive: Story = {
+  render: () => (
+    <Card
+      as="a"
+      href="#card"
+      interactive
+      style={{ maxWidth: 360, display: "block" }}
+    >
+      <CardBody>
+        <Heading level={3}>Interactive card</Heading>
+        <Text>The whole card is a link. Hover or focus to see the state.</Text>
+      </CardBody>
     </Card>
   ),
 };

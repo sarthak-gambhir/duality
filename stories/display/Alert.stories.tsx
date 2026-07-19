@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Alert } from "../../src";
+import { useState } from "react";
+import { Alert, Button } from "../../src";
 
 const meta: Meta<typeof Alert> = {
   title: "Display/Alert",
@@ -20,6 +21,50 @@ export const Tones: Story = {
       </Alert>
       <Alert tone="error" title="Error">
         Something went wrong. Marker is a diamond with a double border.
+      </Alert>
+    </div>
+  ),
+};
+
+export const Dismissible: Story = {
+  render: function DismissibleStory() {
+    const [open, setOpen] = useState(true);
+    return (
+      <div style={{ maxWidth: 420 }}>
+        {open ? (
+          <Alert tone="info" title="Heads up" onDismiss={() => setOpen(false)}>
+            This alert can be dismissed with the close button.
+          </Alert>
+        ) : (
+          <Button size="sm" onClick={() => setOpen(true)}>
+            Restore alert
+          </Button>
+        )}
+      </div>
+    );
+  },
+};
+
+export const WithAction: Story = {
+  render: () => (
+    <div style={{ maxWidth: 480 }}>
+      <Alert
+        tone="warning"
+        title="Update available"
+        action={<Button size="sm">Update</Button>}
+        onDismiss={() => {}}
+      >
+        A new version is ready to install.
+      </Alert>
+    </div>
+  ),
+};
+
+export const CustomIcon: Story = {
+  render: () => (
+    <div style={{ maxWidth: 420 }}>
+      <Alert tone="info" title="Saved" icon={<span>✓</span>}>
+        Your changes were saved. This uses a custom marker.
       </Alert>
     </div>
   ),

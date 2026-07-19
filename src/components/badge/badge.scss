@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as m;
+
 .du_badge {
   display: inline-flex;
   align-items: center;
@@ -19,4 +21,68 @@
 .du_badge_outline {
   color: var(--fg);
   background-color: var(--bg);
+}
+
+// Sizes: scale the min height, padding, and text together.
+.du_badge_sm {
+  min-block-size: var(--size-sm);
+  padding: 0 var(--space-2);
+  font-size: 14px;
+}
+
+.du_badge_md {
+  min-block-size: var(--size-md);
+  padding: 0 var(--space-3);
+  font-size: 16px;
+}
+
+.du_badge_lg {
+  min-block-size: var(--size-lg);
+  padding: 0 var(--space-3);
+  font-size: 18px;
+}
+
+// Status dot: a small square that takes the current text color, so it stays
+// visible on both solid (--bg) and outline (--fg) badges.
+.du_badge_dot {
+  flex: 0 0 auto;
+  inline-size: 8px;
+  block-size: 8px;
+  background-color: currentcolor;
+}
+
+// Remove control for chip/tag use. Inverts the two colors on hover.
+.du_badge_removable {
+  padding-inline-end: var(--space-1);
+}
+
+.du_badge_remove {
+  @include m.du_reset_control;
+
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 16px;
+  block-size: 16px;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fg);
+    background-color: var(--bg);
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid currentcolor;
+    outline-offset: -2px;
+  }
+}
+
+// On an outline badge, hovering the remove control should invert the other way.
+.du_badge_outline .du_badge_remove:hover {
+  color: var(--bg);
+  background-color: var(--fg);
 }

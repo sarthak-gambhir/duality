@@ -121,23 +121,29 @@ export type {
 } from "./components/form_field/FormField";
 
 // Display
-export { Card, CardHeader, CardBody, CardFooter } from "./components/card/Card";
-export type { CardProps } from "./components/card/Card";
+export {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  CardMedia,
+} from "./components/card/Card";
+export type { CardProps, CardSectionProps } from "./components/card/Card";
 export { Badge } from "./components/badge/Badge";
 export { Badge as Tag } from "./components/badge/Badge";
 export type { BadgeProps } from "./components/badge/Badge";
 export { Alert } from "./components/alert/Alert";
 export type { AlertProps } from "./components/alert/Alert";
-export { Avatar } from "./components/avatar/Avatar";
-export type { AvatarProps } from "./components/avatar/Avatar";
+export { Avatar, AvatarGroup } from "./components/avatar/Avatar";
+export type { AvatarProps, AvatarGroupProps } from "./components/avatar/Avatar";
 export { Progress } from "./components/progress/Progress";
 export type { ProgressProps } from "./components/progress/Progress";
 export { Spinner } from "./components/spinner/Spinner";
 export type { SpinnerProps } from "./components/spinner/Spinner";
 export { Skeleton } from "./components/skeleton/Skeleton";
 export type { SkeletonProps } from "./components/skeleton/Skeleton";
-export { Stat } from "./components/stat/Stat";
-export type { StatProps } from "./components/stat/Stat";
+export { Stat, StatGroup } from "./components/stat/Stat";
+export type { StatProps, StatGroupProps } from "./components/stat/Stat";
 export { EmptyState } from "./components/empty_state/EmptyState";
 export type { EmptyStateProps } from "./components/empty_state/EmptyState";
 export { Banner } from "./components/banner/Banner";

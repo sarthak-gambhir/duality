@@ -8,6 +8,38 @@
   border: var(--border-width) solid var(--fg);
 }
 
+.du_progress_sm {
+  block-size: var(--size-sm);
+}
+
+.du_progress_md {
+  block-size: var(--size-md);
+}
+
+.du_progress_lg {
+  block-size: var(--size-lg);
+}
+
+// Layout wrapper when a value label is shown beside the bar.
+.du_progress_root {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+
+  .du_progress {
+    flex: 1 1 auto;
+  }
+}
+
+.du_progress_value {
+  flex: 0 0 auto;
+  min-inline-size: 4ch;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: end;
+}
+
 .du_progress_fill {
   block-size: 100%;
   background-color: var(--fg);

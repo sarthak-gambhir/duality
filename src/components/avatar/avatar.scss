@@ -10,6 +10,12 @@
   border: var(--border-width) solid var(--fg);
 }
 
+.du_avatar_xs {
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  font-size: 10px;
+}
+
 .du_avatar_sm {
   inline-size: var(--size-md);
   block-size: var(--size-md);
@@ -36,4 +42,23 @@
 
 .du_avatar_initials {
   line-height: 1;
+}
+
+// Overlapping stack. Each avatar keeps a --bg ring (via its own border on the
+// --bg surface) so neighbours stay visually separated where they overlap.
+.du_avatar_group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.du_avatar_group_item {
+  display: inline-flex;
+
+  & + & {
+    margin-inline-start: calc(-1 * var(--space-2));
+  }
+
+  .du_avatar {
+    outline: var(--border-width) solid var(--bg);
+  }
 }

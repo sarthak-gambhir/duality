@@ -7,6 +7,40 @@
   @include m.du_border;
 }
 
+// Interactive card: whole surface is a link/button. Focus ring + hover invert;
+// state never relies on color alone.
+.du_card_interactive {
+  display: block;
+  inline-size: 100%;
+  font: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    @include m.du_invert;
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
+// Media region: sits flush inside the card frame with a dividing rule below.
+.du_card_media {
+  overflow: hidden;
+  border-bottom: var(--border-width) solid var(--fg);
+
+  img,
+  video,
+  svg {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+  }
+}
+
 .du_card_header {
   padding: var(--space-4);
   border-bottom: var(--border-width) solid var(--fg);

@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as m;
+
 .du_alert {
   display: flex;
   gap: var(--space-3);
@@ -10,8 +12,49 @@
 
 .du_alert_content {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: var(--space-1);
+}
+
+// Trailing action slot (e.g. a Button); aligned with the content top.
+.du_alert_action {
+  flex: 0 0 auto;
+}
+
+// Custom icon slot, sized to match the default marker box.
+.du_alert_icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 12px;
+  block-size: 12px;
+  margin-block-start: 3px;
+}
+
+.du_alert_close {
+  @include m.du_reset_control;
+
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  color: var(--fg);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    @include m.du_invert;
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
 }
 
 .du_alert_title {

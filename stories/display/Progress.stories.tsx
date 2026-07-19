@@ -18,3 +18,28 @@ export const States: Story = {
     </Stack>
   ),
 };
+
+export const WithValue: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Progress value={40} showValue aria-label="Upload" />
+      <Progress
+        value={3}
+        max={5}
+        showValue
+        formatValue={(v, m) => `${v}/${m}`}
+        aria-label="Steps"
+      />
+    </Stack>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <Stack gap={4}>
+      <Progress value={60} size="sm" aria-label="Small" />
+      <Progress value={60} size="md" aria-label="Medium" />
+      <Progress value={60} size="lg" aria-label="Large" />
+    </Stack>
+  ),
+};

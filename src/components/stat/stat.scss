@@ -12,11 +12,38 @@
 }
 
 .du_stat_label {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.du_stat_icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+// Group: a single bordered surface with the individual stats separated by
+// dividers instead of each carrying its own box.
+.du_stat_group {
+  display: flex;
+  flex-wrap: wrap;
+
+  @include m.du_border;
+
+  .du_stat {
+    flex: 1 1 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .du_stat + .du_stat {
+    border-inline-start: var(--border-width) solid var(--fg);
+  }
 }
 
 .du_stat_value {

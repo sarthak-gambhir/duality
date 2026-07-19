@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Inline, Stat } from "../../src";
+import { Stat, StatGroup } from "../../src";
 
 const meta: Meta<typeof Stat> = {
   title: "Display/Stat",
@@ -20,9 +20,21 @@ export const Default: Story = {
   ),
 };
 
+export const WithIcon: Story = {
+  render: () => (
+    <Stat
+      label="Revenue"
+      value="$48.2k"
+      icon={<span aria-hidden="true">$</span>}
+      delta="+12%"
+      deltaDirection="up"
+    />
+  ),
+};
+
 export const Group: Story = {
   render: () => (
-    <Inline gap={4}>
+    <StatGroup style={{ maxWidth: 560 }}>
       <Stat label="Revenue" value="$48.2k" delta="+12%" deltaDirection="up" />
       <Stat label="Churn" value="2.1%" delta="-0.4%" deltaDirection="down" />
       <Stat
@@ -31,6 +43,6 @@ export const Group: Story = {
         delta="0%"
         deltaDirection="neutral"
       />
-    </Inline>
+    </StatGroup>
   ),
 };

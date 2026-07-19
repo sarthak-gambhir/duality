@@ -28,6 +28,15 @@
   border: var(--border-width) solid var(--fg);
 }
 
+// Custom icon marker: render the provided content, no default box chrome.
+.du_timeline_marker_icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 0;
+}
+
 .du_timeline_connector {
   flex: 1 1 auto;
   inline-size: var(--border-width);
@@ -74,4 +83,17 @@
 
 .du_timeline_item[data-status="upcoming"] .du_timeline_content {
   font-style: italic;
+}
+
+// Error: a filled diamond (rotated square). Warning: a hollow diamond. Shape,
+// not color, distinguishes them from complete/current/upcoming.
+.du_timeline_item[data-status="error"] .du_timeline_marker:not(.du_timeline_marker_icon) {
+  background-color: var(--fg);
+  transform: rotate(45deg);
+}
+
+.du_timeline_item[data-status="warning"] .du_timeline_marker:not(.du_timeline_marker_icon) {
+  background-color: var(--bg);
+  border-width: var(--border-width-thick);
+  transform: rotate(45deg);
 }
