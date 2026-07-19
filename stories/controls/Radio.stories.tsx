@@ -25,6 +25,27 @@ export const Group: Story = {
   render: () => <ControlledGroup />,
 };
 
+export const Uncontrolled: Story = {
+  name: "Uncontrolled (defaultValue)",
+  render: () => (
+    <RadioGroup label="Pick one" defaultValue="two">
+      <Radio value="one" label="Option one" />
+      <Radio value="two" label="Option two" />
+      <Radio value="three" label="Option three" />
+    </RadioGroup>
+  ),
+};
+
+export const Horizontal: Story = {
+  render: () => (
+    <RadioGroup label="Pick one" defaultValue="one" orientation="horizontal">
+      <Radio value="one" label="One" />
+      <Radio value="two" label="Two" />
+      <Radio value="three" label="Three" />
+    </RadioGroup>
+  ),
+};
+
 export const Disabled: Story = {
   render: () => (
     <RadioGroup label="Disabled" value="one" disabled>

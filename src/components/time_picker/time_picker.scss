@@ -5,6 +5,31 @@
   display: inline-block;
 }
 
+.du_time_picker_control {
+  display: flex;
+  align-items: stretch;
+}
+
+// Clear affordance beside the trigger; shares the trigger's border language.
+.du_time_picker_clear {
+  @include m.du_reset_control;
+  @include m.du_focus;
+
+  flex: 0 0 auto;
+  inline-size: var(--size-md);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+  border-inline-start: 0;
+
+  &:hover {
+    @include m.du_invert;
+  }
+}
+
 .du_time_picker_trigger {
   @include m.du_reset_control;
   @include m.du_border;
@@ -75,11 +100,21 @@
 .du_time_picker_column {
   display: flex;
   flex-direction: column;
-  inline-size: var(--size-lg);
+
+  // Wide enough for two digits plus padding and the reserved scrollbar gutter;
+  // at --size-lg (32px) the digits overflowed horizontally.
+  inline-size: calc(var(--size-lg) * 2);
   max-block-size: calc(var(--size-lg) * 5);
   padding: 0;
   margin: 0;
+
+  // Only scroll vertically. Setting overflow-y alone would let overflow-x
+  // compute to `auto` (spec), producing a spurious horizontal scrollbar.
+  // Reserve a stable gutter so the vertical thumb never overlays
+  // the digits and they stay optically centered.
+  overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   list-style: none;
   border-inline-end: var(--border-width) solid var(--fg);
 
@@ -113,7 +148,15 @@
     outline-color: var(--bg);
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     @include m.du_invert;
+  }
+
+  // Out-of-range: dither and keep the label legible without color.
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
   }
 }

@@ -3,6 +3,7 @@ import {
   useState,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
@@ -20,8 +21,14 @@ export interface RatingProps extends Omit<
   onValueChange?: (value: number) => void;
   /** Number of blocks. */
   max?: number;
+  /** Allow half-block (0.5) increments. */
+  allowHalf?: boolean;
+  /** Clicking the current value (or Home) resets to 0. */
+  allowClear?: boolean;
   /** Renders as a non-interactive display. */
   readOnly?: boolean;
+  /** Disables interaction and dithers the control. */
+  disabled?: boolean;
   /** Control size. */
   size?: "sm" | "md" | "lg";
   /** Name of a hidden input so the value participates in form submission. */
@@ -32,14 +39,17 @@ export interface RatingProps extends Omit<
 
 /**
  * Pixel-block rating. Fill (never color) conveys the value: filled blocks are
- * `--fg`, empty blocks are outlined. Hover/focus previews up to that block.
+ * `--fg`, empty blocks are outlined, half blocks are split. Hover/focus previews.
  */
 export function Rating({
   value,
   defaultValue,
   onValueChange,
   max = 5,
+  allowHalf,
+  allowClear,
   readOnly,
+  disabled,
   size = "md",
   name,
   label,
@@ -54,16 +64,29 @@ export function Rating({
   const [hover, setHover] = useState<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
+  const interactive = !readOnly && !disabled;
   const display = hover ?? current;
+  const step = allowHalf ? 0.5 : 1;
+
+  const valueFromPointer = (n: number, event: ReactMouseEvent): number => {
+    if (!allowHalf) return n;
+    const rect = event.currentTarget.getBoundingClientRect();
+    return event.clientX - rect.left < rect.width / 2 ? n - 0.5 : n;
+  };
+
+  const commit = (next: number) => {
+    if (!interactive) return;
+    setCurrent(allowClear && next === current ? 0 : next);
+  };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (readOnly) return;
+    if (!interactive) return;
     let next = current;
     if (event.key === "ArrowRight" || event.key === "ArrowUp")
-      next = Math.min(max, current + 1);
+      next = Math.min(max, current + step);
     else if (event.key === "ArrowLeft" || event.key === "ArrowDown")
-      next = Math.max(0, current - 1);
-    else if (event.key === "Home") next = 1;
+      next = Math.max(0, current - step);
+    else if (event.key === "Home") next = allowClear ? 0 : 1;
     else if (event.key === "End") next = max;
     else return;
 
@@ -73,24 +96,31 @@ export function Rating({
       rootRef.current?.querySelectorAll<HTMLButtonElement>('[role="radio"]') ??
         [],
     );
-    (items[next - 1] ?? items[0])?.focus();
+    const focusIndex = Math.max(0, Math.ceil(next) - 1);
+    (items[focusIndex] ?? items[0])?.focus();
   };
 
   const blocks = Array.from({ length: max }, (_, i) => i + 1);
+  const tabValue = current === 0 ? 1 : Math.ceil(current);
 
   return (
     <div
       ref={rootRef}
       role="radiogroup"
       aria-label={typeof label === "string" ? label : undefined}
-      className={cx("du_rating", `du_rating_${size}`, className)}
+      className={cx(
+        "du_rating",
+        `du_rating_${size}`,
+        disabled && "du_rating_disabled",
+        className,
+      )}
       onKeyDown={onKeyDown}
       onMouseLeave={() => setHover(null)}
       {...rest}
     >
       {blocks.map((n) => {
         const filled = n <= display;
-        const isTabStop = current === 0 ? n === 1 : n === current;
+        const half = allowHalf && !filled && display >= n - 0.5 && display < n;
         return (
           <button
             key={n}
@@ -98,12 +128,15 @@ export function Rating({
             role="radio"
             aria-checked={n === current}
             aria-label={`${n} of ${max}`}
-            tabIndex={isTabStop ? 0 : -1}
-            disabled={readOnly}
+            tabIndex={n === tabValue ? 0 : -1}
+            disabled={!interactive}
             data-filled={filled || undefined}
+            data-half={half || undefined}
             className="du_rating_item"
-            onClick={() => setCurrent(n)}
-            onMouseEnter={() => !readOnly && setHover(n)}
+            onClick={(event) => commit(valueFromPointer(n, event))}
+            onMouseMove={(event) =>
+              interactive && setHover(valueFromPointer(n, event))
+            }
           />
         );
       })}

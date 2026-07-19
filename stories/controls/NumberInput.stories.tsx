@@ -30,6 +30,18 @@ export const Invalid: Story = {
   render: (args) => <Demo {...args} />,
   args: { invalid: true },
 };
+
+export const WithUnits: Story = {
+  name: "Prefix / suffix",
+  render: (args) => <Demo {...args} />,
+  args: { prefix: "$", suffix: "USD", min: 0, max: 1000, step: 10 },
+};
+
+export const HideSteppers: Story = {
+  render: (args) => <Demo {...args} />,
+  args: { hideSteppers: true },
+};
+
 export const Disabled: Story = {
   render: (args) => <Demo {...args} />,
   args: { disabled: true },

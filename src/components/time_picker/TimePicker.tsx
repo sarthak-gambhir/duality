@@ -20,6 +20,8 @@ function parse(value: string | null): TimeParts | null {
   return { hour, minute };
 }
 
+const toMinutes = (parts: TimeParts) => parts.hour * 60 + parts.minute;
+
 const to24 = (displayHour: number, period: "AM" | "PM") =>
   period === "PM" ? (displayHour % 12) + 12 : displayHour % 12;
 
@@ -28,12 +30,22 @@ export interface TimePickerProps {
   value?: string | null;
   /** Initial time as `"HH:mm"` (uncontrolled). */
   defaultValue?: string | null;
-  /** Called with the newly selected `"HH:mm"` value. */
-  onValueChange?: (value: string) => void;
+  /** Called with the newly selected `"HH:mm"` value (or `null` when cleared). */
+  onValueChange?: (value: string | null) => void;
   /** Minute increment for the minute column. Defaults to 5. */
   step?: number;
   /** Use a 12-hour clock with an AM/PM column. Defaults to false (24h). */
   hour12?: boolean;
+  /** Earliest selectable time as `"HH:mm"`. */
+  min?: string;
+  /** Latest selectable time as `"HH:mm"`. */
+  max?: string;
+  /** Predicate to disable specific hours (24h value). */
+  disabledHours?: (hour: number) => boolean;
+  /** Predicate to disable specific minutes (given the active 24h hour). */
+  disabledMinutes?: (minute: number, hour: number | null) => boolean;
+  /** Show a clear affordance beside the trigger. */
+  clearable?: boolean;
   /** Text shown when nothing is selected. */
   placeholder?: string;
   /** Marks the field invalid. */
@@ -60,6 +72,11 @@ export function TimePicker({
   onValueChange,
   step = 5,
   hour12 = false,
+  min,
+  max,
+  disabledHours,
+  disabledMinutes,
+  clearable,
   placeholder = "Select time...",
   invalid,
   size = "md",
@@ -74,7 +91,7 @@ export function TimePicker({
   const [current, setCurrent] = useControllableState<string | null>({
     value,
     defaultValue: defaultValue ?? null,
-    onChange: onValueChange as ((v: string | null) => void) | undefined,
+    onChange: onValueChange,
   });
 
   const [open, setOpen] = useState(false);
@@ -105,6 +122,24 @@ export function TimePicker({
   const period: "AM" | "PM" | null =
     selHour == null ? null : selHour < 12 ? "AM" : "PM";
 
+  const minParts = parse(min ?? null);
+  const maxParts = parse(max ?? null);
+
+  const isHourDisabled = (hour24: number): boolean => {
+    if (minParts && hour24 < minParts.hour) return true;
+    if (maxParts && hour24 > maxParts.hour) return true;
+    return disabledHours?.(hour24) ?? false;
+  };
+
+  const isMinuteDisabled = (minute: number, hour24: number | null): boolean => {
+    if (hour24 != null) {
+      const total = hour24 * 60 + minute;
+      if (minParts && total < toMinutes(minParts)) return true;
+      if (maxParts && total > toMinutes(maxParts)) return true;
+    }
+    return disabledMinutes?.(minute, hour24) ?? false;
+  };
+
   const commit = (hour: number, minute: number) => {
     setCurrent(`${pad(hour)}:${pad(minute)}`);
   };
@@ -116,6 +151,8 @@ export function TimePicker({
     { length: Math.ceil(60 / step) },
     (_, i) => i * step,
   );
+
+  const hourTo24 = (h: number) => (hour12 ? to24(h, period ?? "AM") : h);
 
   const selectHour = (h: number) => {
     if (hour12) commit(to24(h, period ?? "AM"), selMinute ?? 0);
@@ -147,10 +184,74 @@ export function TimePicker({
     }
   };
 
+  const columnOptions = (column: Element): HTMLButtonElement[] =>
+    Array.from(
+      column.querySelectorAll<HTMLButtonElement>(
+        ".du_time_picker_option:not(:disabled)",
+      ),
+    );
+
   const onPanelKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
       closePanel();
+      return;
+    }
+
+    const columns = Array.from(
+      panelRef.current?.querySelectorAll<HTMLElement>('[role="listbox"]') ?? [],
+    );
+    const active = document.activeElement as HTMLElement | null;
+    const colIndex = columns.findIndex((col) => active && col.contains(active));
+    if (colIndex === -1) return;
+
+    const options = columnOptions(columns[colIndex] as Element);
+    const curIdx = active ? options.indexOf(active as HTMLButtonElement) : -1;
+
+    const focusInColumn = (index: number, list: HTMLButtonElement[]) => {
+      const clamped = Math.max(0, Math.min(list.length - 1, index));
+      list[clamped]?.focus();
+    };
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault();
+        focusInColumn(curIdx + 1, options);
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        focusInColumn(curIdx - 1, options);
+        break;
+      case "Home":
+        event.preventDefault();
+        focusInColumn(0, options);
+        break;
+      case "End":
+        event.preventDefault();
+        focusInColumn(options.length - 1, options);
+        break;
+      case "ArrowRight": {
+        event.preventDefault();
+        const next = columns[colIndex + 1];
+        if (next) {
+          const list = columnOptions(next);
+          const selected = list.findIndex((el) => el.dataset.selected);
+          focusInColumn(selected === -1 ? curIdx : selected, list);
+        }
+        break;
+      }
+      case "ArrowLeft": {
+        event.preventDefault();
+        const prev = columns[colIndex - 1];
+        if (prev) {
+          const list = columnOptions(prev);
+          const selected = list.findIndex((el) => el.dataset.selected);
+          focusInColumn(selected === -1 ? curIdx : selected, list);
+        }
+        break;
+      }
+      default:
+        break;
     }
   };
 
@@ -170,32 +271,44 @@ export function TimePicker({
         className,
       )}
     >
-      <button
-        ref={triggerRef}
-        type="button"
-        id={id}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-invalid={invalid || undefined}
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
-        aria-describedby={ariaDescribedby}
-        disabled={disabled}
-        data-open={open || undefined}
-        className={cx("du_time_picker_trigger", `du_time_picker_${size}`)}
-        onClick={() => (open ? closePanel(false) : openPanel())}
-        onKeyDown={onTriggerKeyDown}
-      >
-        <span
-          className={cx(
-            "du_time_picker_value",
-            !parts && "du_time_picker_placeholder",
-          )}
+      <div className="du_time_picker_control">
+        <button
+          ref={triggerRef}
+          type="button"
+          id={id}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          aria-invalid={invalid || undefined}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          aria-describedby={ariaDescribedby}
+          disabled={disabled}
+          data-open={open || undefined}
+          className={cx("du_time_picker_trigger", `du_time_picker_${size}`)}
+          onClick={() => (open ? closePanel(false) : openPanel())}
+          onKeyDown={onTriggerKeyDown}
         >
-          {label}
-        </span>
-        <span className="du_time_picker_glyph" aria-hidden="true" />
-      </button>
+          <span
+            className={cx(
+              "du_time_picker_value",
+              !parts && "du_time_picker_placeholder",
+            )}
+          >
+            {label}
+          </span>
+          <span className="du_time_picker_glyph" aria-hidden="true" />
+        </button>
+        {clearable && parts && !disabled && (
+          <button
+            type="button"
+            className="du_time_picker_clear"
+            aria-label="Clear time"
+            onClick={() => setCurrent(null)}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        )}
+      </div>
 
       {open && (
         <div
@@ -211,6 +324,7 @@ export function TimePicker({
           >
             {hours.map((h) => {
               const selected = hour12 ? h === displayHour : h === selHour;
+              const optionDisabled = isHourDisabled(hourTo24(h));
               return (
                 <li key={h} role="presentation">
                   <button
@@ -218,6 +332,7 @@ export function TimePicker({
                     role="option"
                     aria-selected={selected}
                     data-selected={selected || undefined}
+                    disabled={optionDisabled}
                     className="du_time_picker_option"
                     onClick={() => selectHour(h)}
                   >
@@ -236,6 +351,12 @@ export function TimePicker({
           >
             {minutes.map((m) => {
               const selected = m === selMinute;
+              const optionDisabled = isMinuteDisabled(
+                m,
+                selHour ?? (hour12 && displayHour != null
+                  ? to24(displayHour, period ?? "AM")
+                  : null),
+              );
               return (
                 <li key={m} role="presentation">
                   <button
@@ -243,6 +364,7 @@ export function TimePicker({
                     role="option"
                     aria-selected={selected}
                     data-selected={selected || undefined}
+                    disabled={optionDisabled}
                     className="du_time_picker_option"
                     onClick={() => selectMinute(m)}
                   >

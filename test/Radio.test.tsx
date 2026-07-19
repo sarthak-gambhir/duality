@@ -32,6 +32,35 @@ describe("RadioGroup + Radio", () => {
     expect(one).not.toBeChecked();
   });
 
+  it("supports uncontrolled selection via defaultValue", async () => {
+    const user = userEvent.setup();
+    render(
+      <RadioGroup label="Pick" defaultValue="one">
+        <Radio value="one" label="One" />
+        <Radio value="two" label="Two" />
+      </RadioGroup>,
+    );
+    const one = screen.getByRole("radio", { name: "One" });
+    const two = screen.getByRole("radio", { name: "Two" });
+    expect(one).toBeChecked();
+    await user.click(two);
+    expect(two).toBeChecked();
+    expect(one).not.toBeChecked();
+  });
+
+  it("reflects orientation on the group", () => {
+    render(
+      <RadioGroup label="Pick" defaultValue="one" orientation="horizontal">
+        <Radio value="one" label="One" />
+        <Radio value="two" label="Two" />
+      </RadioGroup>,
+    );
+    expect(screen.getByRole("radiogroup", { name: "Pick" })).toHaveAttribute(
+      "aria-orientation",
+      "horizontal",
+    );
+  });
+
   it("shares a name and honors group disabled", () => {
     render(
       <RadioGroup label="Pick" value="one" disabled>

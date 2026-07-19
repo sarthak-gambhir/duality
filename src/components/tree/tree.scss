@@ -25,7 +25,7 @@
   cursor: pointer;
 }
 
-.du_tree_row:hover {
+.du_tree_item:not([aria-disabled="true"]) > .du_tree_row:hover {
   @include m.du_invert;
 }
 

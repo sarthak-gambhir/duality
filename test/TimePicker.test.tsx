@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { TimePicker } from "../src/components/time_picker/TimePicker";
@@ -65,5 +65,50 @@ describe("TimePicker", () => {
     expect(
       screen.queryByRole("listbox", { name: "Hours" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("clears the value via the clear affordance", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <TimePicker
+        defaultValue="09:30"
+        clearable
+        onValueChange={onValueChange}
+        aria-label="Time"
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Clear time" }));
+    expect(onValueChange).toHaveBeenLastCalledWith(null);
+  });
+
+  it("disables hours and minutes outside the min/max bounds", async () => {
+    const user = userEvent.setup();
+    render(
+      <TimePicker
+        defaultValue="10:00"
+        min="09:00"
+        max="17:00"
+        step={15}
+        aria-label="Time"
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Time" }));
+    expect(screen.getByRole("option", { name: "08" })).toBeDisabled();
+    expect(screen.getByRole("option", { name: "18" })).toBeDisabled();
+    expect(screen.getByRole("option", { name: "09" })).not.toBeDisabled();
+  });
+
+  it("navigates options within a column using arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<TimePicker defaultValue="09:30" aria-label="Time" />);
+    await user.click(screen.getByRole("button", { name: "Time" }));
+
+    const hours = within(screen.getByRole("listbox", { name: "Hours" }));
+    hours.getByRole("option", { name: "09" }).focus();
+    await user.keyboard("{ArrowDown}");
+    expect(hours.getByRole("option", { name: "10" })).toHaveFocus();
+    await user.keyboard("{ArrowUp}");
+    expect(hours.getByRole("option", { name: "09" })).toHaveFocus();
   });
 });

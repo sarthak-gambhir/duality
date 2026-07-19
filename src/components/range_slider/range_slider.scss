@@ -21,6 +21,23 @@
   background-color: var(--fg);
 }
 
+// Tick mark: an outlined block by default, filled when inside the selected
+// range. State reads from fill, never color.
+.du_range_slider_mark {
+  position: absolute;
+  inset-block-start: 50%;
+  inline-size: 4px;
+  block-size: 4px;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  &[data-active] {
+    background-color: var(--fg);
+  }
+}
+
 .du_range_slider_thumb {
   @include m.du_reset_control;
 
@@ -37,6 +54,42 @@
     outline: var(--border-width) solid var(--fg);
     outline-offset: 3px;
   }
+}
+
+// Value bubble above each thumb.
+.du_range_slider_value {
+  position: absolute;
+  inset-block-end: calc(100% + var(--space-2));
+  left: 50%;
+  padding: 0 var(--space-1);
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  transform: translateX(-50%);
+}
+
+// Caption row for labeled marks; each label is anchored to its mark position.
+.du_range_slider_mark_labels {
+  position: relative;
+  block-size: 14px;
+  margin-block-start: var(--space-2);
+}
+
+.du_range_slider_mark_label {
+  position: absolute;
+  font-size: 14px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+// Min/max bounds under the track ends.
+.du_range_slider_limits {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: var(--space-2);
+  font-size: 14px;
 }
 
 .du_range_slider_invalid .du_range_slider_track {

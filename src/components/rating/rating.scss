@@ -27,6 +27,28 @@
   &[data-filled] {
     background-color: var(--fg);
   }
+
+  // Half block: a hard two-color split (no intermediate tone), start edge filled.
+  &[data-half] {
+    background-image: linear-gradient(
+      to right,
+      var(--fg) 0 50%,
+      var(--bg) 50% 100%
+    );
+  }
+}
+
+// Disabled: dither each block and hollow any fill so state is never color-only.
+.du_rating_disabled .du_rating_item {
+  @include m.du_dither;
+
+  cursor: not-allowed;
+
+  &[data-filled],
+  &[data-half] {
+    background-image: none;
+    background-color: var(--fg);
+  }
 }
 
 .du_rating_sm .du_rating_item {

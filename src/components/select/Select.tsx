@@ -40,7 +40,7 @@ export interface SelectProps extends Omit<
   /** Marks the field invalid (border-style change + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
-  selectSize?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
   /**
    * Which edge the selection marker sits on within each option. `"end"` moves
    * it to the trailing edge with the label filling the leading space. Defaults
@@ -105,7 +105,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       onValueChange,
       placeholder = "Select...",
       invalid,
-      selectSize = "md",
+      size = "md",
       markAlign = "start",
       align = "start",
       name,
@@ -254,7 +254,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           aria-labelledby={ariaLabelledby}
           disabled={disabled}
           data-open={open || undefined}
-          className={cx("du_select_button", `du_select_${selectSize}`)}
+          className={cx("du_select_button", `du_select_${size}`)}
           onClick={() => (open ? closeList(false) : openList())}
           onKeyDown={handleKeyDown}
         >

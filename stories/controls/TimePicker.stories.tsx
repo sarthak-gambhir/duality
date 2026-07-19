@@ -26,6 +26,24 @@ function Controlled({ hour12 }: { hour12?: boolean }) {
 export const TwentyFourHour: Story = { render: () => <Controlled /> };
 export const TwelveHour: Story = { render: () => <Controlled hour12 /> };
 
+export const Clearable: Story = {
+  render: () => (
+    <TimePicker defaultValue="09:30" clearable aria-label="Meeting time" />
+  ),
+};
+
+export const Constrained: Story = {
+  name: "Min / max bounds",
+  render: () => (
+    <TimePicker
+      defaultValue="10:00"
+      min="09:00"
+      max="17:00"
+      aria-label="Meeting time"
+    />
+  ),
+};
+
 export const Disabled: Story = {
   render: () => (
     <TimePicker defaultValue="12:00" disabled aria-label="Meeting time" />

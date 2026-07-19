@@ -3,13 +3,21 @@ import {
   type ChangeEvent,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 
 export interface NumberInputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
-  "value" | "defaultValue" | "onChange" | "size" | "min" | "max" | "step"
+  | "value"
+  | "defaultValue"
+  | "onChange"
+  | "size"
+  | "min"
+  | "max"
+  | "step"
+  | "prefix"
 > {
   /** Current value (controlled). */
   value?: number;
@@ -23,12 +31,20 @@ export interface NumberInputProps extends Omit<
   max?: number;
   /** Step applied by the buttons and arrow keys. */
   step?: number;
+  /** Step applied by PageUp/PageDown. Defaults to `step * 10`. */
+  largeStep?: number;
   /** Decimal places to round to when committing. */
   precision?: number;
   /** Marks the field invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
   size?: "sm" | "md" | "lg";
+  /** Hide the increment/decrement buttons. */
+  hideSteppers?: boolean;
+  /** Content rendered before the field (e.g. a currency symbol). */
+  prefix?: ReactNode;
+  /** Content rendered after the field (e.g. a unit). */
+  suffix?: ReactNode;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
 }
@@ -46,9 +62,13 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       min,
       max,
       step = 1,
+      largeStep,
       precision,
       invalid,
       size = "md",
+      hideSteppers,
+      prefix,
+      suffix,
       name,
       id,
       disabled,
@@ -75,9 +95,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       return result;
     };
 
-    const stepBy = (direction: 1 | -1) => {
+    const bigStep = largeStep ?? step * 10;
+
+    const stepBy = (direction: 1 | -1, amount: number = step) => {
       const base = current ?? min ?? 0;
-      setCurrent(clamp(base + direction * step));
+      setCurrent(clamp(base + direction * amount));
     };
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +125,12 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       } else if (event.key === "ArrowDown") {
         event.preventDefault();
         stepBy(-1);
+      } else if (event.key === "PageUp") {
+        event.preventDefault();
+        stepBy(1, bigStep);
+      } else if (event.key === "PageDown") {
+        event.preventDefault();
+        stepBy(-1, bigStep);
       } else if (event.key === "Home" && min !== undefined) {
         event.preventDefault();
         setCurrent(clamp(min));
@@ -121,19 +149,27 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           "du_number_input",
           `du_number_input_${size}`,
           invalid && "du_number_input_invalid",
+          disabled && "du_number_input_disabled",
           className,
         )}
       >
-        <button
-          type="button"
-          className="du_number_input_step"
-          tabIndex={-1}
-          aria-label="Decrease"
-          disabled={disabled || atMin}
-          onClick={() => stepBy(-1)}
-        >
-          <span aria-hidden="true">&minus;</span>
-        </button>
+        {!hideSteppers && (
+          <button
+            type="button"
+            className="du_number_input_step"
+            tabIndex={-1}
+            aria-label="Decrease"
+            disabled={disabled || atMin}
+            onClick={() => stepBy(-1)}
+          >
+            <span aria-hidden="true">&minus;</span>
+          </button>
+        )}
+        {prefix != null && (
+          <span className="du_number_input_affix du_number_input_prefix">
+            {prefix}
+          </span>
+        )}
         <input
           ref={ref}
           {...rest}
@@ -155,16 +191,23 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           onBlur={onBlur}
           onKeyDown={onKeyDown}
         />
-        <button
-          type="button"
-          className="du_number_input_step"
-          tabIndex={-1}
-          aria-label="Increase"
-          disabled={disabled || atMax}
-          onClick={() => stepBy(1)}
-        >
-          <span aria-hidden="true">+</span>
-        </button>
+        {suffix != null && (
+          <span className="du_number_input_affix du_number_input_suffix">
+            {suffix}
+          </span>
+        )}
+        {!hideSteppers && (
+          <button
+            type="button"
+            className="du_number_input_step"
+            tabIndex={-1}
+            aria-label="Increase"
+            disabled={disabled || atMax}
+            onClick={() => stepBy(1)}
+          >
+            <span aria-hidden="true">+</span>
+          </button>
+        )}
         {name && <input type="hidden" name={name} value={current ?? ""} />}
       </div>
     );

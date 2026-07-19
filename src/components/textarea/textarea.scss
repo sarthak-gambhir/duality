@@ -4,3 +4,34 @@
   line-height: var(--line-height);
   resize: vertical;
 }
+
+.du_textarea_sm {
+  font-size: 14px;
+}
+
+.du_textarea_md {
+  font-size: 16px;
+}
+
+.du_textarea_lg {
+  font-size: 18px;
+}
+
+// Autosize manages height in JS, so disable manual resize and clip overflow.
+.du_textarea_autosize {
+  overflow-y: hidden;
+  resize: none;
+}
+
+.du_textarea_wrap {
+  display: block;
+  inline-size: 100%;
+}
+
+.du_textarea_count {
+  display: block;
+  margin-block-start: var(--space-1);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  text-align: end;
+}

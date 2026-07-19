@@ -74,4 +74,50 @@ describe("DatePicker", () => {
     );
     expect(screen.getByRole("button", { name: "date" })).toBeDisabled();
   });
+
+  it("clears the value via the trigger affordance", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        clearable
+        aria-label="date"
+        onValueChange={onValueChange}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Clear date" }));
+    expect(onValueChange).toHaveBeenLastCalledWith(null);
+  });
+
+  it("clears from the footer action", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        clearable
+        aria-label="date"
+        onValueChange={onValueChange}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "date" }));
+    await user.click(screen.getByRole("button", { name: "Clear" }));
+    expect(onValueChange).toHaveBeenLastCalledWith(null);
+  });
+
+  it("respects weekStartsOn for the weekday header order", async () => {
+    const user = userEvent.setup();
+    render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        weekStartsOn={1}
+        aria-label="date"
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "date" }));
+    const headers = screen.getAllByRole("columnheader");
+    expect(headers[0]).toHaveTextContent("Mo");
+    expect(headers[6]).toHaveTextContent("Su");
+  });
 });

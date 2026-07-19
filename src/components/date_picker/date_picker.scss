@@ -5,6 +5,31 @@
   display: inline-block;
 }
 
+.du_date_picker_control {
+  display: flex;
+  align-items: stretch;
+}
+
+// Clear affordance beside the trigger; shares the trigger's border language.
+.du_date_picker_clear {
+  @include m.du_reset_control;
+  @include m.du_focus;
+
+  flex: 0 0 auto;
+  inline-size: var(--size-md);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  border: var(--border-width) solid var(--fg);
+  border-inline-start: 0;
+
+  &:hover {
+    @include m.du_invert;
+  }
+}
+
 .du_date_picker_trigger {
   @include m.du_reset_control;
   @include m.du_border;
@@ -134,15 +159,20 @@
   font-family: var(--font-sans);
   cursor: pointer;
   border: var(--border-width) solid transparent;
+  font-weight: 400;
 }
 
 .du_date_picker_day[data-today] {
   border-color: var(--fg);
 }
 
-.du_date_picker_day[data-outside] {
-  @include m.du_dither;
-  @include m.du_text_outline(2);
+// Adjacent-month days are still selectable, so they must not use the disabled
+// dither (or any reserved state style). Distinguish them by typographic weight
+// instead: a smaller, lighter number reads as "other month" without implying
+// disabled, and stays fully legible and interactive.
+.du_date_picker_day[data-outside]:not(:disabled) .du_date_picker_day_num {
+  font-size: 12px;
+  font-weight: 300;
 }
 
 .du_date_picker_day[aria-selected="true"] {
@@ -167,4 +197,30 @@
 
 .du_date_picker_day:hover:not(:disabled) {
   @include m.du_invert;
+}
+
+.du_date_picker_footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-2);
+  border-block-start: var(--border-width) solid var(--fg);
+}
+
+.du_date_picker_action {
+  @include m.du_reset_control;
+  @include m.du_border;
+  @include m.du_focus;
+
+  padding: var(--space-1) var(--space-3);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    @include m.du_invert;
+  }
 }

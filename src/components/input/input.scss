@@ -47,3 +47,117 @@
   padding: 0 var(--space-3);
   font-size: 18px;
 }
+
+// -- Grouped input: border/focus live on the group so prefix/suffix/clear share
+// the field's frame. The inner field is chromeless. --------------------------
+.du_input_group {
+  @include m.du_border;
+
+  display: flex;
+  align-items: stretch;
+  inline-size: 100%;
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+
+  &:focus-within {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+
+  &.du_input_group_invalid {
+    border-style: dashed;
+  }
+
+  &.du_input_group_disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+  }
+}
+
+.du_input_field {
+  @include m.du_reset_control;
+
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  color: var(--fg);
+  background-color: transparent;
+  font-family: var(--font-sans);
+
+  &::placeholder {
+    color: var(--fg);
+    font-style: italic;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_text_outline(2);
+  }
+}
+
+// Static prefix/suffix slots, separated from the field by a divider.
+.du_input_affix {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  color: var(--fg);
+}
+
+.du_input_prefix {
+  padding-inline: var(--space-2);
+  border-inline-end: var(--border-width) solid var(--fg);
+}
+
+.du_input_suffix {
+  padding-inline: var(--space-2);
+  border-inline-start: var(--border-width) solid var(--fg);
+}
+
+.du_input_clear {
+  @include m.du_reset_control;
+
+  flex: 0 0 auto;
+  padding-inline: var(--space-2);
+  color: var(--fg);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  border-inline-start: var(--border-width) solid var(--fg);
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: calc(-1 * var(--border-width));
+  }
+
+  &:hover {
+    @include m.du_invert;
+  }
+}
+
+// Size the group; the inline padding lives on the field (not the group) so
+// affixes and the clear button sit flush to the frame and invert edge-to-edge.
+.du_input_group_sm {
+  min-block-size: var(--size-sm);
+  font-size: 14px;
+}
+
+.du_input_group_md {
+  min-block-size: var(--size-md);
+  font-size: 16px;
+}
+
+.du_input_group_lg {
+  min-block-size: var(--size-lg);
+  font-size: 18px;
+}
+
+.du_input_group_sm .du_input_field,
+.du_input_group_md .du_input_field {
+  padding-inline: var(--space-2);
+}
+
+.du_input_group_lg .du_input_field {
+  padding-inline: var(--space-3);
+}

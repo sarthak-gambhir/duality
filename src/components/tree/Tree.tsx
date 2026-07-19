@@ -243,7 +243,7 @@ export function Tree({
             <div
               className="du_tree_row"
               style={{
-                paddingInlineStart: `calc(${level - 1} * var(--space-4))`,
+                paddingInlineStart: `calc(var(--space-2) + ${level - 1} * var(--space-4))`,
               }}
             >
               {hasChildren ? (

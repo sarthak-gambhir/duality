@@ -22,6 +22,28 @@ function Demo() {
 }
 
 export const Default: Story = { render: () => <Demo /> };
+
+export const Clearable: Story = {
+  render: () => (
+    <DatePicker
+      defaultValue={new Date(2026, 6, 15)}
+      clearable
+      aria-label="date"
+    />
+  ),
+};
+
+export const MondayStart: Story = {
+  name: "Week starts Monday",
+  render: () => (
+    <DatePicker
+      defaultValue={new Date(2026, 6, 15)}
+      weekStartsOn={1}
+      aria-label="date"
+    />
+  ),
+};
+
 export const Disabled: Story = {
   render: () => (
     <DatePicker

@@ -38,6 +38,30 @@
   }
 }
 
+// Unit slots sharing the field frame, divided from the field with a border.
+.du_number_input_affix {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0 var(--space-2);
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: var(--font-sans);
+}
+
+.du_number_input_prefix {
+  border-inline-end: var(--border-width) solid var(--fg);
+}
+
+.du_number_input_suffix {
+  border-inline-start: var(--border-width) solid var(--fg);
+}
+
+.du_number_input_disabled .du_number_input_affix {
+  @include m.du_dither;
+  @include m.du_text_outline(2);
+}
+
 .du_number_input_step {
   @include m.du_reset_control;
 

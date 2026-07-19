@@ -5,7 +5,7 @@ import { Select, type SelectOption } from "../../src";
 const meta: Meta<typeof Select> = {
   title: "Controls/Select",
   component: Select,
-  args: { selectSize: "md" },
+  args: { size: "md" },
   parameters: {
     docsMinHeight: 280,
     docs: {
@@ -16,7 +16,7 @@ const meta: Meta<typeof Select> = {
     },
   },
   argTypes: {
-    selectSize: {
+    size: {
       control: "inline-radio",
       options: ["sm", "md", "lg"],
       description: "Control size.",

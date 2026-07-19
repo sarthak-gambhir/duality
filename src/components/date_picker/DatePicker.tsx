@@ -48,6 +48,10 @@ export interface DatePickerProps {
   isDateDisabled?: (date: Date) => boolean;
   /** Formats the value shown in the trigger. Defaults to ISO `yyyy-mm-dd`. */
   format?: (date: Date) => string;
+  /** First day of the week (0 = Sunday ... 6 = Saturday). Defaults to Sunday. */
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  /** Show a clear affordance and a "Clear" footer action. */
+  clearable?: boolean;
   /** Text shown when no date is selected. */
   placeholder?: string;
   /** Marks the field invalid. */
@@ -76,6 +80,8 @@ export function DatePicker({
   max,
   isDateDisabled,
   format = toISO,
+  weekStartsOn = 0,
+  clearable,
   placeholder = "Select date...",
   invalid,
   size = "md",
@@ -187,14 +193,18 @@ export function DatePicker({
         event.preventDefault();
         setFocused(addDays(focusedDate, 7));
         break;
-      case "Home":
+      case "Home": {
         event.preventDefault();
-        setFocused(addDays(focusedDate, -focusedDate.getDay()));
+        const offset = (focusedDate.getDay() - weekStartsOn + 7) % 7;
+        setFocused(addDays(focusedDate, -offset));
         break;
-      case "End":
+      }
+      case "End": {
         event.preventDefault();
-        setFocused(addDays(focusedDate, 6 - focusedDate.getDay()));
+        const offset = (focusedDate.getDay() - weekStartsOn + 7) % 7;
+        setFocused(addDays(focusedDate, 6 - offset));
         break;
+      }
       case "PageUp":
         event.preventDefault();
         setFocused(addMonths(focusedDate, -1));
@@ -217,17 +227,34 @@ export function DatePicker({
     }
   };
 
-  // Build a stable 6-week grid starting on Sunday.
-  const gridStart = addDays(
-    startOfMonth(viewMonth),
-    -startOfMonth(viewMonth).getDay(),
-  );
+  // Build a stable 6-week grid starting on the configured first weekday.
+  const monthStart = startOfMonth(viewMonth);
+  const leading = (monthStart.getDay() - weekStartsOn + 7) % 7;
+  const gridStart = addDays(monthStart, -leading);
   const weeks = Array.from({ length: 6 }, (_, w) =>
     Array.from({ length: 7 }, (_, d) => addDays(gridStart, w * 7 + d)),
+  );
+  const weekdays = Array.from(
+    { length: 7 },
+    (_, i) => WEEKDAYS[(i + weekStartsOn) % 7] as string,
   );
 
   const monthLabel = `${MONTHS[viewMonth.getMonth()]} ${viewMonth.getFullYear()}`;
   const today = new Date();
+
+  const clear = () => {
+    setCurrent(null);
+    closeCalendar();
+  };
+
+  const goToday = () => {
+    const t = startOfDay(new Date());
+    if (isDisabledDate(t)) {
+      setFocused(t);
+      return;
+    }
+    selectDate(t);
+  };
 
   return (
     <div
@@ -238,32 +265,44 @@ export function DatePicker({
         className,
       )}
     >
-      <button
-        ref={triggerRef}
-        type="button"
-        id={id}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-invalid={invalid || undefined}
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledby}
-        aria-describedby={ariaDescribedby}
-        disabled={disabled}
-        data-open={open || undefined}
-        className={cx("du_date_picker_trigger", `du_date_picker_${size}`)}
-        onClick={() => (open ? closeCalendar(false) : openCalendar())}
-        onKeyDown={onTriggerKeyDown}
-      >
-        <span
-          className={cx(
-            "du_date_picker_value",
-            !current && "du_date_picker_placeholder",
-          )}
+      <div className="du_date_picker_control">
+        <button
+          ref={triggerRef}
+          type="button"
+          id={id}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          aria-invalid={invalid || undefined}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledby}
+          aria-describedby={ariaDescribedby}
+          disabled={disabled}
+          data-open={open || undefined}
+          className={cx("du_date_picker_trigger", `du_date_picker_${size}`)}
+          onClick={() => (open ? closeCalendar(false) : openCalendar())}
+          onKeyDown={onTriggerKeyDown}
         >
-          {current ? format(current) : placeholder}
-        </span>
-        <span className="du_date_picker_glyph" aria-hidden="true" />
-      </button>
+          <span
+            className={cx(
+              "du_date_picker_value",
+              !current && "du_date_picker_placeholder",
+            )}
+          >
+            {current ? format(current) : placeholder}
+          </span>
+          <span className="du_date_picker_glyph" aria-hidden="true" />
+        </button>
+        {clearable && current && !disabled && (
+          <button
+            type="button"
+            className="du_date_picker_clear"
+            aria-label="Clear date"
+            onClick={() => setCurrent(null)}
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        )}
+      </div>
 
       {open && (
         <div ref={panelRef} className="du_date_picker_panel">
@@ -296,7 +335,7 @@ export function DatePicker({
             onKeyDown={onGridKeyDown}
           >
             <div role="row" className="du_date_picker_row">
-              {WEEKDAYS.map((w) => (
+              {weekdays.map((w) => (
                 <span
                   key={w}
                   role="columnheader"
@@ -334,12 +373,33 @@ export function DatePicker({
                       className="du_date_picker_day"
                       onClick={() => selectDate(date)}
                     >
-                      {date.getDate()}
+                      <span className="du_date_picker_day_num">
+                        {date.getDate()}
+                      </span>
                     </button>
                   );
                 })}
               </div>
             ))}
+          </div>
+
+          <div className="du_date_picker_footer">
+            <button
+              type="button"
+              className="du_date_picker_action"
+              onClick={goToday}
+            >
+              Today
+            </button>
+            {clearable && (
+              <button
+                type="button"
+                className="du_date_picker_action"
+                onClick={clear}
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
       )}

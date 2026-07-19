@@ -58,4 +58,42 @@ describe("NumberInput", () => {
     expect(screen.getByRole("spinbutton", { name: "qty" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Increase" })).toBeDisabled();
   });
+
+  it("takes a large step with PageUp/PageDown", async () => {
+    const onValueChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <NumberInput
+        aria-label="qty"
+        defaultValue={10}
+        min={0}
+        max={100}
+        step={1}
+        largeStep={10}
+        onValueChange={onValueChange}
+      />,
+    );
+    const field = screen.getByRole("spinbutton", { name: "qty" });
+    field.focus();
+    await user.keyboard("{PageUp}");
+    expect(onValueChange).toHaveBeenLastCalledWith(20);
+    await user.keyboard("{PageDown}");
+    expect(onValueChange).toHaveBeenLastCalledWith(10);
+  });
+
+  it("hides the stepper buttons when hideSteppers is set", () => {
+    render(<NumberInput aria-label="qty" defaultValue={1} hideSteppers />);
+    expect(
+      screen.queryByRole("button", { name: "Increase" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("spinbutton", { name: "qty" })).toBeInTheDocument();
+  });
+
+  it("renders prefix and suffix slots", () => {
+    render(
+      <NumberInput aria-label="price" defaultValue={5} prefix="$" suffix="USD" />,
+    );
+    expect(screen.getByText("$")).toBeInTheDocument();
+    expect(screen.getByText("USD")).toBeInTheDocument();
+  });
 });

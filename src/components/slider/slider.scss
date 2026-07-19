@@ -1,7 +1,69 @@
 @use "../../styles/mixins" as m;
 
+.du_slider_root {
+  inline-size: 100%;
+}
+
+// Reserve headroom for the value bubble and give overlays a positioning context.
+.du_slider_input_wrap {
+  position: relative;
+  padding-block-start: var(--space-5);
+}
+
+// Tick mark: outlined block, filled once the value passes it. State from fill.
+.du_slider_mark {
+  position: absolute;
+  inset-block-end: 7px;
+  inline-size: 4px;
+  block-size: 4px;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+
+  &[data-active] {
+    background-color: var(--fg);
+  }
+}
+
+.du_slider_value {
+  position: absolute;
+  inset-block-start: 0;
+  padding: 0 var(--space-1);
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  background-color: var(--bg);
+  border: var(--border-width) solid var(--fg);
+  transform: translateX(-50%);
+}
+
+.du_slider_mark_labels {
+  position: relative;
+  block-size: 14px;
+  margin-block-start: var(--space-2);
+}
+
+.du_slider_mark_label {
+  position: absolute;
+  font-size: 14px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.du_slider_limits {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: var(--space-2);
+  font-size: 14px;
+}
+
 .du_slider {
   inline-size: 100%;
+
+  // Kill the UA margin (Chromium/Edge add 2px) so the track spans the wrapper
+  // exactly and the native thumb lines up with the CSS-positioned marks.
+  margin: 0;
   block-size: var(--size-sm);
   appearance: none;
   background: transparent;

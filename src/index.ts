@@ -94,9 +94,12 @@ export type { ComboboxProps } from "./components/combobox/Combobox";
 export { DatePicker } from "./components/date_picker/DatePicker";
 export type { DatePickerProps } from "./components/date_picker/DatePicker";
 export { Slider } from "./components/slider/Slider";
-export type { SliderProps } from "./components/slider/Slider";
+export type { SliderProps, SliderMark } from "./components/slider/Slider";
 export { RangeSlider } from "./components/range_slider/RangeSlider";
-export type { RangeSliderProps } from "./components/range_slider/RangeSlider";
+export type {
+  RangeSliderProps,
+  RangeSliderMark,
+} from "./components/range_slider/RangeSlider";
 export { TagInput } from "./components/tag_input/TagInput";
 export type { TagInputProps } from "./components/tag_input/TagInput";
 export { TimePicker } from "./components/time_picker/TimePicker";

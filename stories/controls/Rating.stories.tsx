@@ -22,6 +22,37 @@ function Demo(args: React.ComponentProps<typeof Rating>) {
 }
 
 export const Default: Story = { render: (args) => <Demo {...args} /> };
+
+export const AllowHalf: Story = {
+  name: "Half steps",
+  render: () => {
+    const HalfDemo = () => {
+      const [value, setValue] = useState(2.5);
+      return (
+        <Stack gap={2}>
+          <Rating
+            allowHalf
+            value={value}
+            onValueChange={setValue}
+            label="Score"
+          />
+          <Text size="sm">Value: {value}</Text>
+        </Stack>
+      );
+    };
+    return <HalfDemo />;
+  },
+};
+
+export const Clearable: Story = {
+  name: "Click to clear",
+  args: { allowClear: true, defaultValue: 3, label: "Score" },
+};
+
 export const ReadOnly: Story = {
   args: { readOnly: true, defaultValue: 4 },
+};
+
+export const Disabled: Story = {
+  args: { disabled: true, defaultValue: 3 },
 };

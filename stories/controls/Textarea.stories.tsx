@@ -15,3 +15,18 @@ export const Default: Story = {};
 export const Invalid: Story = {
   args: { invalid: true, defaultValue: "needs fixing" },
 };
+
+export const Autosize: Story = {
+  args: {
+    autosize: true,
+    minRows: 2,
+    maxRows: 8,
+    defaultValue: "This field grows as you type.\nTry adding more lines.",
+    rows: undefined,
+  },
+};
+
+export const WithCount: Story = {
+  name: "Character count",
+  args: { showCount: true, maxLength: 120, defaultValue: "Counting..." },
+};
