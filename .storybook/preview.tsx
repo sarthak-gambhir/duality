@@ -10,29 +10,16 @@ import "../src/index.scss";
 
 export const globalTypes = {
   theme: {
-    description: "Active two-color palette",
+    description: "Active two-color theme",
     defaultValue: "classic",
     toolbar: {
-      title: "Palette",
+      title: "Theme",
       icon: "paintbrush",
       dynamicTitle: true,
       items: paletteNames.map((name) => ({
         value: name,
         title: palettes[name].label,
       })),
-    },
-  },
-  inverted: {
-    description: "Swap the two colors",
-    defaultValue: "false",
-    toolbar: {
-      title: "Invert",
-      icon: "contrast",
-      dynamicTitle: true,
-      items: [
-        { value: "false", title: "Normal" },
-        { value: "true", title: "Inverted" },
-      ],
     },
   },
   direction: {
@@ -65,7 +52,6 @@ export const globalTypes = {
 
 const withTheme: Decorator = (Story, context) => {
   const theme = context.globals.theme as PaletteName;
-  const inverted = context.globals.inverted === "true";
   const direction = context.globals.direction === "rtl" ? "rtl" : "ltr";
   const density =
     context.globals.density === "compact" ? "compact" : "comfortable";
@@ -80,9 +66,8 @@ const withTheme: Decorator = (Story, context) => {
     // Remount when the toolbar changes so the uncontrolled ThemeProvider picks
     // up the new defaults.
     <ThemeProvider
-      key={`${theme}-${inverted}-${density}`}
+      key={`${theme}-${density}`}
       defaultTheme={theme}
-      defaultInverted={inverted}
       defaultDensity={density}
     >
       <div

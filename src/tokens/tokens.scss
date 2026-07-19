@@ -5,9 +5,9 @@
 // - CSS custom properties (kebab-case) expose runtime, themeable tokens.
 //
 // COLOR RULE: exactly two colors resolve at runtime, `--fg` and `--bg`.
-// There are no intermediate shades, hue variants, or transparency. A palette is
-// a pair of raw colors (`--ink`, `--surface`); `--fg`/`--bg` derive from them so
-// that the inversion toggle can swap the pair with a single rule.
+// There are no intermediate shades, hue variants, or transparency. Each theme
+// is a single fixed pair of colors selected by `data-theme` (light and dark are
+// separate named themes, not a toggle). Component states swap the two locally.
 //
 // Palette color values are mirrored in `src/theme/palettes.ts` for the Storybook
 // toolbar and the WCAG AAA contrast tests. Keep the two in sync.
@@ -68,38 +68,20 @@ $font_mono:
   ui-monospace, "SFMono-Regular", "Cascadia Code", "Source Code Pro", Menlo,
   monospace;
 
-// -- Palettes (pairs of exactly two colors) ----------------------------------
-// Each entry: (ink, surface). `ink` is the default foreground, `surface` the
-// default background. Every pair MUST meet WCAG AAA (>= 7:1) contrast.
+// -- Palettes (one fixed pair per theme) --------------------------------------
+// Each entry: (fg, bg). Every pair MUST meet WCAG AAA (>= 7:1) contrast.
+// Mirrored in `src/theme/palettes.ts`.
 $palettes: (
-  "classic": (
-    #000000,
-    #ffffff,
-  ),
-  "paper": (
-    #111111,
-    #f4f0e6,
-  ),
-  "amber": (
-    #ffb000,
-    #0a0a0a,
-  ),
-  "phosphor": (
-    #33ff33,
-    #001a00,
-  ),
-  "blueprint": (
-    #ffffff,
-    #0a2540,
-  ),
-  "sepia": (
-    #2b2118,
-    #efe7d8,
-  ),
-  "high_contrast": (
-    #ffff00,
-    #000000,
-  ),
+  "classic": (#141414, #f7f7f4),
+  "dark": (#f0f0ee, #0d0d0d),
+  "paper": (#26221a, #f6ece7),
+  "slate": (#ccd2d9, #242930),
+  "sepia": (#55422a, #fff3c8),
+  "amber": (#ffc233, #201b1e),
+  "phosphor": (#2bff43, #05190b),
+  "blueprint": (#ffffff, #032b46),
+  "teal": (#45e0d2, #04211f),
+  "sakura": (#ff9cb4, #25212b),
 );
 
 $default_palette: "classic";
@@ -134,35 +116,19 @@ $default_palette: "classic";
   --font-size: 16px;
   --line-height: 1.5;
 
-  // Default palette (raw pair + derived fg/bg).
-  --ink: #{list.nth(map.get($palettes, $default_palette), 1)};
-  --surface: #{list.nth(map.get($palettes, $default_palette), 2)};
-  --fg: var(--ink);
-  --bg: var(--surface);
+  // Default theme pair.
+  --fg: #{list.nth(map.get($palettes, $default_palette), 1)};
+  --bg: #{list.nth(map.get($palettes, $default_palette), 2)};
 }
 
-// Named palettes: only override the raw pair.
+// Named themes: resolve --fg / --bg directly on each theme scope. Custom
+// properties resolve their var() where they are DECLARED, so setting concrete
+// colors here guarantees nested theme roots pick up the right pair.
 @each $name, $pair in $palettes {
   [data-theme="#{$name}"] {
-    --ink: #{list.nth($pair, 1)};
-    --surface: #{list.nth($pair, 2)};
+    --fg: #{list.nth($pair, 1)};
+    --bg: #{list.nth($pair, 2)};
   }
-}
-
-// Re-derive fg/bg on every theme scope. Custom properties resolve their var()
-// where they are DECLARED, so deriving fg/bg only on :root would leave nested
-// theme roots stuck on the default palette. Declaring them on [data-theme]
-// ensures a palette change applies even when not inverted.
-[data-theme] {
-  --fg: var(--ink);
-  --bg: var(--surface);
-}
-
-// Inversion toggle: swap the pair. Works for any palette. Declared after the
-// rule above (equal specificity) so it wins when both attributes are present.
-[data-inverted="true"] {
-  --fg: var(--surface);
-  --bg: var(--ink);
 }
 
 // Compact density: re-declare the spacing/sizing tokens on the density scope so

@@ -6,6 +6,10 @@
   font-size: var(--font-size);
   line-height: var(--line-height);
 
+  // Two-color scrollbars (Firefox / standard). Inherited by all descendants.
+  scrollbar-width: thin;
+  scrollbar-color: var(--fg) var(--bg);
+
   // Every focusable element gets a visible, color-safe focus ring. State is
   // never conveyed by color alone, so focus also changes the outline style.
   :focus-visible {
@@ -13,6 +17,30 @@
     outline-offset: 2px;
   }
 }
+
+// Two-color scrollbars (WebKit / Chromium): a solid --fg thumb on a --bg track,
+// square, with a --bg gutter around the thumb. Applies to the theme root and
+// every scroll container inside it.
+/* stylelint-disable selector-no-vendor-prefix */
+.du_theme_root::-webkit-scrollbar,
+.du_theme_root ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.du_theme_root::-webkit-scrollbar-track,
+.du_theme_root ::-webkit-scrollbar-track,
+.du_theme_root::-webkit-scrollbar-corner,
+.du_theme_root ::-webkit-scrollbar-corner {
+  background-color: var(--bg);
+}
+
+.du_theme_root::-webkit-scrollbar-thumb,
+.du_theme_root ::-webkit-scrollbar-thumb {
+  background-color: var(--fg);
+  border: var(--border-width) solid var(--bg);
+}
+/* stylelint-enable selector-no-vendor-prefix */
 
 // Respect reduced-motion preferences. Duality only uses motion as a secondary
 // cue, so we can drop every animation/transition and fall back to an equivalent

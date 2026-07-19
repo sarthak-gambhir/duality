@@ -41,15 +41,15 @@ All components are drawn with the two-color model: base is `--fg` on `--bg`, hov
 - **Navigation:** `Breadcrumbs`, `Pagination`, `Stepper`, `SideNav`
 - **Disclosure:** `Tabs` (+ `TabList` / `Tab` / `TabPanel`), `Accordion` (+ `AccordionItem`)
 - **Overlays:** `Modal` (+ sections), `Drawer` (+ sections), `ConfirmDialog`, `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `ContextMenu`, `CommandPalette`, `Toast` (`ToastProvider` / `useToast`)
-- **Theming:** `ThemeToggle`, `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
+- **Theming:** `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
 
-Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence and `defaultInverted="system"` to follow the OS color scheme. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage. In-depth guides (Accessibility, Theming and Density, Two-Color Patterns) live under **Guides** in Storybook.
+Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage. In-depth guides (Accessibility, Theming and Density, Two-Color Patterns) live under **Guides** in Storybook.
 
 Full composed demo pages — Dashboard, Settings, Email, File Manager, Checkout, and a retro Command Center — live under **Examples** in Storybook. Each is built entirely from public exports and doubles as a copy-paste usage reference.
 
 ## Theming, density, RTL, and motion
 
-- **Palettes + inversion:** `ThemeProvider` sets `data-theme` / `data-inverted` on a `du_theme_root`; the tokens stylesheet derives `--fg` / `--bg` from the active pair. Inversion swaps them for the whole scope.
+- **Themes:** `ThemeProvider` sets `data-theme` on a `du_theme_root`; the tokens stylesheet resolves `--fg` / `--bg` from the active theme's fixed pair. Light and dark are separate named themes, each hand-tuned (built-ins: `classic`, `dark`, `paper`, `slate`, `sepia`, `amber`, `phosphor`, `blueprint`, `teal`, `sakura`). This is separate from the per-component inversion used for hover/selected states.
 - **Density:** `defaultDensity="compact"` (or `useTheme().setDensity`) sets `data-density="compact"`, which applies a tighter spacing/sizing scale. Colors and border widths are unchanged; per-component `size` props are independent.
 - **Right-to-left:** all component styles use CSS logical properties, so setting `dir="rtl"` on any ancestor mirrors the layout correctly.
 - **Reduced motion:** under `prefers-reduced-motion: reduce`, animations/transitions collapse to a static two-color equivalent (spinner stops rotating, indeterminate progress becomes a static dither, skeleton keeps its dither without pulsing).

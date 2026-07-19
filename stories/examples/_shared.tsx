@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Inline, PaletteSelect, Text, ThemeToggle } from "../../src";
+import { Inline, PaletteSelect, Text } from "../../src";
 
 /**
  * Shared scaffolding + mock data for the Examples demos. These are showcase
@@ -53,8 +53,7 @@ export function TopBar({
       </Text>
       <Inline gap={3} wrap={false}>
         {actions}
-        <PaletteSelect aria-label="Palette" />
-        <ThemeToggle />
+        <PaletteSelect aria-label="Palette" align="end" />
       </Inline>
     </Inline>
   );

@@ -8,7 +8,7 @@ Duality targets **WCAG AAA**. Because the whole system is built from exactly two
 
 ## Contrast
 
-Every palette is a pair of colors that meets the AAA **7:1** contrast ratio, in both normal and inverted modes. The pairs are verified by automated tests (`test/contrast.test.ts`) and mirrored between the SCSS tokens and `src/theme/palettes.ts`. You cannot introduce an intermediate shade, so text and UI can never drop below the guaranteed ratio.
+Every theme is a pair of colors that meets the AAA **7:1** contrast ratio. All themes are verified by automated tests (`test/contrast.test.ts`) and mirrored between the SCSS tokens and `src/theme/palettes.ts`. You cannot introduce an intermediate shade, so text and UI can never drop below the guaranteed ratio.
 
 ## State is never color-only
 

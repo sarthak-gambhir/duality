@@ -61,7 +61,10 @@ export function RangeSlider({
   });
   const [low, high] = range;
   const span = max - min || 1;
-  const pct = (v: number) => ((v - min) / span) * 100;
+  // Clamp to [0, 100] so an out-of-range value can never render a thumb/fill
+  // off the track (which would overflow the container).
+  const pct = (v: number) =>
+    Math.max(0, Math.min(100, ((v - min) / span) * 100));
 
   // When both thumbs overlap they stack, and the top one may be pinned against a
   // boundary (can't move), leaving its partner unreachable. Raise the thumb that

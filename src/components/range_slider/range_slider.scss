@@ -14,7 +14,10 @@
 
 .du_range_slider_fill {
   position: absolute;
-  inset-block: 0;
+
+  // Overlap the track's top/bottom borders so the selected range reads as a
+  // solid bar the full height of the track, not a thin line inside it.
+  inset-block: calc(-1 * var(--border-width));
   background-color: var(--fg);
 }
 

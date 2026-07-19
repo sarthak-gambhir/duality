@@ -4,14 +4,14 @@ import { describe, expect, it } from "vitest";
 import { ThemeProvider, useTheme } from "../src/theme/ThemeProvider";
 
 function ThemeProbe() {
-  const { theme, inverted, setTheme, toggleInverted } = useTheme();
+  const { theme, density, setTheme, setDensity } = useTheme();
   return (
     <div>
       <span data-testid="state">
-        {theme}:{String(inverted)}
+        {theme}:{density}
       </span>
       <button onClick={() => setTheme("amber")}>to amber</button>
-      <button onClick={toggleInverted}>invert</button>
+      <button onClick={() => setDensity("compact")}>compact</button>
     </div>
   );
 }
@@ -26,22 +26,21 @@ describe("ThemeProvider", () => {
     const root = container.querySelector(".du_theme_root");
     expect(root).not.toBeNull();
     expect(root?.getAttribute("data-theme")).toBe("classic");
-    expect(root?.getAttribute("data-inverted")).toBe("false");
     expect(root?.getAttribute("data-density")).toBe("comfortable");
   });
 
-  it("honors default theme and inversion", () => {
+  it("honors default theme and density", () => {
     const { container } = render(
-      <ThemeProvider defaultTheme="phosphor" defaultInverted>
+      <ThemeProvider defaultTheme="phosphor" defaultDensity="compact">
         <span>hi</span>
       </ThemeProvider>,
     );
     const root = container.querySelector(".du_theme_root");
     expect(root?.getAttribute("data-theme")).toBe("phosphor");
-    expect(root?.getAttribute("data-inverted")).toBe("true");
+    expect(root?.getAttribute("data-density")).toBe("compact");
   });
 
-  it("updates theme and inversion via context", async () => {
+  it("updates theme and density via context", async () => {
     const user = userEvent.setup();
     render(
       <ThemeProvider>
@@ -49,11 +48,11 @@ describe("ThemeProvider", () => {
       </ThemeProvider>,
     );
 
-    expect(screen.getByTestId("state")).toHaveTextContent("classic:false");
+    expect(screen.getByTestId("state")).toHaveTextContent("classic:comfortable");
     await user.click(screen.getByText("to amber"));
-    expect(screen.getByTestId("state")).toHaveTextContent("amber:false");
-    await user.click(screen.getByText("invert"));
-    expect(screen.getByTestId("state")).toHaveTextContent("amber:true");
+    expect(screen.getByTestId("state")).toHaveTextContent("amber:comfortable");
+    await user.click(screen.getByText("compact"));
+    expect(screen.getByTestId("state")).toHaveTextContent("amber:compact");
   });
 
   it("throws when useTheme is used outside a provider", () => {

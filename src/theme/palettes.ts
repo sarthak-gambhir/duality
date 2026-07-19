@@ -1,56 +1,36 @@
 /**
- * Named two-color palettes.
+ * Named two-color themes.
  *
- * Each palette is a pair: `ink` (default foreground) and `surface` (default
- * background). The inversion toggle swaps them at runtime. Color values mirror
- * the `$palettes` map in `src/tokens/tokens.scss` - keep the two in sync.
+ * Each theme is a single fixed pair of colors - `fg` (foreground) and `bg`
+ * (background) - from which `--fg` / `--bg` resolve at runtime. There is no
+ * light/dark toggle: light and dark are separate named themes. Component states
+ * (hover / selected) still swap the two colors locally.
  *
- * Every pair must meet WCAG AAA; this is verified by the contrast tests.
+ * Color values mirror the `$palettes` map in `src/tokens/tokens.scss` - keep
+ * the two in sync. Every theme MUST meet WCAG AAA (>= 7:1); this is verified by
+ * the contrast tests.
  */
+
 export interface Palette {
-  /** Machine name, used as the `data-theme` value. */
-  name: string;
   /** Human-readable label for docs and the Storybook toolbar. */
   label: string;
-  /** Default foreground color. */
-  ink: string;
-  /** Default background color. */
-  surface: string;
+  /** Foreground color (text, borders, filled marks). */
+  fg: string;
+  /** Background / surface color. */
+  bg: string;
 }
 
 export const palettes = {
-  classic: {
-    name: "classic",
-    label: "Classic",
-    ink: "#000000",
-    surface: "#ffffff",
-  },
-  paper: { name: "paper", label: "Paper", ink: "#111111", surface: "#f4f0e6" },
-  amber: {
-    name: "amber",
-    label: "Amber CRT",
-    ink: "#ffb000",
-    surface: "#0a0a0a",
-  },
-  phosphor: {
-    name: "phosphor",
-    label: "Phosphor",
-    ink: "#33ff33",
-    surface: "#001a00",
-  },
-  blueprint: {
-    name: "blueprint",
-    label: "Blueprint",
-    ink: "#ffffff",
-    surface: "#0a2540",
-  },
-  sepia: { name: "sepia", label: "Sepia", ink: "#2b2118", surface: "#efe7d8" },
-  high_contrast: {
-    name: "high_contrast",
-    label: "High Contrast",
-    ink: "#ffff00",
-    surface: "#000000",
-  },
+  classic: { label: "Classic", fg: "#141414", bg: "#f7f7f4" },
+  dark: { label: "Dark", fg: "#f0f0ee", bg: "#0d0d0d" },
+  paper: { label: "Paper", fg: "#26221a", bg: "#f6ece7" },
+  slate: { label: "Slate", fg: "#ccd2d9", bg: "#242930" },
+  sepia: { label: "Sepia", fg: "#55422a", bg: "#fff3c8" },
+  amber: { label: "Amber CRT", fg: "#ffc233", bg: "#201b1e" },
+  phosphor: { label: "Phosphor", fg: "#2bff43", bg: "#05190b" },
+  blueprint: { label: "Blueprint", fg: "#ffffff", bg: "#032b46" },
+  teal: { label: "Teal", fg: "#45e0d2", bg: "#04211f" },
+  sakura: { label: "Sakura", fg: "#ff9cb4", bg: "#25212b" },
 } as const satisfies Record<string, Palette>;
 
 export type PaletteName = keyof typeof palettes;

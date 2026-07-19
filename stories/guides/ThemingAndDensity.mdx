@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Theming and Density
 
-Everything renders inside a `ThemeProvider`, which establishes a theme scope on a `du_theme_root` element carrying `data-theme`, `data-inverted`, and `data-density`. The tokens stylesheet reads those attributes to resolve the two colors and the spacing / sizing scale. Import the stylesheet once:
+Everything renders inside a `ThemeProvider`, which establishes a theme scope on a `du_theme_root` element carrying `data-theme` and `data-density`. The tokens stylesheet reads those attributes to resolve the two colors and the spacing / sizing scale. Import the stylesheet once:
 
 ```tsx
 import { ThemeProvider, Button } from "@duality/ui";
@@ -19,30 +19,21 @@ export function App() {
 }
 ```
 
-## Palettes
+## Themes
 
-A palette is a pair of colors `(--ink, --surface)` from which `--fg` / `--bg` derive. All palettes meet AAA (7:1). Preview any of them with the **Palette** toolbar control, or set one as the default:
+A theme is a single fixed pair of colors (`fg` / `bg`) from which `--fg` / `--bg` resolve. Light and dark are separate named themes rather than a toggle, so each is hand-tuned on its own. Every theme meets AAA (7:1). Preview any of them with the **Theme** toolbar control, or set one as the default:
 
 ```tsx
 <ThemeProvider defaultTheme="phosphor">...</ThemeProvider>
 ```
 
-Built-in palettes: `classic`, `paper`, `amber`, `phosphor`, `blueprint`, `sepia`, `high_contrast`. The `palettes` export (and the `contrastRatio` / `meetsAAA` helpers) are available if you want to validate custom pairs.
+Built-in themes: `classic`, `dark`, `paper`, `slate`, `sepia`, `amber`, `phosphor`, `blueprint`, `teal`, `sakura`. The `palettes` export (and the `contrastRatio` / `meetsAAA` helpers) are available if you want to validate custom pairs. The `PaletteSelect` component is a ready-made theme picker bound to the provider.
 
-## Inversion
-
-Inversion swaps the two colors for the entire scope; it is how "dark mode" works in a two-color system. Drive it explicitly, or follow the OS:
-
-```tsx
-// Follow prefers-color-scheme, and keep following live changes.
-<ThemeProvider defaultInverted="system">...</ThemeProvider>
-```
-
-`useTheme()` exposes `inverted`, `setInverted`, and `toggleInverted`. The `ThemeToggle` component wraps this in a ready-made control.
+Note this is distinct from the per-component inversion used for hover / selected states, which always swaps the two active colors locally.
 
 ## Persistence
 
-Pass a `storageKey` to persist the active theme, inversion, and density to `localStorage` and restore them on the next load:
+Pass a `storageKey` to persist the active theme and density to `localStorage` and restore them on the next load:
 
 ```tsx
 <ThemeProvider storageKey="duality">...</ThemeProvider>
@@ -68,4 +59,4 @@ Component styles use logical properties throughout, so setting `dir="rtl"` on an
 
 ## Portaled overlays
 
-Overlays that portal out of the DOM flow (`Modal`, `Drawer`, `Toast`, `ConfirmDialog`, `ContextMenu`) render into the nearest theme root via `usePortalContainer`, so they always inherit the active palette, inversion, and density.
+Overlays that portal out of the DOM flow (`Modal`, `Drawer`, `Toast`, `ConfirmDialog`, `ContextMenu`) render into the nearest theme root via `usePortalContainer`, so they always inherit the active theme and density.

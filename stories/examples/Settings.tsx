@@ -21,7 +21,6 @@ import {
   Tabs,
   Text,
   Textarea,
-  ThemeToggle,
   ToggleGroup,
   ToggleGroupItem,
   useTheme,
@@ -111,7 +110,7 @@ function PreferencesTab() {
   const [notifications, setNotifications] = useState(true);
   const [digest, setDigest] = useState(false);
   const [view, setView] = useState("comfortable");
-  const [volume, setVolume] = useState<[number, number]>([20, 80]);
+  const [quietHours, setQuietHours] = useState<[number, number]>([1, 7]);
 
   return (
     <Stack gap={5} style={{ maxWidth: 520 }}>
@@ -120,8 +119,7 @@ function PreferencesTab() {
           Appearance
         </Text>
         <Inline gap={4}>
-          <ThemeToggle />
-          <PaletteSelect aria-label="Palette" />
+          <PaletteSelect aria-label="Palette" align="end" />
         </Inline>
         <FormField label="Density">
           {() => (
@@ -169,8 +167,8 @@ function PreferencesTab() {
         <FormField label="Quiet hours">
           {() => (
             <RangeSlider
-              value={volume}
-              onValueChange={setVolume}
+              value={quietHours}
+              onValueChange={setQuietHours}
               minLabel="Start hour"
               maxLabel="End hour"
               max={24}

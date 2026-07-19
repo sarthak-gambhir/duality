@@ -4,8 +4,8 @@ import { palettes, paletteNames, contrastRatio, meetsAAA } from "../src";
 
 /**
  * Foundations: the two-color model. Everything Duality renders resolves to
- * exactly `--fg` and `--bg`. Use the "Palette" and "Invert" toolbar controls
- * (top of the canvas) to see the current story under any palette.
+ * exactly `--fg` and `--bg`. Use the "Theme" toolbar control (top of the
+ * canvas) to see the current story under any named theme.
  */
 const meta: Meta = {
   title: "Foundations/Two-Color Model",
@@ -22,7 +22,7 @@ const swatch = (bg: string, fg: string): CSSProperties => ({
   minWidth: 160,
 });
 
-export const CurrentPalette: Story = {
+export const CurrentTheme: Story = {
   render: () => (
     <div style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>
       <div style={swatch("var(--bg)", "var(--fg)")}>
@@ -37,12 +37,12 @@ export const CurrentPalette: Story = {
   ),
 };
 
-export const AllPalettes: Story = {
+export const AllThemes: Story = {
   render: () => (
     <div style={{ display: "grid", gap: "var(--space-4)" }}>
       {paletteNames.map((name) => {
-        const { ink, surface, label } = palettes[name];
-        const ratio = contrastRatio(ink, surface).toFixed(2);
+        const { fg, bg, label } = palettes[name];
+        const ratio = contrastRatio(fg, bg).toFixed(2);
         return (
           <div
             key={name}
@@ -51,19 +51,18 @@ export const AllPalettes: Story = {
               display: "flex",
               alignItems: "center",
               gap: "var(--space-4)",
-              background: surface,
-              color: ink,
-              border: `2px solid ${ink}`,
+              background: bg,
+              color: fg,
+              border: `2px solid ${fg}`,
               padding: "var(--space-4)",
             }}
           >
             <strong style={{ minWidth: 120 }}>{label}</strong>
             <code>
-              {ink} / {surface}
+              {fg} / {bg}
             </code>
-            <span>
-              contrast {ratio}:1{" "}
-              {meetsAAA(ink, surface) ? "(AAA)" : "(FAILS AAA)"}
+            <span style={{ marginInlineStart: "auto" }}>
+              {ratio}:1 {meetsAAA(fg, bg) ? "(AAA)" : "(FAILS AAA)"}
             </span>
           </div>
         );

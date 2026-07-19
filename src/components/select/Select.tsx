@@ -41,6 +41,18 @@ export interface SelectProps extends Omit<
   invalid?: boolean;
   /** Control size. */
   selectSize?: "sm" | "md" | "lg";
+  /**
+   * Which edge the selection marker sits on within each option. `"end"` moves
+   * it to the trailing edge with the label filling the leading space. Defaults
+   * to `"start"`.
+   */
+  markAlign?: "start" | "end";
+  /**
+   * Which edge the dropdown is anchored to relative to the trigger. Use
+   * `"end"` for triggers near the trailing edge so the list opens inward.
+   * Defaults to `"start"`.
+   */
+  align?: "start" | "end";
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
 }
@@ -94,6 +106,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       placeholder = "Select...",
       invalid,
       selectSize = "md",
+      markAlign = "start",
+      align = "start",
       name,
       id,
       disabled,
@@ -256,7 +270,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         </button>
 
         {open && (
-          <ul id={listboxId} role="listbox" className="du_select_listbox">
+          <ul
+            id={listboxId}
+            role="listbox"
+            className="du_select_listbox"
+            data-mark-align={markAlign}
+            data-align={align}
+          >
             {items.map((item, index) => (
               <li
                 key={item.value}

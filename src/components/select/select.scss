@@ -79,15 +79,32 @@
 .du_select_listbox {
   position: absolute;
   z-index: 10;
-  inset-inline: 0;
-  inset-block-start: calc(100% - var(--border-width));
+
+  // Size to the widest option (so labels never wrap), but never narrower than
+  // the trigger. Anchored to the start edge; capped so long labels don't run
+  // off-screen.
+  inset-inline-start: 0;
+  inset-block-start: calc(100% + var(--space-2));
+  inline-size: max-content;
+  min-inline-size: 100%;
+  max-inline-size: min(320px, 90vw);
   max-block-size: 240px;
   padding: 0;
   margin: 0;
-  overflow-y: auto;
+
+  // Only ever scroll vertically. Setting a single axis to `auto` would force
+  // the other to compute as `auto` too, so pin overflow-x to hidden explicitly.
+  overflow: hidden auto;
   list-style: none;
   background-color: var(--bg);
   border: var(--border-width) solid var(--fg);
+}
+
+// Anchor to the trailing edge so the list opens inward from a right-aligned
+// trigger instead of overflowing off-screen.
+.du_select_listbox[data-align="end"] {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
 }
 
 .du_select_option {
@@ -97,7 +114,12 @@
   padding: var(--space-2) var(--space-3);
   color: var(--fg);
   font-family: var(--font-sans);
+  white-space: nowrap;
   cursor: pointer;
+}
+
+.du_select_option_label {
+  flex: 1 1 auto;
 }
 
 // Selection is shown by a filled marker (never color alone); the active option
@@ -107,6 +129,11 @@
   inline-size: 10px;
   block-size: 10px;
   background-color: var(--bg);
+}
+
+// Trailing marker: label fills the leading space, marker sits at the end edge.
+.du_select_listbox[data-mark-align="end"] .du_select_option_mark {
+  order: 1;
 }
 
 .du_select_option[aria-selected="true"] .du_select_option_mark {

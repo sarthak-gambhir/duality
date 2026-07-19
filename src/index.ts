@@ -11,8 +11,6 @@ export type {
 } from "./theme/ThemeProvider";
 export { palettes, paletteNames, defaultPalette } from "./theme/palettes";
 export type { Palette, PaletteName } from "./theme/palettes";
-export { ThemeToggle } from "./components/theme_controls/ThemeToggle";
-export type { ThemeToggleProps } from "./components/theme_controls/ThemeToggle";
 export { PaletteSelect } from "./components/theme_controls/PaletteSelect";
 export type { PaletteSelectProps } from "./components/theme_controls/PaletteSelect";
 export {

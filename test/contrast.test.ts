@@ -35,11 +35,11 @@ describe("contrast math", () => {
   });
 });
 
-describe("every palette meets WCAG AAA", () => {
-  it.each(paletteNames)('palette "%s" has >= 7:1 contrast', (name) => {
-    const { ink, surface } = palettes[name];
-    const ratio = contrastRatio(ink, surface);
+describe("every theme meets WCAG AAA", () => {
+  it.each(paletteNames)('theme "%s" has >= 7:1 contrast', (name) => {
+    const { fg, bg } = palettes[name];
+    const ratio = contrastRatio(fg, bg);
     expect(ratio).toBeGreaterThanOrEqual(AAA_CONTRAST);
-    expect(meetsAAA(ink, surface)).toBe(true);
+    expect(meetsAAA(fg, bg)).toBe(true);
   });
 });
