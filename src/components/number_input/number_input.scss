@@ -98,6 +98,11 @@
   }
 }
 
+// Size the +/- icons to the stepper button, not the field font.
+.du_number_input_step .du_icon {
+  font-size: 1.25em;
+}
+
 .du_number_input_sm {
   min-block-size: var(--size-sm);
   font-size: 14px;

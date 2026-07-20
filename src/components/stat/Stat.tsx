@@ -4,6 +4,9 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
+import type { DualityIcons } from "../icon/icons";
 
 export interface StatProps extends ComponentPropsWithoutRef<"div"> {
   /** Descriptive label above the value. */
@@ -18,10 +21,10 @@ export interface StatProps extends ComponentPropsWithoutRef<"div"> {
   deltaDirection?: "up" | "down" | "neutral";
 }
 
-const ARROW: Record<"up" | "down" | "neutral", string> = {
-  up: "\u25B2",
-  down: "\u25BC",
-  neutral: "\u25AC",
+const DELTA_ICON: Record<"up" | "down" | "neutral", keyof DualityIcons> = {
+  up: "deltaUp",
+  down: "deltaDown",
+  neutral: "deltaNeutral",
 };
 
 const DIRECTION_LABEL: Record<"up" | "down" | "neutral", string> = {
@@ -35,6 +38,7 @@ export const Stat = forwardRef<HTMLDivElement, StatProps>(function Stat(
   { label, value, icon, delta, deltaDirection, className, ...rest },
   ref,
 ) {
+  const icons = useIcons();
   return (
     <div ref={ref} className={cx("du_stat", className)} {...rest}>
       <div className="du_stat_label">
@@ -49,13 +53,11 @@ export const Stat = forwardRef<HTMLDivElement, StatProps>(function Stat(
       {delta != null && (
         <div className="du_stat_delta">
           {deltaDirection && (
-            <span
+            <Icon
+              icon={icons[DELTA_ICON[deltaDirection]]}
               className="du_stat_delta_arrow"
-              aria-label={DIRECTION_LABEL[deltaDirection]}
-              role="img"
-            >
-              {ARROW[deltaDirection]}
-            </span>
+              label={DIRECTION_LABEL[deltaDirection]}
+            />
           )}
           <span>{delta}</span>
         </div>

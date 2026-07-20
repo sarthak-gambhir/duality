@@ -57,4 +57,30 @@ describe("Tree", () => {
       screen.getByRole("treeitem", { name: /Button\.tsx/ }),
     ).toHaveAttribute("aria-selected", "true");
   });
+
+  it("expands all parents with defaultExpandAll", () => {
+    render(<Tree items={items} label="Files" defaultExpandAll />);
+    expect(
+      screen.getByRole("treeitem", { name: /Button\.tsx/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("moves focus to a matching node via typeahead", async () => {
+    const user = userEvent.setup();
+    render(<Tree items={items} label="Files" defaultExpandAll />);
+    const src = screen.getByRole("treeitem", { name: /^src/ });
+    src.focus();
+    await user.keyboard("l");
+    expect(screen.getByRole("treeitem", { name: "LICENSE" })).toHaveFocus();
+  });
+
+  it("renders a per-node icon", () => {
+    render(
+      <Tree
+        items={[{ id: "a", label: "Alpha", icon: <span>ICON</span> }]}
+        label="Files"
+      />,
+    );
+    expect(screen.getByText("ICON")).toBeInTheDocument();
+  });
 });

@@ -66,13 +66,11 @@
   font-family: var(--font-sans);
 }
 
-// Marker: a filled foreground pixel. Shape differs per tone (never color).
+// Marker: a tone icon (chosen in TSX). Border style still differs per tone so
+// severity is never conveyed by icon/color alone.
 .du_alert_marker {
   flex: 0 0 auto;
-  inline-size: 12px;
-  block-size: 12px;
-  margin-block-start: 3px;
-  background-color: var(--fg);
+  margin-block-start: 2px;
 }
 
 .du_alert_info {
@@ -81,18 +79,9 @@
 
 .du_alert_warning {
   border-style: dashed;
-
-  .du_alert_marker {
-    background-color: var(--bg);
-    border: var(--border-width) solid var(--fg);
-  }
 }
 
 .du_alert_error {
   border-style: double;
   border-width: var(--border-width-thick);
-
-  .du_alert_marker {
-    transform: rotate(45deg);
-  }
 }

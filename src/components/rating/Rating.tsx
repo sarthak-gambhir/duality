@@ -8,6 +8,8 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface RatingProps extends Omit<
   ComponentPropsWithoutRef<"div">,
@@ -63,6 +65,7 @@ export function Rating({
   });
   const [hover, setHover] = useState<number | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const icons = useIcons();
 
   const interactive = !readOnly && !disabled;
   const display = hover ?? current;
@@ -137,7 +140,13 @@ export function Rating({
             onMouseMove={(event) =>
               interactive && setHover(valueFromPointer(n, event))
             }
-          />
+          >
+            {filled ? (
+              <Icon icon={icons.star} className="du_rating_star" />
+            ) : half ? (
+              <Icon icon={icons.starHalf} className="du_rating_star" />
+            ) : null}
+          </button>
         );
       })}
       {name && <input type="hidden" name={name} value={current} />}

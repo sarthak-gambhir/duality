@@ -33,20 +33,26 @@
 
 .du_radio_dot {
   position: relative;
+  display: flex;
   flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
   inline-size: var(--size-sm);
   block-size: var(--size-sm);
+  color: var(--fg);
   background-color: var(--bg);
   border: var(--border-width) solid var(--fg);
   border-radius: 50%;
 }
 
-.du_radio_input:checked ~ .du_radio_dot::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  background-color: var(--fg);
-  border-radius: 50%;
+.du_radio_mark {
+  display: none;
+  inline-size: calc(var(--size-sm) - var(--space-2));
+  block-size: calc(var(--size-sm) - var(--space-2));
+}
+
+.du_radio_input:checked ~ .du_radio_dot .du_radio_mark {
+  display: block;
 }
 
 .du_radio_input:focus-visible ~ .du_radio_dot {

@@ -13,6 +13,8 @@ import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
 
 export interface ComboboxProps extends Omit<
@@ -113,6 +115,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
 
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
+    const icons = useIcons();
 
     const rootRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -268,7 +271,10 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectIndex(index)}
               >
-                <span className="du_combobox_option_mark" aria-hidden="true" />
+                <Icon
+                  icon={icons.check}
+                  className="du_combobox_option_mark"
+                />
                 <span className="du_combobox_option_label">{option.label}</span>
               </li>
             ))}

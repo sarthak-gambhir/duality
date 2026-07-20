@@ -7,6 +7,8 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface NumberInputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -86,6 +88,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       defaultValue,
       onChange: onValueChange,
     });
+    const icons = useIcons();
 
     const clamp = (n: number): number => {
       let result = n;
@@ -162,7 +165,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             disabled={disabled || atMin}
             onClick={() => stepBy(-1)}
           >
-            <span aria-hidden="true">&minus;</span>
+            <Icon icon={icons.dash} />
           </button>
         )}
         {prefix != null && (
@@ -205,7 +208,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             disabled={disabled || atMax}
             onClick={() => stepBy(1)}
           >
-            <span aria-hidden="true">+</span>
+            <Icon icon={icons.add} />
           </button>
         )}
         {name && <input type="hidden" name={name} value={current ?? ""} />}

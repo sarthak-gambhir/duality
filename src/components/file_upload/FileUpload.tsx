@@ -8,6 +8,8 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface FileUploadProps {
   /** Selected files (controlled). */
@@ -54,6 +56,7 @@ export function FileUpload({
   });
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const icons = useIcons();
   const baseId = useId();
   const inputId = id ?? `${baseId}_input`;
   const listId = `${baseId}_list`;
@@ -128,7 +131,12 @@ export function FileUpload({
         onDragOver={onDragOver}
         onDragLeave={() => setDragOver(false)}
       >
-        {label}
+        <Icon
+          icon={icons.upload}
+          className="du_file_upload_zone_icon"
+          size={24}
+        />
+        <span>{label}</span>
       </div>
 
       {current.length > 0 && (
@@ -146,7 +154,7 @@ export function FileUpload({
                 disabled={disabled}
                 onClick={() => remove(index)}
               >
-                &times;
+                <Icon icon={icons.close} />
               </button>
             </li>
           ))}

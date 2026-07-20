@@ -11,6 +11,12 @@
 }
 
 // Clear affordance beside the trigger; shares the trigger's border language.
+// Icon-only nav/clear buttons: size the glyph to the button box, not the font.
+.du_date_picker_nav .du_icon,
+.du_date_picker_clear .du_icon {
+  font-size: 20px;
+}
+
 .du_date_picker_clear {
   @include m.du_reset_control;
   @include m.du_focus;
@@ -66,10 +72,6 @@
 // Small pixel calendar glyph: a box with a heavier top edge.
 .du_date_picker_glyph {
   flex: 0 0 auto;
-  inline-size: 12px;
-  block-size: 12px;
-  border: var(--border-width) solid var(--fg);
-  border-block-start-width: var(--border-width-thick);
 }
 
 .du_date_picker_sm {

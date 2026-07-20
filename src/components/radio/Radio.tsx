@@ -4,6 +4,8 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 import { useRadioGroup } from "./RadioGroup";
 
 export interface RadioProps extends Omit<
@@ -22,6 +24,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   ref,
 ) {
   const group = useRadioGroup();
+  const icons = useIcons();
 
   const resolvedName = name ?? group?.name;
   const resolvedChecked =
@@ -50,7 +53,9 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         }}
         {...rest}
       />
-      <span className="du_radio_dot" aria-hidden="true" />
+      <span className="du_radio_dot" aria-hidden="true">
+        <Icon icon={icons.dot} className="du_radio_mark" />
+      </span>
       {label != null && <span className="du_radio_label">{label}</span>}
     </label>
   );

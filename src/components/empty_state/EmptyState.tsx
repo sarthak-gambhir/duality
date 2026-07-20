@@ -1,5 +1,7 @@
 import { type ReactNode } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface EmptyStateProps {
   /** Primary heading. */
@@ -21,6 +23,7 @@ export function EmptyState({
   action,
   className,
 }: EmptyStateProps) {
+  const icons = useIcons();
   return (
     <div className={cx("du_empty_state", className)}>
       {icon != null ? (
@@ -28,7 +31,11 @@ export function EmptyState({
           {icon}
         </div>
       ) : (
-        <div className="du_empty_state_marker" aria-hidden="true" />
+        <Icon
+          icon={icons.empty}
+          className="du_empty_state_marker"
+          size={24}
+        />
       )}
       <div className="du_empty_state_title">{title}</div>
       {description != null && (

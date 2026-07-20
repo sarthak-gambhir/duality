@@ -2,6 +2,8 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { Badge } from "../badge/Badge";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface TagInputProps {
   /** Current tags (controlled). */
@@ -56,6 +58,7 @@ export function TagInput({
   });
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const icons = useIcons();
 
   const commit = () => {
     const tag = draft.trim();
@@ -109,7 +112,7 @@ export function TagInput({
                     removeAt(index);
                   }}
                 >
-                  <span aria-hidden="true">x</span>
+                  <Icon icon={icons.close} />
                 </button>
               )}
             </Badge>

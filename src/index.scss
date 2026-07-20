@@ -4,6 +4,9 @@
 @use "styles/reset";
 @use "styles/global";
 
+// Shared
+@use "components/icon/icon";
+
 // Layout
 @use "components/stack/stack";
 @use "components/inline/inline";

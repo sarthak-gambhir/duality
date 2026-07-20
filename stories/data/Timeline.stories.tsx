@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Timeline, type TimelineItem } from "../../src";
+import {
+  RiAttachment2,
+  RiChat3Line,
+  RiCheckboxCircleLine,
+} from "react-icons/ri";
+import { Icon, Timeline, type TimelineItem } from "../../src";
 
 const meta: Meta<typeof Timeline> = {
   title: "Data/Timeline",
@@ -94,19 +99,19 @@ const iconItems: TimelineItem[] = [
     id: "1",
     title: "Comment added",
     time: "10:00",
-    icon: <span>💬</span>,
+    icon: <Icon icon={RiChat3Line} />,
   },
   {
     id: "2",
     title: "File attached",
     time: "10:05",
-    icon: <span>📎</span>,
+    icon: <Icon icon={RiAttachment2} />,
   },
   {
     id: "3",
     title: "Approved",
     time: "10:12",
-    icon: <span>✓</span>,
+    icon: <Icon icon={RiCheckboxCircleLine} />,
   },
 ];
 

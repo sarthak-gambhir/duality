@@ -56,19 +56,20 @@
 }
 
 // Pixel caret: points right, rotates to point down when expanded.
+// Caret icon: chevron that points right when collapsed, down when expanded
+// (icon is swapped in TSX).
 .du_tree_caret {
   flex: 0 0 auto;
-  inline-size: 0;
-  block-size: 0;
-  border-block: 5px solid transparent;
-  border-inline-start: 6px solid currentColor;
-}
-
-.du_tree_caret[data-open] {
-  transform: rotate(90deg);
 }
 
 .du_tree_spacer {
   flex: 0 0 auto;
-  inline-size: 6px;
+  inline-size: 1em;
+}
+
+.du_tree_icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

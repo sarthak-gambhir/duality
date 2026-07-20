@@ -14,6 +14,8 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface SelectOption {
   value: string;
@@ -138,6 +140,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
 
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
+    const icons = useIcons();
 
     const rootRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -266,7 +269,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           >
             {selected ? selected.label : placeholder}
           </span>
-          <span className="du_select_caret" aria-hidden="true" />
+          <Icon
+            icon={open ? icons.chevronUp : icons.chevronDown}
+            className="du_select_caret"
+          />
         </button>
 
         {open && (
@@ -293,7 +299,10 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectIndex(index)}
               >
-                <span className="du_select_option_mark" aria-hidden="true" />
+                <Icon
+                  icon={icons.check}
+                  className="du_select_option_mark"
+                />
                 <span className="du_select_option_label">{item.label}</span>
               </li>
             ))}

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   DataTable,
   type DataTableColumn,
@@ -83,5 +83,104 @@ describe("DataTable", () => {
       "zzz",
     );
     expect(screen.getByText("No results")).toBeInTheDocument();
+  });
+
+  it("selects a row and toggles select-all", async () => {
+    const user = userEvent.setup();
+    const onSelectionChange = vi.fn();
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        getRowId={(r) => r.name}
+        selectable
+        onSelectionChange={onSelectionChange}
+        aria-label="Scores"
+      />,
+    );
+
+    await user.click(screen.getByRole("checkbox", { name: "Select row 1" }));
+    expect(onSelectionChange).toHaveBeenLastCalledWith(["Charlie"]);
+
+    onSelectionChange.mockClear();
+    await user.click(screen.getByRole("checkbox", { name: "Select all rows" }));
+    expect(onSelectionChange).toHaveBeenLastCalledWith([
+      "Charlie",
+      "Alice",
+      "Bob",
+    ]);
+  });
+
+  it("marks select-all indeterminate on a partial selection", async () => {
+    const user = userEvent.setup();
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        getRowId={(r) => r.name}
+        selectable
+        aria-label="Scores"
+      />,
+    );
+    await user.click(screen.getByRole("checkbox", { name: "Select row 1" }));
+    const selectAll = screen.getByRole<HTMLInputElement>("checkbox", {
+      name: "Select all rows",
+    });
+    expect(selectAll.indeterminate).toBe(true);
+  });
+
+  it("paginates rows and reports the range", async () => {
+    const user = userEvent.setup();
+    const many = Array.from({ length: 12 }).map((_, i) => ({
+      name: `P${String(i).padStart(2, "0")}`,
+      score: i,
+    }));
+    render(
+      <DataTable
+        columns={columns}
+        data={many}
+        getRowId={(r) => r.name}
+        filterable={false}
+        pageSize={5}
+        aria-label="Scores"
+      />,
+    );
+    expect(screen.getByText("1-5 of 12")).toBeInTheDocument();
+    expect(screen.getAllByRole("row")).toHaveLength(1 + 5);
+
+    await user.click(screen.getByRole("button", { name: "Next page" }));
+    expect(screen.getByText("6-10 of 12")).toBeInTheDocument();
+  });
+
+  it("renders skeleton rows while loading", () => {
+    const { container } = render(
+      <DataTable
+        columns={columns}
+        data={[]}
+        filterable={false}
+        isLoading
+        loadingRowCount={3}
+        aria-label="Scores"
+      />,
+    );
+    expect(container.querySelectorAll(".du_skeleton").length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("row")).toHaveLength(1 + 3);
+  });
+
+  it("fires onRowClick when a row is activated", async () => {
+    const user = userEvent.setup();
+    const onRowClick = vi.fn();
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        getRowId={(r) => r.name}
+        filterable={false}
+        onRowClick={onRowClick}
+        aria-label="Scores"
+      />,
+    );
+    await user.click(screen.getByText("Charlie"));
+    expect(onRowClick).toHaveBeenCalledWith({ name: "Charlie", score: 30 });
   });
 });

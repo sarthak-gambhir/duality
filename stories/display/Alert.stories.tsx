@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Alert, Button } from "../../src";
+import { RiCheckboxCircleLine } from "react-icons/ri";
+import { Alert, Button, Icon } from "../../src";
 
 const meta: Meta<typeof Alert> = {
   title: "Display/Alert",
@@ -63,7 +64,7 @@ export const WithAction: Story = {
 export const CustomIcon: Story = {
   render: () => (
     <div style={{ maxWidth: 420 }}>
-      <Alert tone="info" title="Saved" icon={<span>✓</span>}>
+      <Alert tone="info" title="Saved" icon={<Icon icon={RiCheckboxCircleLine} />}>
         Your changes were saved. This uses a custom marker.
       </Alert>
     </div>

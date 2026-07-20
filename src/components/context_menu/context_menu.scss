@@ -1,5 +1,6 @@
-// Positioned relative to the viewport at the cursor. The visual chrome comes
-// from the shared `.du_menu` / `.du_menu_item` styles.
+// Pinned at the cursor. Positioned with `fixed`; JS measures the rendered menu
+// and corrects the inset for any transformed containing block (e.g. Storybook's
+// zoom canvas). The visual chrome comes from `.du_menu` / `.du_menu_item`.
 .du_context_menu {
   position: fixed;
   z-index: 1000;

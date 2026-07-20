@@ -47,6 +47,13 @@
   text-align: start;
 }
 
+// Vertical: pin the marker to the top so it occupies a known [0, size-md] band.
+// The connector is positioned from that assumption; centering it (the default)
+// would let multi-line text push the marker down into the connector line.
+.du_stepper_vertical .du_stepper_button {
+  align-items: flex-start;
+}
+
 button.du_stepper_button {
   cursor: pointer;
 
@@ -98,12 +105,8 @@ button.du_stepper_button {
 
 // Pixel check drawn with two borders, like the checkbox.
 .du_stepper_check {
-  inline-size: 6px;
-  block-size: 10px;
-  border-inline-end: var(--border-width-thick) solid var(--bg);
-  border-block-end: var(--border-width-thick) solid var(--bg);
-  transform: rotate(45deg);
-  margin-block-start: -2px;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
 .du_stepper_connector {
@@ -119,6 +122,6 @@ button.du_stepper_button {
 .du_stepper_vertical .du_stepper_connector {
   position: absolute;
   inline-size: var(--border-width);
-  inset-block: calc(var(--size-md) + var(--space-1)) 0;
+  inset-block: var(--size-md) 0;
   inset-inline-start: calc(var(--size-md) / 2);
 }

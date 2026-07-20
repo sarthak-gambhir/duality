@@ -1,5 +1,7 @@
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface SpinnerProps extends ComponentPropsWithoutRef<"span"> {
   /** Size. */
@@ -14,6 +16,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
     { size = "md", label = "Loading", className, ...rest },
     ref,
   ) {
+    const icons = useIcons();
     return (
       <span
         ref={ref}
@@ -21,9 +24,9 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
         className={cx("du_spinner_root", className)}
         {...rest}
       >
-        <span
+        <Icon
+          icon={icons.spinner}
           className={cx("du_spinner", `du_spinner_${size}`)}
-          aria-hidden="true"
         />
         <span className="du_visually_hidden">{label}</span>
       </span>

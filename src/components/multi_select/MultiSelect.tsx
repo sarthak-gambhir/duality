@@ -11,6 +11,8 @@ import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { Badge } from "../badge/Badge";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
 
 export interface MultiSelectProps {
@@ -83,6 +85,7 @@ export function MultiSelect({
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const icons = useIcons();
 
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -204,7 +207,7 @@ export function MultiSelect({
                 remove(option.value);
               }}
             >
-              &times;
+              <Icon icon={icons.close} />
             </button>
           </Badge>
         ))}
@@ -260,9 +263,9 @@ export function MultiSelect({
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => toggle(option)}
             >
-              <span
+              <Icon
+                icon={icons.check}
                 className="du_multi_select_option_mark"
-                aria-hidden="true"
               />
               <span>{option.label}</span>
             </li>

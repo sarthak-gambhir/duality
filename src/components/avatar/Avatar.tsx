@@ -6,6 +6,8 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface AvatarProps extends ComponentPropsWithoutRef<"span"> {
   /** Name used to derive initials when no image is given. */
@@ -36,6 +38,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
   // Fall back to initials if the image is missing or fails to load.
   const [failed, setFailed] = useState(false);
   const showImage = src != null && !failed;
+  const icons = useIcons();
 
   return (
     <span
@@ -53,10 +56,12 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
           alt={alt ?? name ?? ""}
           onError={() => setFailed(true)}
         />
-      ) : (
+      ) : name ? (
         <span className="du_avatar_initials" aria-hidden="true">
           {initials(name)}
         </span>
+      ) : (
+        <Icon icon={icons.avatarFallback} className="du_avatar_fallback" />
       )}
     </span>
   );

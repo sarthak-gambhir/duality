@@ -19,22 +19,30 @@
   align-items: center;
 }
 
+// Upcoming nodes use this empty bordered circle; complete/current/error/warning
+// swap in a circular icon (chosen in TSX) so every node reads as a round dot.
 .du_timeline_marker {
   flex: 0 0 auto;
-  inline-size: 14px;
-  block-size: 14px;
-  margin-block-start: 3px;
+  inline-size: 20px;
+  block-size: 20px;
+  margin-block-start: 1px;
   background-color: var(--bg);
   border: var(--border-width) solid var(--fg);
+  border-radius: 50%;
 }
 
-// Custom icon marker: render the provided content, no default box chrome.
+// Icon marker (status or custom): render the content, no default box chrome.
 .du_timeline_marker_icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: transparent;
   border: 0;
+}
+
+.du_timeline_marker_icon .du_icon {
+  inline-size: 100%;
+  block-size: 100%;
 }
 
 .du_timeline_connector {
@@ -70,30 +78,8 @@
   font-size: 14px;
 }
 
-// Completed / current events get a filled marker; current is thicker so the
-// state is not conveyed by fill alone.
-.du_timeline_item[data-status="complete"] .du_timeline_marker {
-  background-color: var(--fg);
-}
-
-.du_timeline_item[data-status="current"] .du_timeline_marker {
-  background-color: var(--fg);
-  border-width: var(--border-width-thick);
-}
-
+// Status is conveyed by the marker icon shape (chosen in TSX); upcoming keeps
+// the empty bordered marker and italicises its content.
 .du_timeline_item[data-status="upcoming"] .du_timeline_content {
   font-style: italic;
-}
-
-// Error: a filled diamond (rotated square). Warning: a hollow diamond. Shape,
-// not color, distinguishes them from complete/current/upcoming.
-.du_timeline_item[data-status="error"] .du_timeline_marker:not(.du_timeline_marker_icon) {
-  background-color: var(--fg);
-  transform: rotate(45deg);
-}
-
-.du_timeline_item[data-status="warning"] .du_timeline_marker:not(.du_timeline_marker_icon) {
-  background-color: var(--bg);
-  border-width: var(--border-width-thick);
-  transform: rotate(45deg);
 }

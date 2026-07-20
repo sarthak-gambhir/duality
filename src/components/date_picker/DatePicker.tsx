@@ -2,6 +2,8 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 const MONTHS = [
   "January",
@@ -110,6 +112,7 @@ export function DatePicker({
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const icons = useIcons();
 
   const baseId = useId();
   const gridLabelId = `${baseId}_grid_label`;
@@ -290,7 +293,7 @@ export function DatePicker({
           >
             {current ? format(current) : placeholder}
           </span>
-          <span className="du_date_picker_glyph" aria-hidden="true" />
+          <Icon icon={icons.calendar} className="du_date_picker_glyph" />
         </button>
         {clearable && current && !disabled && (
           <button
@@ -299,7 +302,7 @@ export function DatePicker({
             aria-label="Clear date"
             onClick={() => setCurrent(null)}
           >
-            <span aria-hidden="true">&times;</span>
+            <Icon icon={icons.close} />
           </button>
         )}
       </div>
@@ -313,7 +316,7 @@ export function DatePicker({
               aria-label="Previous month"
               onClick={() => setViewMonth(addMonths(viewMonth, -1))}
             >
-              <span aria-hidden="true">&lsaquo;</span>
+              <Icon icon={icons.chevronLeft} />
             </button>
             <span id={gridLabelId} className="du_date_picker_month">
               {monthLabel}
@@ -324,7 +327,7 @@ export function DatePicker({
               aria-label="Next month"
               onClick={() => setViewMonth(addMonths(viewMonth, 1))}
             >
-              <span aria-hidden="true">&rsaquo;</span>
+              <Icon icon={icons.chevronRight} />
             </button>
           </div>
 

@@ -1,5 +1,17 @@
 import { type ReactNode } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
+import type { DualityIcons } from "../icon/icons";
+
+const TONE_ICON: Record<
+  "info" | "warning" | "error",
+  keyof DualityIcons
+> = {
+  info: "toneInfo",
+  warning: "toneWarning",
+  error: "toneError",
+};
 
 export interface BannerProps {
   /** Severity. Signalled by marker shape + border style, never by color. */
@@ -27,12 +39,13 @@ export function Banner({
   dismissLabel = "Dismiss",
   className,
 }: BannerProps) {
+  const icons = useIcons();
   return (
     <div
       role={tone === "error" ? "alert" : "status"}
       className={cx("du_banner", `du_banner_${tone}`, className)}
     >
-      <span className="du_banner_marker" aria-hidden="true" />
+      <Icon icon={icons[TONE_ICON[tone]]} className="du_banner_marker" />
       <div className="du_banner_content">
         {title != null && <span className="du_banner_title">{title}</span>}
         {children != null && <span className="du_banner_body">{children}</span>}
@@ -45,7 +58,7 @@ export function Banner({
           aria-label={dismissLabel}
           onClick={onDismiss}
         >
-          &times;
+          <Icon icon={icons.close} />
         </button>
       )}
     </div>

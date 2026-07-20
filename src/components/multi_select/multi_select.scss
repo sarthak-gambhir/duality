@@ -107,28 +107,16 @@
 
 .du_multi_select_option_mark {
   flex: 0 0 auto;
-  inline-size: 10px;
-  block-size: 10px;
-  background-color: var(--bg);
-  border: var(--border-width) solid var(--fg);
+  visibility: hidden;
 }
 
 .du_multi_select_option[aria-selected="true"] .du_multi_select_option_mark {
-  background-color: var(--fg);
+  visibility: visible;
 }
 
 .du_multi_select_option[data-active] {
   color: var(--bg);
   background-color: var(--fg);
-}
-
-.du_multi_select_option[data-active] .du_multi_select_option_mark {
-  border-color: var(--bg);
-}
-
-.du_multi_select_option[data-active][aria-selected="true"]
-  .du_multi_select_option_mark {
-  background-color: var(--bg);
 }
 
 .du_multi_select_option[aria-disabled="true"] {

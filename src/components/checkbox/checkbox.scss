@@ -21,11 +21,25 @@
 
 .du_checkbox_box {
   position: relative;
+  display: flex;
   flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
   inline-size: var(--size-sm);
   block-size: var(--size-sm);
+
+  // Marks render in --bg against the filled --fg box when checked.
+  color: var(--bg);
   background-color: var(--bg);
   border: var(--border-width) solid var(--fg);
+}
+
+// Size the mark icons to the box; hidden until the matching state is active.
+.du_checkbox_check,
+.du_checkbox_dash {
+  display: none;
+  inline-size: calc(var(--size-sm) - var(--space-1));
+  block-size: calc(var(--size-sm) - var(--space-1));
 }
 
 .du_checkbox_input:checked ~ .du_checkbox_box,
@@ -33,26 +47,17 @@
   background-color: var(--fg);
 }
 
-.du_checkbox_input:checked ~ .du_checkbox_box::after {
-  content: "";
-  position: absolute;
-  inset-block-start: 2px;
-  inset-inline-start: 6px;
-  inline-size: 4px;
-  block-size: 9px;
-  border-inline-end: var(--border-width) solid var(--bg);
-  border-block-end: var(--border-width) solid var(--bg);
-  transform: rotate(45deg);
+.du_checkbox_input:checked ~ .du_checkbox_box .du_checkbox_check {
+  display: block;
 }
 
-.du_checkbox_input:indeterminate ~ .du_checkbox_box::after {
-  content: "";
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline: 3px;
-  block-size: var(--border-width);
-  background-color: var(--bg);
-  transform: translateY(-50%);
+// Indeterminate wins visually even if the input is also checked.
+.du_checkbox_input:indeterminate ~ .du_checkbox_box .du_checkbox_check {
+  display: none;
+}
+
+.du_checkbox_input:indeterminate ~ .du_checkbox_box .du_checkbox_dash {
+  display: block;
 }
 
 .du_checkbox_input:focus-visible ~ .du_checkbox_box {

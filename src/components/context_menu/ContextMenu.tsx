@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useLayoutEffect,
   useRef,
   useState,
@@ -40,8 +41,18 @@ export function ContextMenu({
   className,
 }: ContextMenuProps) {
   const [open, setOpen] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  // Raw viewport (client) coordinates of the triggering right-click.
+  const clickRef = useRef({ x: 0, y: 0 });
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  // Tracked as state (not just a ref) so the positioning effect re-runs once the
+  // menu node is actually attached. The Portal mounts its children a tick late,
+  // so on the initial open `menuRef.current` is still null in a layout effect.
+  const [menuEl, setMenuEl] = useState<HTMLDivElement | null>(null);
+  const setMenu = useCallback((node: HTMLDivElement | null) => {
+    menuRef.current = node;
+    setMenuEl(node);
+  }, []);
 
   useDismiss({
     enabled: open,
@@ -51,27 +62,54 @@ export function ContextMenu({
 
   const openAt = (event: MouseEvent) => {
     event.preventDefault();
-    setCoords({ x: event.clientX, y: event.clientY });
+    clickRef.current = { x: event.clientX, y: event.clientY };
+    // Start at the raw client coords; the layout effect corrects for any
+    // transformed containing block after measuring the rendered menu.
+    setPos({ x: event.clientX, y: event.clientY });
     setOpen(true);
   };
 
-  // Clamp into the viewport and focus the first item once measured.
+  // The menu is `position: fixed`, so its inset values live in the coordinate
+  // space of its containing block. That is normally the viewport, but a
+  // transformed ancestor (e.g. Storybook's zoom canvas) becomes the containing
+  // block instead and shifts/scales it. We render once at the raw client
+  // coordinates, measure where the menu actually landed, and correct by the
+  // measured delta (divided by the ancestor's scale) so it sits under the
+  // cursor and stays clamped to the viewport - regardless of any transform.
   useLayoutEffect(() => {
-    if (!open) return;
-    const el = menuRef.current;
-    if (!el) return;
+    if (!open || !menuEl) return;
+    const el = menuEl;
+
+    const { x: clientX, y: clientY } = clickRef.current;
     const rect = el.getBoundingClientRect();
-    const maxX = window.innerWidth - rect.width;
-    const maxY = window.innerHeight - rect.height;
-    setCoords((prev) => {
-      const x = Math.max(0, Math.min(prev.x, maxX));
-      const y = Math.max(0, Math.min(prev.y, maxY));
+    const scaleX = el.offsetWidth ? rect.width / el.offsetWidth : 1;
+    const scaleY = el.offsetHeight ? rect.height / el.offsetHeight : 1;
+
+    // Desired on-screen position: at the cursor, flipped/clamped to the viewport.
+    let targetLeft = clientX;
+    if (clientX + rect.width > window.innerWidth) {
+      targetLeft = window.innerWidth - rect.width;
+    }
+    targetLeft = Math.max(0, targetLeft);
+
+    let targetTop = clientY;
+    if (clientY + rect.height > window.innerHeight) {
+      targetTop = window.innerHeight - rect.height;
+    }
+    targetTop = Math.max(0, targetTop);
+
+    // Adjust our inset by the (scale-corrected) gap between where we want the
+    // menu and where it currently renders.
+    setPos((prev) => {
+      const x = prev.x + (targetLeft - rect.left) / scaleX;
+      const y = prev.y + (targetTop - rect.top) / scaleY;
       return x === prev.x && y === prev.y ? prev : { x, y };
     });
+
     el.querySelector<HTMLElement>(
       '[role="menuitem"]:not([aria-disabled="true"])',
     )?.focus();
-  }, [open]);
+  }, [open, menuEl]);
 
   const focusableItems = () =>
     Array.from(
@@ -129,11 +167,11 @@ export function ContextMenu({
       {open && (
         <Portal>
           <div
-            ref={menuRef}
+            ref={setMenu}
             role="menu"
             aria-label={ariaLabel}
             className="du_menu du_context_menu"
-            style={{ insetInlineStart: coords.x, insetBlockStart: coords.y }}
+            style={{ left: pos.x, top: pos.y }}
             onKeyDown={onKeyDown}
           >
             {items.map((item) =>

@@ -4,6 +4,18 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
+import type { DualityIcons } from "../icon/icons";
+
+const TONE_ICON: Record<
+  "info" | "warning" | "error",
+  keyof DualityIcons
+> = {
+  info: "toneInfo",
+  warning: "toneWarning",
+  error: "toneError",
+};
 
 export interface AlertProps extends Omit<
   ComponentPropsWithoutRef<"div">,
@@ -38,6 +50,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   },
   ref,
 ) {
+  const icons = useIcons();
   return (
     <div
       ref={ref}
@@ -50,7 +63,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
           {icon}
         </span>
       ) : (
-        <span className="du_alert_marker" aria-hidden="true" />
+        <Icon icon={icons[TONE_ICON[tone]]} className="du_alert_marker" />
       )}
       <div className="du_alert_content">
         {title != null && <div className="du_alert_title">{title}</div>}
@@ -64,7 +77,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
           aria-label={dismissLabel}
           onClick={onDismiss}
         >
-          &times;
+          <Icon icon={icons.close} />
         </button>
       )}
     </div>

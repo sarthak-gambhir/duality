@@ -1,4 +1,6 @@
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface StepperStep {
   /** Short step label. */
@@ -36,6 +38,7 @@ export function Stepper({
   className,
   "aria-label": ariaLabel,
 }: StepperProps) {
+  const icons = useIcons();
   const statusOf = (index: number): StepStatus =>
     index < activeStep
       ? "complete"
@@ -56,7 +59,7 @@ export function Stepper({
         const marker = (
           <span className="du_stepper_marker" aria-hidden="true">
             {status === "complete" ? (
-              <span className="du_stepper_check" />
+              <Icon icon={icons.stepComplete} className="du_stepper_check" />
             ) : (
               index + 1
             )}

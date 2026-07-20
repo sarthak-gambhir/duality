@@ -1,5 +1,7 @@
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface BadgeProps extends ComponentPropsWithoutRef<"span"> {
   /** `solid` is filled, `outline` is bordered only. */
@@ -37,6 +39,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   },
   ref,
 ) {
+  const icons = useIcons();
   const hasCount = count != null;
   if (hasCount && count === 0 && !showZero) return null;
 
@@ -58,7 +61,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
       )}
       {...rest}
     >
-      {dot && <span className="du_badge_dot" aria-hidden="true" />}
+      {dot && <Icon icon={icons.dot} className="du_badge_dot" />}
       {countLabel ?? children}
       {onRemove && (
         <button
@@ -67,7 +70,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
           aria-label={removeLabel}
           onClick={onRemove}
         >
-          &times;
+          <Icon icon={icons.close} />
         </button>
       )}
     </span>

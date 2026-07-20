@@ -4,6 +4,19 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
+import type { DualityIcons } from "../icon/icons";
+
+const STATUS_ICON: Record<
+  "complete" | "current" | "error" | "warning",
+  keyof DualityIcons
+> = {
+  complete: "markerComplete",
+  current: "markerCurrent",
+  error: "toneError",
+  warning: "toneWarning",
+};
 
 export interface TimelineItem {
   /** Stable identity. */
@@ -28,21 +41,29 @@ export interface TimelineProps extends ComponentPropsWithoutRef<"ol"> {
 /** Vertical event list with pixel markers and connectors. */
 export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(
   function Timeline({ items, className, ...rest }, ref) {
+    const icons = useIcons();
     return (
       <ol ref={ref} className={cx("du_timeline", className)} {...rest}>
-        {items.map((item, index) => (
+        {items.map((item, index) => {
+          const status = item.status ?? "complete";
+          return (
           <li
             key={item.id}
             className="du_timeline_item"
-            data-status={item.status ?? "complete"}
+            data-status={status}
           >
             <div className="du_timeline_rail" aria-hidden="true">
               {item.icon != null ? (
                 <span className="du_timeline_marker du_timeline_marker_icon">
                   {item.icon}
                 </span>
-              ) : (
+              ) : status === "upcoming" ? (
                 <span className="du_timeline_marker" />
+              ) : (
+                <Icon
+                  icon={icons[STATUS_ICON[status]]}
+                  className="du_timeline_marker du_timeline_marker_icon"
+                />
               )}
               {index < items.length - 1 && (
                 <span className="du_timeline_connector" />
@@ -62,7 +83,8 @@ export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(
               )}
             </div>
           </li>
-        ))}
+          );
+        })}
       </ol>
     );
   },

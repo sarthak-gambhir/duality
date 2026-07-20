@@ -44,6 +44,12 @@
   line-height: 1;
 }
 
+// Fallback icon scales with the avatar's font-size scale.
+.du_avatar_fallback {
+  inline-size: 1.4em;
+  block-size: 1.4em;
+}
+
 // Overlapping stack. Each avatar keeps a --bg ring (via its own border on the
 // --bg surface) so neighbours stay visually separated where they overlap.
 .du_avatar_group {

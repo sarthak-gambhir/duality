@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -8,12 +9,18 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface TreeNode {
   /** Unique node id. */
   id: string;
   /** Node label. */
   label: ReactNode;
+  /** Leading icon/marker (decorative). */
+  icon?: ReactNode;
+  /** Plain-text value for typeahead / aria when `label` is not a string. */
+  textValue?: string;
   /** Child nodes. */
   children?: TreeNode[];
   /** Prevents selection. */
@@ -36,6 +43,8 @@ export interface TreeProps extends Omit<
   expanded?: string[];
   /** Initially expanded node ids (uncontrolled). */
   defaultExpanded?: string[];
+  /** Expand every parent node initially (uncontrolled convenience). */
+  defaultExpandAll?: boolean;
   /** Called with the new set of expanded ids. */
   onExpandedChange?: (ids: string[]) => void;
   /** Selected node id (controlled). */
@@ -64,6 +73,23 @@ function flatten(
   return acc;
 }
 
+/** Ids of every node that has children (for `defaultExpandAll`). */
+function collectParentIds(nodes: TreeNode[], acc: string[] = []): string[] {
+  for (const node of nodes) {
+    if (node.children?.length) {
+      acc.push(node.id);
+      collectParentIds(node.children, acc);
+    }
+  }
+  return acc;
+}
+
+/** Lowercased text used for typeahead matching and aria labels. */
+function nodeText(node: TreeNode): string {
+  if (node.textValue) return node.textValue.toLowerCase();
+  return typeof node.label === "string" ? node.label.toLowerCase() : "";
+}
+
 /**
  * Data-driven tree. `role="tree"` with roving focus over the visible nodes:
  * Up/Down move, Right expands or descends, Left collapses or ascends, Home/End
@@ -73,6 +99,7 @@ export function Tree({
   items,
   expanded,
   defaultExpanded,
+  defaultExpandAll,
   onExpandedChange,
   selected,
   defaultSelected,
@@ -83,7 +110,8 @@ export function Tree({
 }: TreeProps) {
   const [expandedList, setExpandedList] = useControllableState<string[]>({
     value: expanded,
-    defaultValue: defaultExpanded ?? [],
+    defaultValue:
+      defaultExpanded ?? (defaultExpandAll ? collectParentIds(items) : []),
     onChange: onExpandedChange,
   });
   const [selectedId, setSelectedId] = useControllableState<string | undefined>({
@@ -92,11 +120,18 @@ export function Tree({
     onChange: onSelectedChange as (v: string | undefined) => void,
   });
 
+  const icons = useIcons();
   const expandedSet = useMemo(() => new Set(expandedList), [expandedList]);
   const flat = useMemo(() => flatten(items, expandedSet), [items, expandedSet]);
 
   const [activeId, setActiveId] = useState<string | undefined>(items[0]?.id);
   const rootRef = useRef<HTMLUListElement>(null);
+  const typeaheadBuffer = useRef("");
+  const typeaheadTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+
+  useEffect(() => () => clearTimeout(typeaheadTimer.current), []);
 
   const focusNode = (id: string) => {
     rootRef.current
@@ -134,6 +169,26 @@ export function Tree({
       if ((flat[i] as FlatNode).level === level - 1) return flat[i];
     }
     return undefined;
+  };
+
+  // Typeahead: focus the next visible node whose text starts with the buffered
+  // keystrokes, wrapping around. The buffer clears after a short idle window.
+  const onTypeahead = (char: string) => {
+    clearTimeout(typeaheadTimer.current);
+    typeaheadBuffer.current += char.toLowerCase();
+    const buffer = typeaheadBuffer.current;
+    const from = indexOf(activeId ?? flat[0]?.node.id);
+    const count = flat.length;
+    for (let step = 1; step <= count; step += 1) {
+      const candidate = flat[(from + step) % count];
+      if (candidate && nodeText(candidate.node).startsWith(buffer)) {
+        setActive(candidate.node.id);
+        break;
+      }
+    }
+    typeaheadTimer.current = setTimeout(() => {
+      typeaheadBuffer.current = "";
+    }, 500);
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
@@ -200,8 +255,18 @@ export function Tree({
         if (hasChildren) toggleExpand(node.id);
         break;
       }
-      default:
+      default: {
+        if (
+          event.key.length === 1 &&
+          event.key !== " " &&
+          !event.ctrlKey &&
+          !event.metaKey &&
+          !event.altKey
+        ) {
+          onTypeahead(event.key);
+        }
         break;
+      }
     }
   };
 
@@ -224,7 +289,9 @@ export function Tree({
           <li
             key={node.id}
             role="treeitem"
-            aria-label={typeof node.label === "string" ? node.label : undefined}
+            aria-label={
+              typeof node.label === "string" ? node.label : node.textValue
+            }
             aria-expanded={hasChildren ? isExpanded : undefined}
             aria-selected={isSelected}
             aria-level={level}
@@ -247,13 +314,17 @@ export function Tree({
               }}
             >
               {hasChildren ? (
-                <span
+                <Icon
+                  icon={isExpanded ? icons.chevronDown : icons.chevronRight}
                   className="du_tree_caret"
-                  data-open={isExpanded || undefined}
-                  aria-hidden="true"
                 />
               ) : (
                 <span className="du_tree_spacer" aria-hidden="true" />
+              )}
+              {node.icon != null && (
+                <span className="du_tree_icon" aria-hidden="true">
+                  {node.icon}
+                </span>
               )}
               <span className="du_tree_label">{node.label}</span>
             </div>

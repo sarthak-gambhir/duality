@@ -7,6 +7,8 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface CheckboxProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -22,6 +24,7 @@ export interface CheckboxProps extends Omit<
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   function Checkbox({ label, indeterminate = false, className, ...rest }, ref) {
     const innerRef = useRef<HTMLInputElement>(null);
+    const icons = useIcons();
 
     useEffect(() => {
       if (innerRef.current) innerRef.current.indeterminate = indeterminate;
@@ -41,7 +44,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           className="du_checkbox_input"
           {...rest}
         />
-        <span className="du_checkbox_box" aria-hidden="true" />
+        <span className="du_checkbox_box" aria-hidden="true">
+          <Icon icon={icons.check} className="du_checkbox_check" />
+          <Icon icon={icons.dash} className="du_checkbox_dash" />
+        </span>
         {label != null && <span className="du_checkbox_label">{label}</span>}
       </label>
     );

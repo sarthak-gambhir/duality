@@ -1,0 +1,8 @@
+// Icons inherit the current text color (react-icons default is
+// fill: currentColor), so they follow --fg / --bg and invert with their
+// surface automatically. This rule just keeps them optically aligned.
+.du_icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  vertical-align: middle;
+}

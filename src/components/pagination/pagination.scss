@@ -16,3 +16,9 @@
   color: var(--fg);
   font-family: var(--font-mono);
 }
+
+// Prev/next/ellipsis icons read small at the button's text size, so scale them
+// up relative to the icon-only control.
+.du_pagination_list .du_icon {
+  font-size: 1.3em;
+}

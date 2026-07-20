@@ -1,6 +1,8 @@
 import { type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
 import { Button } from "../button/Button";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface PaginationProps extends Omit<
   ComponentPropsWithoutRef<"nav">,
@@ -53,6 +55,7 @@ export function Pagination({
   "aria-label": ariaLabel = "Pagination",
   ...rest
 }: PaginationProps) {
+  const icons = useIcons();
   const items = buildRange(page, count, siblingCount);
 
   return (
@@ -70,7 +73,7 @@ export function Pagination({
             disabled={page <= 1}
             onClick={() => onPageChange(page - 1)}
           >
-            Prev
+            <Icon icon={icons.chevronLeft} />
           </Button>
         </li>
         {items.map((item, index) => (
@@ -87,7 +90,7 @@ export function Pagination({
               </Button>
             ) : (
               <span className="du_pagination_ellipsis" aria-hidden="true">
-                ...
+                <Icon icon={icons.more} />
               </span>
             )}
           </li>
@@ -100,7 +103,7 @@ export function Pagination({
             disabled={page >= count}
             onClick={() => onPageChange(page + 1)}
           >
-            Next
+            <Icon icon={icons.chevronRight} />
           </Button>
         </li>
       </ul>

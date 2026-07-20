@@ -8,11 +8,18 @@
 .du_rating_item {
   @include m.du_reset_control;
 
+  display: flex;
   flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
   inline-size: var(--size-md);
   block-size: var(--size-md);
+  color: var(--fg);
   background-color: var(--bg);
   cursor: pointer;
+
+  // Fill-only icons can't render an outline, so each position is framed by a
+  // bordered cell; the star icon marks filled/half. Empty = an empty cell.
   border: var(--border-width) solid var(--fg);
 
   &:focus-visible {
@@ -23,32 +30,18 @@
   &:disabled {
     cursor: default;
   }
-
-  &[data-filled] {
-    background-color: var(--fg);
-  }
-
-  // Half block: a hard two-color split (no intermediate tone), start edge filled.
-  &[data-half] {
-    background-image: linear-gradient(
-      to right,
-      var(--fg) 0 50%,
-      var(--bg) 50% 100%
-    );
-  }
 }
 
-// Disabled: dither each block and hollow any fill so state is never color-only.
+.du_rating_star {
+  inline-size: 80%;
+  block-size: 80%;
+}
+
+// Disabled: dither each cell so state is never color-only.
 .du_rating_disabled .du_rating_item {
   @include m.du_dither;
 
   cursor: not-allowed;
-
-  &[data-filled],
-  &[data-half] {
-    background-image: none;
-    background-color: var(--fg);
-  }
 }
 
 .du_rating_sm .du_rating_item {

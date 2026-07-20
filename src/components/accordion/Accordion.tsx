@@ -7,6 +7,8 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 interface AccordionContextValue {
   isOpen: (value: string) => boolean;
@@ -82,6 +84,7 @@ export function AccordionItem({
   ...rest
 }: AccordionItemProps) {
   const ctx = useAccordion();
+  const icons = useIcons();
   const open = ctx.isOpen(value);
   const headerId = `${ctx.idBase}_header_${value}`;
   const panelId = `${ctx.idBase}_panel_${value}`;
@@ -99,7 +102,10 @@ export function AccordionItem({
           onClick={() => ctx.toggle(value)}
         >
           <span className="du_accordion_title">{title}</span>
-          <span className="du_accordion_icon" aria-hidden="true" />
+          <Icon
+            icon={open ? icons.chevronUp : icons.chevronDown}
+            className="du_accordion_icon"
+          />
         </button>
       </h3>
       <div

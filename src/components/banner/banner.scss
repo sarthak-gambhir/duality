@@ -13,9 +13,6 @@
 
 .du_banner_marker {
   flex: 0 0 auto;
-  inline-size: 12px;
-  block-size: 12px;
-  background-color: var(--fg);
 }
 
 .du_banner_content {
@@ -59,25 +56,16 @@
   }
 }
 
-// Tone: shape of the marker + border style, never color.
+// Tone: icon (chosen in TSX) + border style, never color alone.
 .du_banner_info {
   border-style: solid;
 }
 
 .du_banner_warning {
   border-style: dashed;
-
-  .du_banner_marker {
-    background-color: var(--bg);
-    border: var(--border-width) solid var(--fg);
-  }
 }
 
 .du_banner_error {
   border-style: double;
   border-width: var(--border-width-thick);
-
-  .du_banner_marker {
-    transform: rotate(45deg);
-  }
 }

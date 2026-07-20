@@ -11,11 +11,7 @@
 
 // Default decorative marker: an outlined pixel diamond.
 .du_empty_state_marker {
-  inline-size: 24px;
-  block-size: 24px;
-  background-color: var(--bg);
-  border: var(--border-width) solid var(--fg);
-  transform: rotate(45deg);
+  flex: 0 0 auto;
 }
 
 .du_empty_state_icon {

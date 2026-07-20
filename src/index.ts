@@ -20,6 +20,17 @@ export {
   AAA_CONTRAST,
 } from "./theme/contrast";
 
+// Icons
+export { Icon } from "./components/icon/Icon";
+export type { IconProps } from "./components/icon/Icon";
+export {
+  IconsProvider,
+  useIcons,
+} from "./components/icon/IconsProvider";
+export type { IconsProviderProps } from "./components/icon/IconsProvider";
+export { defaultIcons } from "./components/icon/icons";
+export type { DualityIcons } from "./components/icon/icons";
+
 // Shared
 export { cx } from "./utils/cx";
 export type {
@@ -151,11 +162,12 @@ export type { BannerProps } from "./components/banner/Banner";
 
 // Data
 export { Table, THead, TBody, Tr, Th, Td } from "./components/table/Table";
-export type { TableProps } from "./components/table/Table";
+export type { TableProps, ThProps, TdProps } from "./components/table/Table";
 export { DataTable } from "./components/data_table/DataTable";
 export type {
   DataTableProps,
   DataTableColumn,
+  RowId,
 } from "./components/data_table/DataTable";
 export { Tree } from "./components/tree/Tree";
 export type { TreeProps, TreeNode } from "./components/tree/Tree";

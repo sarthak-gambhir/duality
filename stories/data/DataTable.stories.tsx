@@ -1,5 +1,11 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Badge, DataTable, type DataTableColumn } from "../../src";
+import {
+  Badge,
+  DataTable,
+  type DataTableColumn,
+  type RowId,
+} from "../../src";
 
 const meta: Meta<typeof DataTable> = {
   title: "Data/DataTable",
@@ -66,6 +72,67 @@ export const Default: Story = {
       data={people}
       getRowId={(p) => p.name}
       initialSort={{ columnId: "name", direction: "asc" }}
+      aria-label="Team members"
+    />
+  ),
+};
+
+export const Selectable: Story = {
+  render: function SelectableStory() {
+    const [selected, setSelected] = useState<RowId[]>(["Ada Lovelace"]);
+    return (
+      <DataTable
+        columns={columns}
+        data={people}
+        getRowId={(p) => p.name}
+        selectable
+        selectedIds={selected}
+        onSelectionChange={setSelected}
+        aria-label="Team members"
+      />
+    );
+  },
+};
+
+const manyPeople: Person[] = Array.from({ length: 23 }).map((_, i) => ({
+  name: `Person ${String(i + 1).padStart(2, "0")}`,
+  role: ["Engineer", "Researcher", "Analyst"][i % 3] as string,
+  level: (i % 6) + 1,
+  active: i % 2 === 0,
+}));
+
+export const Paginated: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={manyPeople}
+      getRowId={(p) => p.name}
+      pageSize={5}
+      aria-label="Team members"
+    />
+  ),
+};
+
+export const Loading: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={[]}
+      isLoading
+      aria-label="Team members"
+    />
+  ),
+};
+
+export const StickyAndClickable: Story = {
+  render: () => (
+    <DataTable
+      columns={columns}
+      data={manyPeople}
+      getRowId={(p) => p.name}
+      stickyHeader
+      maxHeight={240}
+      onRowClick={(p) => window.alert(`Clicked ${p.name}`)}
       aria-label="Team members"
     />
   ),

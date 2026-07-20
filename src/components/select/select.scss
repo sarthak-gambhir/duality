@@ -57,18 +57,9 @@
   font-size: 18px;
 }
 
-// CSS caret: a filled foreground triangle that flips when open.
+// Caret icon: chevron that swaps direction (in TSX) when the list opens.
 .du_select_caret {
   flex: 0 0 auto;
-  inline-size: 0;
-  block-size: 0;
-  border-inline: 5px solid transparent;
-  border-block-start: 6px solid var(--fg);
-}
-
-.du_select_button[data-open] .du_select_caret {
-  border-block-start: 0;
-  border-block-end: 6px solid var(--fg);
 }
 
 .du_select_invalid .du_select_button {
@@ -122,13 +113,11 @@
   flex: 1 1 auto;
 }
 
-// Selection is shown by a filled marker (never color alone); the active option
-// (keyboard or hover) inverts the two colors.
+// Selection is shown by a check icon (never color alone); it reserves its space
+// even when hidden so labels stay aligned. The active option inverts colors.
 .du_select_option_mark {
   flex: 0 0 auto;
-  inline-size: 10px;
-  block-size: 10px;
-  background-color: var(--bg);
+  visibility: hidden;
 }
 
 // Trailing marker: label fills the leading space, marker sits at the end edge.
@@ -137,20 +126,12 @@
 }
 
 .du_select_option[aria-selected="true"] .du_select_option_mark {
-  background-color: var(--fg);
+  visibility: visible;
 }
 
 .du_select_option[data-active] {
   color: var(--bg);
   background-color: var(--fg);
-}
-
-.du_select_option[data-active] .du_select_option_mark {
-  background-color: var(--fg);
-}
-
-.du_select_option[data-active][aria-selected="true"] .du_select_option_mark {
-  background-color: var(--bg);
 }
 
 .du_select_option[aria-disabled="true"] {

@@ -18,8 +18,50 @@
   font-weight: 700;
 }
 
+// Size scale: cell padding only, so borders and inversion stay identical.
+// Declared before the header-band rule to keep specificity non-descending.
+.du_table_sm th,
+.du_table_sm td {
+  padding: var(--space-1) var(--space-2);
+}
+
+.du_table_md th,
+.du_table_md td {
+  padding: var(--space-2) var(--space-3);
+}
+
+.du_table_lg th,
+.du_table_lg td {
+  padding: var(--space-3) var(--space-4);
+}
+
 // Header row inverts to read as a distinct band without a second color.
 .du_table thead th {
   color: var(--bg);
   background-color: var(--fg);
+}
+
+// Sticky header: pins the inverted band to the top of a scroll container.
+// The header keeps its own --fg background so rows never show through.
+.du_table_sticky thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+.du_table caption {
+  padding-block-end: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-align: start;
+  caption-side: top;
+}
+
+// Alignment (set by the `align` prop on Th/Td, or `data-align` directly).
+.du_table [data-align="end"] {
+  text-align: end;
+}
+
+.du_table [data-align="center"] {
+  text-align: center;
 }

@@ -5,7 +5,7 @@ import { ContextMenu, type ContextMenuItem } from "../../src";
 const meta: Meta<typeof ContextMenu> = {
   title: "Overlays/ContextMenu",
   component: ContextMenu,
-  parameters: { docsMinHeight: 320 },
+  parameters: { docsMinHeight: 360 },
 };
 
 export default meta;
@@ -27,7 +27,7 @@ function Demo() {
           style={{
             display: "grid",
             placeItems: "center",
-            blockSize: 160,
+            blockSize: 200,
             border: "var(--border-width) dashed var(--fg)",
             fontFamily: "var(--font-sans)",
           }}

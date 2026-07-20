@@ -10,6 +10,8 @@ import { cx } from "../../utils/cx";
 import { Portal } from "../../utils/Portal";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFocusTrap } from "../../utils/useFocusTrap";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface Command {
   /** Unique id. */
@@ -75,6 +77,7 @@ export function CommandPalette({
 
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const icons = useIcons();
   const optionRefs = useRef<Array<HTMLElement | null>>([]);
 
   const baseId = useId();
@@ -165,6 +168,8 @@ export function CommandPalette({
           aria-label={ariaLabel}
           className={cx("du_command", className)}
         >
+          <div className="du_command_search">
+          <Icon icon={icons.search} className="du_command_search_icon" />
           <input
             ref={inputRef}
             type="text"
@@ -187,6 +192,7 @@ export function CommandPalette({
             }}
             onKeyDown={onKeyDown}
           />
+          </div>
 
           <ul id={listboxId} role="listbox" className="du_command_list">
             {filtered.length === 0 && (

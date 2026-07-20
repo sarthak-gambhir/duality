@@ -84,27 +84,16 @@
 
 .du_combobox_option_mark {
   flex: 0 0 auto;
-  inline-size: 10px;
-  block-size: 10px;
-  background-color: var(--bg);
+  visibility: hidden;
 }
 
 .du_combobox_option[aria-selected="true"] .du_combobox_option_mark {
-  background-color: var(--fg);
+  visibility: visible;
 }
 
 .du_combobox_option[data-active] {
   color: var(--bg);
   background-color: var(--fg);
-}
-
-.du_combobox_option[data-active] .du_combobox_option_mark {
-  background-color: var(--fg);
-}
-
-.du_combobox_option[data-active][aria-selected="true"]
-  .du_combobox_option_mark {
-  background-color: var(--bg);
 }
 
 .du_combobox_option[aria-disabled="true"] {

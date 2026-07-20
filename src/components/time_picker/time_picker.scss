@@ -11,6 +11,11 @@
 }
 
 // Clear affordance beside the trigger; shares the trigger's border language.
+// Icon-only clear button: size the glyph to the button box, not the font.
+.du_time_picker_clear .du_icon {
+  font-size: 20px;
+}
+
 .du_time_picker_clear {
   @include m.du_reset_control;
   @include m.du_focus;
@@ -66,10 +71,6 @@
 // Small pixel clock glyph: a box with a heavier bottom edge.
 .du_time_picker_glyph {
   flex: 0 0 auto;
-  inline-size: 12px;
-  block-size: 12px;
-  border: var(--border-width) solid var(--fg);
-  border-block-end-width: var(--border-width-thick);
 }
 
 .du_time_picker_sm {

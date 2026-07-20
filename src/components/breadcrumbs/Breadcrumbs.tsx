@@ -1,5 +1,7 @@
 import { Fragment, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { cx } from "../../utils/cx";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 import { Link } from "../link/Link";
 
 export interface BreadcrumbItem {
@@ -10,18 +12,20 @@ export interface BreadcrumbItem {
 export interface BreadcrumbsProps extends ComponentPropsWithoutRef<"nav"> {
   /** Ordered crumbs from root to current page. */
   items: BreadcrumbItem[];
-  /** Separator between crumbs. Defaults to a slash. */
+  /** Separator between crumbs. Defaults to a chevron icon. */
   separator?: ReactNode;
 }
 
 /** Hierarchical navigation trail; the last crumb is the current page. */
 export function Breadcrumbs({
   items,
-  separator = "/",
+  separator,
   className,
   "aria-label": ariaLabel = "Breadcrumb",
   ...rest
 }: BreadcrumbsProps) {
+  const icons = useIcons();
+  const sep = separator ?? <Icon icon={icons.chevronRight} />;
   return (
     <nav
       aria-label={ariaLabel}
@@ -44,7 +48,7 @@ export function Breadcrumbs({
               </li>
               {!isLast && (
                 <li aria-hidden="true" className="du_breadcrumbs_separator">
-                  {separator}
+                  {sep}
                 </li>
               )}
             </Fragment>

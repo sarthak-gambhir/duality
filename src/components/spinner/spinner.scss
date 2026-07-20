@@ -3,21 +3,14 @@
 }
 
 .du_spinner {
-  position: relative;
   display: inline-block;
-  border: var(--border-width) solid var(--fg);
   animation: du_spinner_spin 0.8s steps(8) infinite;
 }
 
-// Asymmetric filled corner so the rotation reads as motion.
-.du_spinner::after {
-  content: "";
-  position: absolute;
-  inset-block-start: calc(-1 * var(--border-width));
-  inset-inline-start: calc(-1 * var(--border-width));
-  inline-size: 6px;
-  block-size: 6px;
-  background-color: var(--fg);
+@media (prefers-reduced-motion: reduce) {
+  .du_spinner {
+    animation-duration: 1.6s;
+  }
 }
 
 .du_spinner_sm {

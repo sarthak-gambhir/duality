@@ -9,6 +9,8 @@ import {
 } from "react";
 import { Portal } from "../../utils/Portal";
 import { Alert } from "../alert/Alert";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 export interface ToastOptions {
   title?: ReactNode;
@@ -55,6 +57,7 @@ export function ToastProvider({
   placement = "bottom-end",
 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const icons = useIcons();
   const timers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   const dismiss = useCallback((id: string) => {
@@ -109,7 +112,7 @@ export function ToastProvider({
                   className="du_toast_close"
                   onClick={() => dismiss(t.id)}
                 >
-                  x
+                  <Icon icon={icons.close} />
                 </button>
               </div>
             ))}

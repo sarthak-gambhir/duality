@@ -48,17 +48,9 @@
 }
 
 // Pixel caret that flips when the section is open.
+// Caret icon (swapped in TSX): chevron down when collapsed, up when open.
 .du_accordion_icon {
   flex: 0 0 auto;
-  inline-size: 0;
-  block-size: 0;
-  border-inline: 5px solid transparent;
-  border-block-start: 6px solid currentColor;
-}
-
-.du_accordion_trigger[data-open] .du_accordion_icon {
-  border-block-start: 0;
-  border-block-end: 6px solid currentColor;
 }
 
 .du_accordion_panel {

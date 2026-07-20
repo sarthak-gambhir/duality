@@ -46,9 +46,7 @@
 // visible on both solid (--bg) and outline (--fg) badges.
 .du_badge_dot {
   flex: 0 0 auto;
-  inline-size: 8px;
-  block-size: 8px;
-  background-color: currentcolor;
+  font-size: 0.6em;
 }
 
 // Remove control for chip/tag use. Inverts the two colors on hover.

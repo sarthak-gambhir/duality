@@ -2,6 +2,8 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -98,6 +100,7 @@ export function TimePicker({
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const icons = useIcons();
   const baseId = useId();
 
   useDismiss({
@@ -296,7 +299,7 @@ export function TimePicker({
           >
             {label}
           </span>
-          <span className="du_time_picker_glyph" aria-hidden="true" />
+          <Icon icon={icons.clock} className="du_time_picker_glyph" />
         </button>
         {clearable && parts && !disabled && (
           <button
@@ -305,7 +308,7 @@ export function TimePicker({
             aria-label="Clear time"
             onClick={() => setCurrent(null)}
           >
-            <span aria-hidden="true">&times;</span>
+            <Icon icon={icons.close} />
           </button>
         )}
       </div>
