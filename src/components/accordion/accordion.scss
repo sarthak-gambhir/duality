@@ -51,6 +51,7 @@
 // Caret icon (swapped in TSX): chevron down when collapsed, up when open.
 .du_accordion_icon {
   flex: 0 0 auto;
+  font-size: var(--icon-md);
 }
 
 .du_accordion_panel {

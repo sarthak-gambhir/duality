@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Checkbox } from "../../src";
 
@@ -12,7 +13,24 @@ type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {};
 export const Checked: Story = { args: { defaultChecked: true } };
-export const Indeterminate: Story = { args: { indeterminate: true } };
+
+function IndeterminateDemo() {
+  const [indeterminate, setIndeterminate] = useState(true);
+  const [checked, setChecked] = useState(false);
+  return (
+    <Checkbox
+      label="Accept terms"
+      indeterminate={indeterminate}
+      checked={checked}
+      onChange={(e) => {
+        setIndeterminate(false);
+        setChecked(e.target.checked);
+      }}
+    />
+  );
+}
+
+export const Indeterminate: Story = { render: () => <IndeterminateDemo /> };
 export const Disabled: Story = {
   args: { disabled: true, defaultChecked: true },
 };

@@ -104,9 +104,11 @@ button.du_stepper_button {
 }
 
 // Pixel check drawn with two borders, like the checkbox.
+// Proportional to the marker box (density-safe) rather than a fixed token, so
+// it never overflows the circle when the box shrinks under compact density.
 .du_stepper_check {
-  inline-size: 1em;
-  block-size: 1em;
+  inline-size: calc(var(--size-md) - var(--space-2));
+  block-size: calc(var(--size-md) - var(--space-2));
 }
 
 .du_stepper_connector {

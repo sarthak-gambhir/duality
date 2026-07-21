@@ -100,7 +100,7 @@ export function TagInput({
       <ul className="du_tag_input_list">
         {tags.map((tag, index) => (
           <li key={`${tag}_${index}`} className="du_tag_input_chip">
-            <Badge className="du_tag_input_badge">
+            <Badge className="du_tag_input_badge du_badge_removable">
               <span className="du_tag_input_text">{tag}</span>
               {!disabled && (
                 <button

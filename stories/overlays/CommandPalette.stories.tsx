@@ -1,6 +1,15 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import {
+  RiFileAddLine,
+  RiFolderOpenLine,
+  RiSaveLine,
+  RiScissorsLine,
+  RiFileCopyLine,
+  RiClipboardLine,
+  RiContrastLine,
+} from "react-icons/ri";
+import {
   Button,
   CommandPalette,
   Text,
@@ -20,6 +29,7 @@ type Story = StoryObj<typeof CommandPalette>;
 function Demo() {
   const { isOpen, open, close } = useDisclosure();
   const [last, setLast] = useState<string>("");
+  const [inverted, setInverted] = useState(false);
 
   const commands: Command[] = [
     {
@@ -27,12 +37,17 @@ function Demo() {
       label: "New file",
       group: "File",
       keywords: ["create"],
+      icon: RiFileAddLine,
+      description: "Create an empty file",
+      shortcut: ["Ctrl", "N"],
       onSelect: () => setLast("New file"),
     },
     {
       id: "open",
       label: "Open file",
       group: "File",
+      icon: RiFolderOpenLine,
+      shortcut: ["Ctrl", "O"],
       onSelect: () => setLast("Open file"),
     },
     {
@@ -40,19 +55,31 @@ function Demo() {
       label: "Save",
       group: "File",
       keywords: ["write"],
+      icon: RiSaveLine,
+      shortcut: ["Ctrl", "S"],
       onSelect: () => setLast("Save"),
     },
-    { id: "cut", label: "Cut", group: "Edit", onSelect: () => setLast("Cut") },
+    {
+      id: "cut",
+      label: "Cut",
+      group: "Edit",
+      icon: RiScissorsLine,
+      shortcut: ["Ctrl", "X"],
+      onSelect: () => setLast("Cut"),
+    },
     {
       id: "copy",
       label: "Copy",
       group: "Edit",
+      icon: RiFileCopyLine,
+      shortcut: ["Ctrl", "C"],
       onSelect: () => setLast("Copy"),
     },
     {
       id: "paste",
       label: "Paste",
       group: "Edit",
+      icon: RiClipboardLine,
       disabled: true,
       onSelect: () => setLast("Paste"),
     },
@@ -61,7 +88,12 @@ function Demo() {
       label: "Toggle theme",
       group: "View",
       keywords: ["dark", "invert"],
-      onSelect: () => setLast("Toggle theme"),
+      icon: RiContrastLine,
+      description: "Invert the preview colors",
+      onSelect: () => {
+        setInverted((prev) => !prev);
+        setLast("Toggle theme");
+      },
     },
   ];
 
@@ -73,7 +105,24 @@ function Demo() {
           Ran: {last}
         </Text>
       )}
-      <CommandPalette isOpen={isOpen} onClose={close} commands={commands} />
+      <div
+        style={{
+          marginBlockStart: "var(--space-3)",
+          padding: "var(--space-3)",
+          border: "var(--border-width) solid var(--fg)",
+          color: inverted ? "var(--bg)" : "var(--fg)",
+          backgroundColor: inverted ? "var(--fg)" : "var(--bg)",
+        }}
+      >
+        Preview ({inverted ? "inverted" : "normal"}) - run &ldquo;Toggle
+        theme&rdquo; to flip.
+      </div>
+      <CommandPalette
+        isOpen={isOpen}
+        onClose={close}
+        commands={commands}
+        recentIds={["save", "theme"]}
+      />
     </>
   );
 }

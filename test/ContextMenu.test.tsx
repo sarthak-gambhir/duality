@@ -56,4 +56,23 @@ describe("ContextMenu", () => {
     fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   });
+
+  it("restores focus to the prior element on Escape", () => {
+    const items: ContextMenuItem[] = [{ id: "copy", label: "Copy" }];
+    render(
+      <>
+        <button>Before</button>
+        <ContextMenu items={items} aria-label="menu">
+          <div data-testid="target">Target</div>
+        </ContextMenu>
+      </>,
+    );
+    const before = screen.getByRole("button", { name: "Before" });
+    before.focus();
+    expect(before).toHaveFocus();
+
+    fireEvent.contextMenu(screen.getByTestId("target"));
+    fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
+    expect(before).toHaveFocus();
+  });
 });

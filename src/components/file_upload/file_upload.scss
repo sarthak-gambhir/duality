@@ -94,10 +94,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: 20px;
-  block-size: 20px;
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
   color: var(--fg);
-  font-size: 18px;
+  font-size: var(--icon-lg);
   line-height: 1;
   cursor: pointer;
 

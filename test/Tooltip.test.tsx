@@ -53,4 +53,34 @@ describe("Tooltip", () => {
       expect(screen.queryByRole("tooltip")).not.toBeInTheDocument(),
     );
   });
+
+  it("shows immediately when controlled open", () => {
+    render(
+      <Tooltip content="Always here" open>
+        <Button>Save</Button>
+      </Tooltip>,
+    );
+    expect(screen.getByRole("tooltip")).toHaveTextContent("Always here");
+  });
+
+  it("keeps the tooltip visible during the close delay", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tooltip content="Lingers" openDelay={0} closeDelay={150}>
+        <Button>Save</Button>
+      </Tooltip>,
+    );
+    const trigger = screen.getByRole("button", { name: "Save" });
+
+    await user.hover(trigger);
+    await screen.findByRole("tooltip");
+
+    await user.unhover(trigger);
+    // Still present immediately after leaving the trigger.
+    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.queryByRole("tooltip")).not.toBeInTheDocument(),
+    );
+  });
 });

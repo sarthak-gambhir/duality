@@ -60,6 +60,7 @@
 // Caret icon: chevron that swaps direction (in TSX) when the list opens.
 .du_select_caret {
   flex: 0 0 auto;
+  font-size: var(--icon-md);
 }
 
 .du_select_invalid .du_select_button {

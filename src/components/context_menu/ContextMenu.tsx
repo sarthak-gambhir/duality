@@ -9,6 +9,7 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { Portal } from "../../utils/Portal";
+import { clampToViewport } from "../../utils/floating";
 import { useDismiss } from "../../utils/useDismiss";
 
 export interface ContextMenuItem {
@@ -49,6 +50,8 @@ export function ContextMenu({
   // menu node is actually attached. The Portal mounts its children a tick late,
   // so on the initial open `menuRef.current` is still null in a layout effect.
   const [menuEl, setMenuEl] = useState<HTMLDivElement | null>(null);
+  // Element focused before the menu opened, restored on Escape for parity with Menu.
+  const previousFocus = useRef<HTMLElement | null>(null);
   const setMenu = useCallback((node: HTMLDivElement | null) => {
     menuRef.current = node;
     setMenuEl(node);
@@ -62,11 +65,17 @@ export function ContextMenu({
 
   const openAt = (event: MouseEvent) => {
     event.preventDefault();
+    previousFocus.current = document.activeElement as HTMLElement | null;
     clickRef.current = { x: event.clientX, y: event.clientY };
     // Start at the raw client coords; the layout effect corrects for any
     // transformed containing block after measuring the rendered menu.
     setPos({ x: event.clientX, y: event.clientY });
     setOpen(true);
+  };
+
+  const closeAndRestoreFocus = () => {
+    setOpen(false);
+    previousFocus.current?.focus?.();
   };
 
   // The menu is `position: fixed`, so its inset values live in the coordinate
@@ -85,18 +94,12 @@ export function ContextMenu({
     const scaleX = el.offsetWidth ? rect.width / el.offsetWidth : 1;
     const scaleY = el.offsetHeight ? rect.height / el.offsetHeight : 1;
 
-    // Desired on-screen position: at the cursor, flipped/clamped to the viewport.
-    let targetLeft = clientX;
-    if (clientX + rect.width > window.innerWidth) {
-      targetLeft = window.innerWidth - rect.width;
-    }
-    targetLeft = Math.max(0, targetLeft);
-
-    let targetTop = clientY;
-    if (clientY + rect.height > window.innerHeight) {
-      targetTop = window.innerHeight - rect.height;
-    }
-    targetTop = Math.max(0, targetTop);
+    // Desired on-screen position: at the cursor, clamped to the viewport.
+    const { left: targetLeft, top: targetTop } = clampToViewport(
+      { x: clientX, y: clientY },
+      { width: rect.width, height: rect.height },
+      { width: window.innerWidth, height: window.innerHeight },
+    );
 
     // Adjust our inset by the (scale-corrected) gap between where we want the
     // menu and where it currently renders.
@@ -140,7 +143,7 @@ export function ContextMenu({
         break;
       case "Escape":
         event.preventDefault();
-        setOpen(false);
+        closeAndRestoreFocus();
         break;
       case "Tab":
         setOpen(false);

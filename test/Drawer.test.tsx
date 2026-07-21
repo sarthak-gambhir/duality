@@ -46,4 +46,25 @@ describe("Drawer", () => {
     fireEvent.mouseDown(document.body);
     expect(onClose).toHaveBeenCalled();
   });
+
+  it("maps a size preset to the panel dimension", () => {
+    render(
+      <Drawer isOpen onClose={() => {}} side="end" size="sm" aria-label="S">
+        <DrawerBody>Body</DrawerBody>
+      </Drawer>,
+    );
+    expect(screen.getByRole("dialog")).toHaveStyle({ inlineSize: "280px" });
+  });
+
+  it("renders a close button that calls onClose", async () => {
+    const onClose = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Drawer isOpen onClose={onClose} showCloseButton aria-label="Settings">
+        <DrawerBody>Body</DrawerBody>
+      </Drawer>,
+    );
+    await user.click(screen.getByRole("button", { name: "Close" }));
+    expect(onClose).toHaveBeenCalled();
+  });
 });

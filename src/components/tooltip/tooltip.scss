@@ -1,41 +1,44 @@
 .du_tooltip_root {
-  position: relative;
   display: inline-flex;
 }
 
+// Positioned via inline `position: fixed` + coords from useAnchorPosition.
 .du_tooltip {
-  position: absolute;
-  z-index: 900;
+  z-index: var(--z-popover);
   padding: var(--space-1) var(--space-2);
   color: var(--bg);
   background-color: var(--fg);
   font-family: var(--font-sans);
   font-size: 14px;
   white-space: nowrap;
-  pointer-events: none;
   border: var(--border-width) solid var(--fg);
 }
 
-.du_tooltip_top {
-  inset-block-end: calc(100% + var(--space-2));
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
+// Inverted (fg-filled) square straddling the tooltip edge.
+.du_tooltip_arrow {
+  position: absolute;
+  inline-size: 8px;
+  block-size: 8px;
+  background-color: var(--fg);
+  transform: rotate(45deg);
 }
 
-.du_tooltip_bottom {
-  inset-block-start: calc(100% + var(--space-2));
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
+.du_tooltip[data-side="bottom"] .du_tooltip_arrow {
+  inset-block-start: -4px;
+  margin-inline-start: -4px;
 }
 
-.du_tooltip_left {
-  inset-inline-end: calc(100% + var(--space-2));
-  inset-block-start: 50%;
-  transform: translateY(-50%);
+.du_tooltip[data-side="top"] .du_tooltip_arrow {
+  inset-block-end: -4px;
+  margin-inline-start: -4px;
 }
 
-.du_tooltip_right {
-  inset-inline-start: calc(100% + var(--space-2));
-  inset-block-start: 50%;
-  transform: translateY(-50%);
+.du_tooltip[data-side="right"] .du_tooltip_arrow {
+  inset-inline-start: -4px;
+  margin-block-start: -4px;
+}
+
+.du_tooltip[data-side="left"] .du_tooltip_arrow {
+  inset-inline-end: -4px;
+  margin-block-start: -4px;
 }

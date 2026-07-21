@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { ConfirmDialog } from "../src/components/confirm_dialog/ConfirmDialog";
@@ -68,5 +68,43 @@ describe("ConfirmDialog", () => {
       />,
     );
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("uses the alertdialog role for the danger tone", () => {
+    render(
+      <ConfirmDialog
+        isOpen
+        tone="danger"
+        title="Delete?"
+        onConfirm={vi.fn()}
+        onCancel={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("alertdialog")).toBeInTheDocument();
+  });
+
+  it("disables the buttons while an async confirm is pending", async () => {
+    const user = userEvent.setup();
+    let resolve!: () => void;
+    const pending = new Promise<void>((r) => {
+      resolve = r;
+    });
+    render(
+      <ConfirmDialog
+        isOpen
+        title="Save?"
+        confirmLabel="Save"
+        onConfirm={() => pending}
+        onCancel={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /Save/ }));
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeDisabled();
+
+    resolve();
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "Cancel" })).not.toBeDisabled(),
+    );
   });
 });

@@ -30,6 +30,13 @@
   img,
   svg {
     display: block;
+  }
+
+  // The responsive cap is for content media only. Duality icons are sized
+  // deliberately (font-size / size prop), so exclude them or the cap squashes
+  // them to their parent's width.
+  img,
+  svg:not(.du_icon) {
     max-width: 100%;
   }
 }

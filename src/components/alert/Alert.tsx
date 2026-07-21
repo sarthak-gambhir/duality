@@ -8,11 +8,11 @@ import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { DualityIcons } from "../icon/icons";
 
-const TONE_ICON: Record<
-  "info" | "warning" | "error",
-  keyof DualityIcons
-> = {
+type AlertTone = "info" | "success" | "warning" | "error";
+
+const TONE_ICON: Record<AlertTone, keyof DualityIcons> = {
   info: "toneInfo",
+  success: "toneSuccess",
   warning: "toneWarning",
   error: "toneError",
 };
@@ -22,7 +22,7 @@ export interface AlertProps extends Omit<
   "title"
 > {
   /** Severity. Signalled by marker shape + border style, never by color. */
-  tone?: "info" | "warning" | "error";
+  tone?: AlertTone;
   /** Optional bold heading above the body. */
   title?: ReactNode;
   /** Replaces the default tone marker (e.g. a custom pixel icon). */

@@ -47,18 +47,33 @@ export const Dismissible: Story = {
 };
 
 export const WithAction: Story = {
-  render: () => (
-    <div style={{ maxWidth: 480 }}>
-      <Alert
-        tone="warning"
-        title="Update available"
-        action={<Button size="sm">Update</Button>}
-        onDismiss={() => {}}
-      >
-        A new version is ready to install.
-      </Alert>
-    </div>
-  ),
+  render: function WithActionStory() {
+    const [open, setOpen] = useState(true);
+    const [status, setStatus] = useState<string | null>(null);
+    return (
+      <div style={{ maxWidth: 480, display: "grid", gap: "var(--space-2)" }}>
+        {open ? (
+          <Alert
+            tone="warning"
+            title="Update available"
+            action={
+              <Button size="sm" onClick={() => setStatus("Update started")}>
+                Update
+              </Button>
+            }
+            onDismiss={() => setOpen(false)}
+          >
+            A new version is ready to install.
+          </Alert>
+        ) : (
+          <Button size="sm" onClick={() => setOpen(true)}>
+            Restore alert
+          </Button>
+        )}
+        {status && <p style={{ margin: 0 }}>{status}</p>}
+      </div>
+    );
+  },
 };
 
 export const CustomIcon: Story = {

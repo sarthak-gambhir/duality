@@ -1,5 +1,6 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Badge } from "../../src";
+import { Badge, Button } from "../../src";
 
 const meta: Meta<typeof Badge> = {
   title: "Display/Badge",
@@ -52,15 +53,37 @@ export const Count: Story = {
   ),
 };
 
-export const Removable: Story = {
-  render: () => (
+const INITIAL_TAGS = [
+  { id: "design", label: "Design", variant: "outline" as const },
+  { id: "engineering", label: "Engineering", variant: "solid" as const },
+];
+
+function RemovableDemo() {
+  const [tags, setTags] = useState(INITIAL_TAGS);
+  if (tags.length === 0) {
+    return (
+      <Button size="sm" onClick={() => setTags(INITIAL_TAGS)}>
+        Reset tags
+      </Button>
+    );
+  }
+  return (
     <div style={{ display: "flex", gap: "var(--space-2)" }}>
-      <Badge variant="outline" onRemove={() => {}}>
-        Design
-      </Badge>
-      <Badge variant="solid" onRemove={() => {}}>
-        Engineering
-      </Badge>
+      {tags.map((tag) => (
+        <Badge
+          key={tag.id}
+          variant={tag.variant}
+          onRemove={() =>
+            setTags((prev) => prev.filter((t) => t.id !== tag.id))
+          }
+        >
+          {tag.label}
+        </Badge>
+      ))}
     </div>
-  ),
+  );
+}
+
+export const Removable: Story = {
+  render: () => <RemovableDemo />,
 };

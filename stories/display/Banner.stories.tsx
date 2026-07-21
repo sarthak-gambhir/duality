@@ -30,17 +30,25 @@ export const Dismissible: Story = {
   render: () => {
     function Demo() {
       const [open, setOpen] = useState(true);
+      const [managing, setManaging] = useState(false);
       if (!open)
         return <Button onClick={() => setOpen(true)}>Show banner</Button>;
       return (
-        <Banner
-          tone="info"
-          title="Cookies"
-          action={<Button size="sm">Manage</Button>}
-          onDismiss={() => setOpen(false)}
-        >
-          We use two colors and nothing else.
-        </Banner>
+        <Stack gap={2}>
+          <Banner
+            tone="info"
+            title="Cookies"
+            action={
+              <Button size="sm" onClick={() => setManaging((prev) => !prev)}>
+                Manage
+              </Button>
+            }
+            onDismiss={() => setOpen(false)}
+          >
+            We use two colors and nothing else.
+          </Banner>
+          {managing && <span>Preferences panel opened.</span>}
+        </Stack>
       );
     }
     return <Demo />;

@@ -22,7 +22,7 @@ export {
 
 // Icons
 export { Icon } from "./components/icon/Icon";
-export type { IconProps } from "./components/icon/Icon";
+export type { IconProps, IconSize } from "./components/icon/Icon";
 export {
   IconsProvider,
   useIcons,
@@ -44,6 +44,17 @@ export type { PortalProps } from "./utils/Portal";
 export { useDisclosure } from "./utils/useDisclosure";
 export type { Disclosure } from "./utils/useDisclosure";
 export { useControllableState } from "./utils/useControllableState";
+export {
+  computePosition,
+  clampToViewport,
+  useAnchorPosition,
+} from "./utils/floating";
+export type {
+  Side,
+  Placement,
+  PositionResult,
+  ComputePositionOptions,
+} from "./utils/floating";
 
 // Layout
 export { Box } from "./components/box/Box";
@@ -214,18 +225,27 @@ export {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  ModalCloseButton,
 } from "./components/modal/Modal";
-export type { ModalProps, ModalSectionProps } from "./components/modal/Modal";
+export type {
+  ModalProps,
+  ModalSectionProps,
+  ModalSize,
+  ModalCloseButtonProps,
+} from "./components/modal/Modal";
 export {
   Drawer,
   DrawerHeader,
   DrawerBody,
   DrawerFooter,
+  DrawerCloseButton,
 } from "./components/drawer/Drawer";
 export type {
   DrawerProps,
   DrawerSectionProps,
   DrawerSide,
+  DrawerSize,
+  DrawerCloseButtonProps,
 } from "./components/drawer/Drawer";
 export { ConfirmDialog } from "./components/confirm_dialog/ConfirmDialog";
 export type { ConfirmDialogProps } from "./components/confirm_dialog/ConfirmDialog";
@@ -260,4 +280,5 @@ export type {
   ToastProviderProps,
   ToastOptions,
   ToastPlacement,
+  ToastAction,
 } from "./components/toast/ToastProvider";

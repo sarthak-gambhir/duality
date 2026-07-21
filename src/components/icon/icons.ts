@@ -8,10 +8,10 @@ import {
   RiArrowUpDownLine,
   RiArrowUpSLine,
   RiCalendarLine,
-  RiCheckboxBlankCircleLine,
   RiCheckboxCircleLine,
   RiCheckLine,
   RiCircleFill,
+  RiCircleLine,
   RiCloseLine,
   RiErrorWarningLine,
   RiInboxLine,
@@ -54,6 +54,7 @@ export interface DualityIcons {
   deltaDown: IconType;
   deltaNeutral: IconType;
   toneInfo: IconType;
+  toneSuccess: IconType;
   toneWarning: IconType;
   toneError: IconType;
   stepComplete: IconType;
@@ -91,12 +92,13 @@ export const defaultIcons: DualityIcons = {
   deltaDown: RiArrowDownSLine,
   deltaNeutral: RiSubtractLine,
   toneInfo: RiInformationLine,
+  toneSuccess: RiCheckboxCircleLine,
   toneWarning: RiAlertLine,
   toneError: RiErrorWarningLine,
   stepComplete: RiCheckLine,
   markerComplete: RiCheckboxCircleLine,
   markerCurrent: RiRecordCircleLine,
-  markerBlank: RiCheckboxBlankCircleLine,
+  markerBlank: RiCircleLine,
   // A status/selection dot is filled by definition, so it keeps the fill glyph
   // even though the rest of the set uses line variants.
   dot: RiCircleFill,

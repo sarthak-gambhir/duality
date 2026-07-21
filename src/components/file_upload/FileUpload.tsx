@@ -134,7 +134,7 @@ export function FileUpload({
         <Icon
           icon={icons.upload}
           className="du_file_upload_zone_icon"
-          size={24}
+          size="xl"
         />
         <span>{label}</span>
       </div>

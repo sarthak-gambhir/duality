@@ -34,12 +34,16 @@
   border: var(--border-width) solid var(--fg);
 }
 
-// Size the mark icons to the box; hidden until the matching state is active.
-.du_checkbox_check,
-.du_checkbox_dash {
+// Size the mark icons to the box's inner area, less a small inset so the glyph
+// never touches the border (which reads as cramped/broken, especially for
+// wider glyphs like a double-check). Hidden until the matching state is active.
+// Scoped under the box so this beats the shared `.du_icon` display rule
+// regardless of stylesheet order; otherwise a mark can stay visible.
+.du_checkbox_box .du_checkbox_check,
+.du_checkbox_box .du_checkbox_dash {
   display: none;
-  inline-size: calc(var(--size-sm) - var(--space-1));
-  block-size: calc(var(--size-sm) - var(--space-1));
+  inline-size: calc(var(--size-sm) - var(--border-width));
+  block-size: calc(var(--size-sm) - var(--border-width));
 }
 
 .du_checkbox_input:checked ~ .du_checkbox_box,

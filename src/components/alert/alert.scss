@@ -28,9 +28,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: 12px;
-  block-size: 12px;
-  margin-block-start: 3px;
+  inline-size: var(--icon-lg);
+  block-size: var(--icon-lg);
+  font-size: var(--icon-lg);
+  margin-block-start: 1px;
 }
 
 .du_alert_close {
@@ -40,10 +41,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: 24px;
-  block-size: 24px;
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
   color: var(--fg);
-  font-size: 20px;
+  font-size: var(--icon-lg);
   line-height: 1;
   cursor: pointer;
 
@@ -70,11 +71,17 @@
 // severity is never conveyed by icon/color alone.
 .du_alert_marker {
   flex: 0 0 auto;
-  margin-block-start: 2px;
+  font-size: var(--icon-lg);
+  margin-block-start: 1px;
 }
 
 .du_alert_info {
   border-style: solid;
+}
+
+// Success: a doubled 2px border - distinct from info (solid) and error (thick).
+.du_alert_success {
+  border-style: double;
 }
 
 .du_alert_warning {

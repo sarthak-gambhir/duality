@@ -60,11 +60,12 @@
 // (icon is swapped in TSX).
 .du_tree_caret {
   flex: 0 0 auto;
+  font-size: var(--icon-md);
 }
 
 .du_tree_spacer {
   flex: 0 0 auto;
-  inline-size: 1em;
+  inline-size: var(--icon-md);
 }
 
 .du_tree_icon {
@@ -72,4 +73,5 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-size: var(--icon-md);
 }

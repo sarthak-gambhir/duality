@@ -3,7 +3,7 @@
 .du_modal_backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,9 +14,15 @@
 }
 
 .du_modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   inline-size: 100%;
-  max-block-size: calc(100vh - var(--space-7));
-  overflow-y: auto;
+
+  // Cap to the backdrop (its padded content box) rather than the raw viewport,
+  // so the body scrolls correctly inside transformed/auto-sized containers too.
+  max-block-size: 100%;
+  overflow: hidden;
   color: var(--fg);
   background-color: var(--bg);
 
@@ -24,19 +30,79 @@
   @include m.du_focus;
 }
 
+// Width presets; an explicit `maxWidth` prop overrides via inline style.
+.du_modal_size_sm {
+  max-inline-size: 360px;
+}
+
+.du_modal_size_md {
+  max-inline-size: 480px;
+}
+
+.du_modal_size_lg {
+  max-inline-size: 640px;
+}
+
+.du_modal_size_xl {
+  max-inline-size: 800px;
+}
+
+.du_modal_size_full {
+  max-inline-size: none;
+  max-block-size: 100%;
+}
+
+.du_modal_close {
+  @include m.du_reset_control;
+
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
+  color: var(--fg);
+  font-size: var(--icon-lg);
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover {
+    @include m.du_invert;
+  }
+
+  &:focus-visible {
+    outline: var(--border-width) solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
 .du_modal_header {
+  flex: 0 0 auto;
   padding: var(--space-4);
   border-bottom: var(--border-width) solid var(--fg);
 }
 
+// Only the body scrolls; the header and footer stay pinned.
 .du_modal_body {
+  flex: 1 1 auto;
+  min-block-size: 0;
   padding: var(--space-4);
+  overflow-y: auto;
 }
 
 .du_modal_footer {
   display: flex;
+  flex: 0 0 auto;
   gap: var(--space-2);
   justify-content: flex-end;
   padding: var(--space-4);
   border-top: var(--border-width) solid var(--fg);
+}
+
+// With no body, the header and footer meet directly; drop the footer's top
+// border so the two rules don't stack into a doubled edge.
+.du_modal_header + .du_modal_footer {
+  border-top: 0;
 }

@@ -1,13 +1,12 @@
 @use "../../styles/mixins" as m;
 
 .du_popover_root {
-  position: relative;
   display: inline-flex;
 }
 
+// Positioned via inline `position: fixed` + coords from useAnchorPosition.
 .du_popover {
-  position: absolute;
-  z-index: 900;
+  z-index: var(--z-popover);
   min-inline-size: 180px;
   padding: var(--space-3);
   color: var(--fg);
@@ -16,22 +15,39 @@
   @include m.du_border;
 }
 
-.du_popover_bottom_start {
-  inset-block-start: calc(100% + var(--space-1));
-  inset-inline-start: 0;
+// Pointer arrow: a bordered square rotated 45deg straddling the panel edge.
+.du_popover_arrow {
+  position: absolute;
+  inline-size: 8px;
+  block-size: 8px;
+  background-color: var(--bg);
+  transform: rotate(45deg);
 }
 
-.du_popover_bottom_end {
-  inset-block-start: calc(100% + var(--space-1));
-  inset-inline-end: 0;
+.du_popover[data-side="bottom"] .du_popover_arrow {
+  inset-block-start: -5px;
+  margin-inline-start: -4px;
+  border-block-start: var(--border-width) solid var(--fg);
+  border-inline-start: var(--border-width) solid var(--fg);
 }
 
-.du_popover_top_start {
-  inset-block-end: calc(100% + var(--space-1));
-  inset-inline-start: 0;
+.du_popover[data-side="top"] .du_popover_arrow {
+  inset-block-end: -5px;
+  margin-inline-start: -4px;
+  border-block-end: var(--border-width) solid var(--fg);
+  border-inline-end: var(--border-width) solid var(--fg);
 }
 
-.du_popover_top_end {
-  inset-block-end: calc(100% + var(--space-1));
-  inset-inline-end: 0;
+.du_popover[data-side="right"] .du_popover_arrow {
+  inset-inline-start: -5px;
+  margin-block-start: -4px;
+  border-block-end: var(--border-width) solid var(--fg);
+  border-inline-start: var(--border-width) solid var(--fg);
+}
+
+.du_popover[data-side="left"] .du_popover_arrow {
+  inset-inline-end: -5px;
+  margin-block-start: -4px;
+  border-block-start: var(--border-width) solid var(--fg);
+  border-inline-end: var(--border-width) solid var(--fg);
 }

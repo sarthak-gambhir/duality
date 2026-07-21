@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import {
   Button,
@@ -18,8 +19,9 @@ const meta: Meta<typeof Card> = {
 export default meta;
 type Story = StoryObj<typeof Card>;
 
-export const WithSections: Story = {
-  render: () => (
+function WithSectionsDemo() {
+  const [count, setCount] = useState(0);
+  return (
     <Card style={{ maxWidth: 360 }}>
       <CardHeader>
         <Heading level={3}>Card title</Heading>
@@ -31,10 +33,17 @@ export const WithSections: Story = {
         </Text>
       </CardBody>
       <CardFooter>
-        <Button size="sm">Action</Button>
+        <Button size="sm" onClick={() => setCount((prev) => prev + 1)}>
+          Action
+        </Button>
+        {count > 0 && <Text size="sm">Ran {count}×</Text>}
       </CardFooter>
     </Card>
-  ),
+  );
+}
+
+export const WithSections: Story = {
+  render: () => <WithSectionsDemo />,
 };
 
 export const WithMedia: Story = {

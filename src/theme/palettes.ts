@@ -21,9 +21,9 @@ export interface Palette {
 }
 
 export const palettes = {
-  classic: { label: "Classic", fg: "#141414", bg: "#f7f7f4" },
+  classic: { label: "Classic", fg: "#141414", bg: "#fcfbff" },
   dark: { label: "Dark", fg: "#f0f0ee", bg: "#0d0d0d" },
-  paper: { label: "Paper", fg: "#26221a", bg: "#f6ece7" },
+  paper: { label: "Paper", fg: "#26221a", bg: "#f0eee7" },
   slate: { label: "Slate", fg: "#ccd2d9", bg: "#242930" },
   sepia: { label: "Sepia", fg: "#55422a", bg: "#fff3c8" },
   amber: { label: "Amber CRT", fg: "#ffc233", bg: "#201b1e" },

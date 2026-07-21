@@ -49,7 +49,9 @@
   font-size: 0.6em;
 }
 
-// Remove control for chip/tag use. Inverts the two colors on hover.
+// Remove control for chip/tag use: keep only a minimal trailing gap so the
+// remove button sits at the end without jamming against the border (zero looks
+// misaligned/cramped). The larger leading padding is kept.
 .du_badge_removable {
   padding-inline-end: var(--space-1);
 }
@@ -61,10 +63,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: 16px;
-  block-size: 16px;
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
   color: inherit;
-  font-size: 16px;
+  font-size: var(--icon-sm);
   line-height: 1;
   cursor: pointer;
 

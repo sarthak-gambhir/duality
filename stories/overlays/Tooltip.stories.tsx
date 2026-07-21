@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button, Tooltip } from "../../src";
 
@@ -25,9 +26,63 @@ export const Placements: Story = {
       <Tooltip content="On bottom" placement="bottom">
         <Button variant="inverse">Bottom</Button>
       </Tooltip>
+      <Tooltip content="On the left" placement="left">
+        <Button variant="inverse">Left</Button>
+      </Tooltip>
       <Tooltip content="On the right" placement="right">
         <Button variant="inverse">Right</Button>
       </Tooltip>
     </div>
   ),
+};
+
+export const WithArrow: Story = {
+  render: () => (
+    <div style={{ padding: "var(--space-7)" }}>
+      <Tooltip content="Now with a pointer" placement="top" arrow>
+        <Button variant="inverse">Hover me</Button>
+      </Tooltip>
+    </div>
+  ),
+};
+
+export const Delays: Story = {
+  render: () => (
+    <div
+      style={{
+        display: "flex",
+        gap: "var(--space-6)",
+        padding: "var(--space-7)",
+      }}
+    >
+      <Tooltip content="Opens instantly" openDelay={0}>
+        <Button variant="inverse">No open delay</Button>
+      </Tooltip>
+      <Tooltip content="Lingers on exit" closeDelay={600} arrow>
+        <Button variant="inverse">Close delay 600ms</Button>
+      </Tooltip>
+    </div>
+  ),
+};
+
+function ControlledDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ padding: "var(--space-7)" }}>
+      <Tooltip
+        content="Toggled by click, not hover"
+        placement="right"
+        open={open}
+        arrow
+      >
+        <Button variant="inverse" onClick={() => setOpen((prev) => !prev)}>
+          {open ? "Hide" : "Show"} tip
+        </Button>
+      </Tooltip>
+    </div>
+  );
+}
+
+export const Controlled: Story = {
+  render: () => <ControlledDemo />,
 };

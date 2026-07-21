@@ -58,7 +58,10 @@ export const Timeline = forwardRef<HTMLOListElement, TimelineProps>(
                   {item.icon}
                 </span>
               ) : status === "upcoming" ? (
-                <span className="du_timeline_marker" />
+                <Icon
+                  icon={icons.markerBlank}
+                  className="du_timeline_marker du_timeline_marker_icon"
+                />
               ) : (
                 <Icon
                   icon={icons[STATUS_ICON[status]]}

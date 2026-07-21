@@ -5,7 +5,7 @@ import { ContextMenu, type ContextMenuItem } from "../../src";
 const meta: Meta<typeof ContextMenu> = {
   title: "Overlays/ContextMenu",
   component: ContextMenu,
-  parameters: { docsMinHeight: 360 },
+  parameters: { docsMinHeight: 420 },
 };
 
 export default meta;

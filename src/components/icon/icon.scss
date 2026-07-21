@@ -6,3 +6,20 @@
   flex: 0 0 auto;
   vertical-align: middle;
 }
+
+// Named size tiers. The icon renders at 1em, so font-size drives its box.
+.du_icon_sm {
+  font-size: var(--icon-sm);
+}
+
+.du_icon_md {
+  font-size: var(--icon-md);
+}
+
+.du_icon_lg {
+  font-size: var(--icon-lg);
+}
+
+.du_icon_xl {
+  font-size: var(--icon-xl);
+}

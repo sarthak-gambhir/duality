@@ -45,7 +45,9 @@
   border-radius: 50%;
 }
 
-.du_radio_mark {
+// Scoped under the dot so this beats the shared `.du_icon` display rule
+// regardless of stylesheet order; otherwise the mark can show when unchecked.
+.du_radio_dot .du_radio_mark {
   display: none;
   inline-size: calc(var(--size-sm) - var(--space-2));
   block-size: calc(var(--size-sm) - var(--space-2));

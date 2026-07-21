@@ -195,7 +195,7 @@ export function MultiSelect({
         }}
       >
         {selectedOptions.map((option) => (
-          <Badge key={option.value} className="du_multi_select_chip">
+          <Badge key={option.value} className="du_multi_select_chip du_badge_removable">
             <span>{option.label}</span>
             <button
               type="button"

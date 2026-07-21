@@ -1,10 +1,12 @@
 import {
   cloneElement,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useId,
   useRef,
+  useState,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
   type MouseEvent,
@@ -12,6 +14,8 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { Portal } from "../../utils/Portal";
+import { useAnchorPosition, type Placement } from "../../utils/floating";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 
@@ -21,7 +25,8 @@ interface MenuContextValue {
 
 const MenuContext = createContext<MenuContextValue | null>(null);
 
-export type MenuPlacement = "bottom-start" | "bottom-end";
+/** Full placement set (any side, optionally aligned to start/end). */
+export type MenuPlacement = Placement;
 
 interface TriggerProps {
   onClick?: (event: MouseEvent) => void;
@@ -34,6 +39,16 @@ export interface MenuProps {
   children: ReactNode;
   /** Anchor position. Defaults to bottom-start. */
   placement?: MenuPlacement;
+  /** Gap between trigger and menu, in px. Defaults to 8. */
+  offset?: number;
+  /** Flip to the opposite side on overflow. Defaults to true. */
+  flip?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Initial open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Called when open state changes. */
+  onOpenChange?: (open: boolean) => void;
   /** Accessible name for the menu. */
   "aria-label"?: string;
   className?: string;
@@ -46,20 +61,43 @@ export function Menu({
   trigger,
   children,
   placement = "bottom-start",
+  offset,
+  flip,
+  open,
+  defaultOpen = false,
+  onOpenChange,
   "aria-label": ariaLabel,
   className,
 }: MenuProps) {
-  const [isOpen, setOpen] = useControllableState({ defaultValue: false });
+  const [isOpen, setOpen] = useControllableState({
+    value: open,
+    defaultValue: defaultOpen,
+    onChange: onOpenChange,
+  });
   const rootRef = useRef<HTMLSpanElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const [menuEl, setMenuEl] = useState<HTMLDivElement | null>(null);
+  const setMenu = useCallback((node: HTMLDivElement | null) => {
+    menuRef.current = node;
+    setMenuEl(node);
+  }, []);
   const id = useId();
   const menuId = `${id}_menu`;
 
   useDismiss({
     enabled: isOpen,
     onDismiss: () => setOpen(false),
-    refs: [rootRef],
+    refs: [rootRef, menuRef],
+  });
+
+  const position = useAnchorPosition({
+    anchorRef: rootRef,
+    floatingEl: menuEl,
+    placement,
+    offset,
+    flip,
+    enabled: isOpen,
   });
 
   const items = () =>
@@ -67,9 +105,10 @@ export function Menu({
       menuRef.current?.querySelectorAll<HTMLElement>(ITEM_SELECTOR) ?? [],
     );
 
+  // Focus the first item once the portaled menu has actually attached.
   useEffect(() => {
-    if (isOpen) items()[0]?.focus();
-  }, [isOpen]);
+    if (isOpen && menuEl) items()[0]?.focus();
+  }, [isOpen, menuEl]);
 
   const closeAndFocusTrigger = () => {
     setOpen(false);
@@ -123,22 +162,22 @@ export function Menu({
     <span ref={rootRef} className="du_menu_root">
       {clonedTrigger}
       {isOpen && (
-        <div
-          ref={menuRef}
-          role="menu"
-          id={menuId}
-          aria-label={ariaLabel}
-          className={cx(
-            "du_menu",
-            `du_menu_${placement.replace("-", "_")}`,
-            className,
-          )}
-          onKeyDown={onMenuKeyDown}
-        >
-          <MenuContext.Provider value={{ close: closeAndFocusTrigger }}>
-            {children}
-          </MenuContext.Provider>
-        </div>
+        <Portal>
+          <div
+            ref={setMenu}
+            role="menu"
+            id={menuId}
+            aria-label={ariaLabel}
+            data-side={position.side}
+            className={cx("du_menu", className)}
+            style={position.floatingStyle}
+            onKeyDown={onMenuKeyDown}
+          >
+            <MenuContext.Provider value={{ close: closeAndFocusTrigger }}>
+              {children}
+            </MenuContext.Provider>
+          </div>
+        </Portal>
       )}
     </span>
   );

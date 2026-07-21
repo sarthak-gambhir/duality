@@ -8,6 +8,7 @@ import {
 } from "react-icons/ri";
 import {
   Badge,
+  Button,
   Checkbox,
   Icon,
   IconsProvider,
@@ -69,6 +70,7 @@ export const RegistryOverride: Story = {
   render: () => {
     function Demo() {
       const [checked, setChecked] = useState(true);
+      const [removed, setRemoved] = useState(false);
       return (
         <Stack gap={4}>
           <Checkbox
@@ -76,7 +78,13 @@ export const RegistryOverride: Story = {
             checked={checked}
             onChange={(e) => setChecked(e.target.checked)}
           />
-          <Badge onRemove={() => {}}>Removable</Badge>
+          {removed ? (
+            <Button size="sm" onClick={() => setRemoved(false)}>
+              Restore badge
+            </Button>
+          ) : (
+            <Badge onRemove={() => setRemoved(true)}>Removable</Badge>
+          )}
           <div style={{ maxWidth: 240 }}>
             <Select
               aria-label="Fruit"

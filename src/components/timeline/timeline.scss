@@ -19,25 +19,21 @@
   align-items: center;
 }
 
-// Upcoming nodes use this empty bordered circle; complete/current/error/warning
-// swap in a circular icon (chosen in TSX) so every node reads as a round dot.
+// Sizing base for every node marker. Complete/current/upcoming/error/warning
+// all render a circular icon (chosen in TSX) via the _icon modifier below, so
+// every node reads as a round dot.
 .du_timeline_marker {
   flex: 0 0 auto;
-  inline-size: 20px;
-  block-size: 20px;
+  inline-size: var(--icon-lg);
+  block-size: var(--icon-lg);
   margin-block-start: 1px;
-  background-color: var(--bg);
-  border: var(--border-width) solid var(--fg);
-  border-radius: 50%;
 }
 
-// Icon marker (status or custom): render the content, no default box chrome.
+// Icon marker (status or custom): center the glyph in the marker box.
 .du_timeline_marker_icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
-  border: 0;
 }
 
 .du_timeline_marker_icon .du_icon {

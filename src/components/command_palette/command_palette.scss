@@ -3,11 +3,11 @@
 .du_command_backdrop {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-modal);
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-block-start: 10vh;
+  padding-block: 10vh var(--space-4);
   padding-inline: var(--space-4);
 
   @include m.du_dither;
@@ -18,7 +18,10 @@
   flex-direction: column;
   inline-size: 100%;
   max-inline-size: 560px;
-  max-block-size: 70vh;
+
+  // Cap to the backdrop's padded content box rather than the raw viewport, so
+  // it fits transformed/auto-sized containers (e.g. Storybook Docs) too.
+  max-block-size: 100%;
   color: var(--fg);
   background-color: var(--bg);
   border: var(--border-width) solid var(--fg);
@@ -37,7 +40,7 @@
 
 .du_command_search_icon {
   flex: 0 0 auto;
-  font-size: 18px;
+  font-size: var(--icon-md);
 }
 
 .du_command_input {
@@ -80,7 +83,9 @@
 .du_command_option {
   @include m.du_reset_control;
 
-  display: block;
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
   inline-size: 100%;
   padding: var(--space-2) var(--space-3);
   color: var(--fg);
@@ -102,8 +107,50 @@
   }
 }
 
+.du_command_option_icon {
+  flex: 0 0 auto;
+  font-size: var(--icon-md);
+}
+
+.du_command_option_text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.du_command_option_desc {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+// Shortcut badges inherit the active row's inverted colors.
+.du_command_option_shortcut {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: var(--space-1);
+}
+
 .du_command_empty {
   padding: var(--space-3);
   font-family: var(--font-sans);
   font-style: italic;
+}
+
+// Hint bar pinned below the list.
+.du_command_footer {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  border-block-start: var(--border-width) solid var(--fg);
+}
+
+.du_command_hint {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
 }

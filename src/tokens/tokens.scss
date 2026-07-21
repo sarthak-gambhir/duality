@@ -72,9 +72,9 @@ $font_mono:
 // Each entry: (fg, bg). Every pair MUST meet WCAG AAA (>= 7:1) contrast.
 // Mirrored in `src/theme/palettes.ts`.
 $palettes: (
-  "classic": (#141414, #f7f7f4),
+  "classic": (#141414, #fcfbff),
   "dark": (#f0f0ee, #0d0d0d),
-  "paper": (#26221a, #f6ece7),
+  "paper": (#26221a, #f0eee7),
   "slate": (#ccd2d9, #242930),
   "sepia": (#55422a, #fff3c8),
   "amber": (#ffc233, #201b1e),
@@ -109,6 +109,18 @@ $default_palette: "classic";
   --border-width: 2px;
   --border-width-thick: 4px;
   --radius: 0;
+
+  // Layering - shared stacking order for overlays.
+  --z-popover: 900;
+  --z-modal: 1000;
+  --z-toast: 1100;
+
+  // Icon sizing - a tiered scale so thin line icons stay legible. Intentionally
+  // density-independent: compact mode must not shrink icons below recognition.
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --icon-xl: 32px;
 
   // Typography
   --font-sans: #{$font_sans};

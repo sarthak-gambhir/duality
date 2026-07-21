@@ -12,10 +12,12 @@
 // Default decorative marker: an outlined pixel diamond.
 .du_empty_state_marker {
   flex: 0 0 auto;
+  font-size: var(--icon-xl);
 }
 
 .du_empty_state_icon {
   display: inline-flex;
+  font-size: var(--icon-xl);
 }
 
 .du_empty_state_title {

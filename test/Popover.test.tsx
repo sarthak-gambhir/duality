@@ -48,4 +48,32 @@ describe("Popover", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("exposes the resolved side via data-side and renders an arrow", async () => {
+    const user = userEvent.setup();
+    render(
+      <Popover placement="top" arrow trigger={<Button>Open</Button>}>
+        <p>Panel body</p>
+      </Popover>,
+    );
+    await user.click(screen.getByRole("button", { name: "Open" }));
+    const panel = screen.getByRole("dialog");
+    expect(panel).toHaveAttribute("data-side");
+    expect(panel.querySelector(".du_popover_arrow")).toBeInTheDocument();
+  });
+
+  it("supports a controlled open state", () => {
+    const { rerender } = render(
+      <Popover open={false} trigger={<Button>Open</Button>}>
+        <p>Panel body</p>
+      </Popover>,
+    );
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    rerender(
+      <Popover open trigger={<Button>Open</Button>}>
+        <p>Panel body</p>
+      </Popover>,
+    );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
 });

@@ -79,4 +79,44 @@ describe("CommandPalette", () => {
     await user.keyboard("{Escape}");
     expect(onClose).toHaveBeenCalled();
   });
+
+  it("renders shortcut badges and a footer hint bar", () => {
+    const commands: Command[] = [
+      {
+        id: "save",
+        label: "Save",
+        shortcut: ["Ctrl", "S"],
+        onSelect: vi.fn(),
+      },
+    ];
+    render(<CommandPalette isOpen onClose={() => {}} commands={commands} />);
+    const option = screen.getByRole("option", { name: /Save/ });
+    expect(option.querySelector(".du_command_option_shortcut")).not.toBeNull();
+    expect(document.querySelector(".du_command_footer")).not.toBeNull();
+  });
+
+  it("activates the first enabled command when the first is disabled", () => {
+    const commands: Command[] = [
+      { id: "a", label: "Alpha", disabled: true, onSelect: vi.fn() },
+      { id: "b", label: "Bravo", onSelect: vi.fn() },
+    ];
+    render(<CommandPalette isOpen onClose={() => {}} commands={commands} />);
+    expect(screen.getByRole("option", { name: "Bravo" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  });
+
+  it("surfaces recents first when the query is empty", () => {
+    render(
+      <CommandPalette
+        isOpen
+        onClose={() => {}}
+        commands={makeCommands()}
+        recentIds={["copy"]}
+      />,
+    );
+    const options = screen.getAllByRole("option");
+    expect(options[0]).toHaveTextContent("Copy");
+  });
 });

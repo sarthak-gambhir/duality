@@ -13,6 +13,7 @@
 
 .du_banner_marker {
   flex: 0 0 auto;
+  font-size: var(--icon-lg);
 }
 
 .du_banner_content {
@@ -39,10 +40,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: 24px;
-  block-size: 24px;
+  inline-size: var(--size-md);
+  block-size: var(--size-md);
   color: var(--fg);
-  font-size: 20px;
+  font-size: var(--icon-lg);
   line-height: 1;
   cursor: pointer;
 
