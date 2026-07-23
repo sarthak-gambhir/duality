@@ -14,3 +14,17 @@
   // surface (e.g. inside a filled/inverse button or a selected row).
   border-color: currentColor;
 }
+
+// Combo wrapper: a plain container of capped keys joined by separators.
+.du_kbd_combo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+}
+
+.du_kbd_sep {
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}

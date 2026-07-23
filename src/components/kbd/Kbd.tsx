@@ -1,12 +1,43 @@
-import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import {
+  forwardRef,
+  Fragment,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from "react";
 import { cx } from "../../utils/cx";
 
-export type KbdProps = ComponentPropsWithoutRef<"kbd">;
+export interface KbdProps extends ComponentPropsWithoutRef<"kbd"> {
+  /** Render a key combo: each entry becomes its own `<kbd>` cap. */
+  keys?: string[];
+  /** Separator shown between combo keys. Defaults to `"+"`. */
+  separator?: ReactNode;
+}
 
-/** Keyboard key hint with a pixel border. */
+/** Keyboard key hint with a pixel border. Pass `keys` to render a combo. */
 export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
-  { className, ...rest },
+  { keys, separator = "+", className, children, ...rest },
   ref,
 ) {
-  return <kbd ref={ref} className={cx("du_kbd", className)} {...rest} />;
+  if (keys && keys.length > 0) {
+    return (
+      <kbd ref={ref} className={cx("du_kbd_combo", className)} {...rest}>
+        {keys.map((key, i) => (
+          <Fragment key={`${key}-${i}`}>
+            {i > 0 && (
+              <span className="du_kbd_sep" aria-hidden="true">
+                {separator}
+              </span>
+            )}
+            <kbd className="du_kbd">{key}</kbd>
+          </Fragment>
+        ))}
+      </kbd>
+    );
+  }
+
+  return (
+    <kbd ref={ref} className={cx("du_kbd", className)} {...rest}>
+      {children}
+    </kbd>
+  );
 });

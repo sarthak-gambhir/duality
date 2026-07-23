@@ -6,19 +6,19 @@
 }
 
 .du_text_sm {
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_text_md {
-  font-size: var(--font-size);
+  font-size: var(--font-size-2);
 }
 
 .du_text_lg {
-  font-size: 20px;
+  font-size: var(--font-size-4);
 }
 
 .du_text_xl {
-  font-size: 24px;
+  font-size: var(--font-size-5);
 }
 
 .du_text_mono {
@@ -26,5 +26,27 @@
 }
 
 .du_text_bold {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
+}
+
+.du_text_normal {
+  font-weight: var(--font-weight-normal);
+}
+
+// Single-line truncation. Requires a constrained inline-size on the element.
+.du_text_truncate {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Multi-line clamp to --du-clamp lines.
+.du_text_clamp {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: var(--du-clamp, 2);
+  line-clamp: var(--du-clamp, 2);
+  -webkit-box-orient: vertical;
 }

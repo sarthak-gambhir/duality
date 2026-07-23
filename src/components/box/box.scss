@@ -1,0 +1,16 @@
+@use "../../styles/mixins" as m;
+
+// Polymorphic base. Padding is opt-in via --du-p (all sides) with per-axis
+// overrides --du-px / --du-py; unset axes fall back to the all-sides value.
+.du_box {
+  padding-inline: var(--du-px, var(--du-p, 0));
+  padding-block: var(--du-py, var(--du-p, 0));
+}
+
+.du_box_border {
+  @include m.du_border;
+}
+
+.du_box_radius {
+  border-radius: var(--radius);
+}

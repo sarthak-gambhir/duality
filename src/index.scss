@@ -5,6 +5,7 @@
 @use "styles/global";
 
 // Shared
+@use "components/box/box";
 @use "components/icon/icon";
 @use "components/logo/logo";
 
@@ -18,6 +19,7 @@
 // Typography
 @use "components/text/text";
 @use "components/heading/heading";
+@use "components/truncated_text/truncated_text";
 @use "components/link/link";
 @use "components/code/code";
 @use "components/kbd/kbd";

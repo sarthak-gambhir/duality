@@ -4,6 +4,21 @@ import { Divider } from "../../src";
 const meta: Meta<typeof Divider> = {
   title: "Layout/Divider",
   component: Divider,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A one-pixel-family rule in the foreground color. Unlabeled horizontal dividers " +
+          "render a semantic `<hr>`; add a `label` for a centered caption, or `decorative` " +
+          "to drop the `separator` role.",
+      },
+    },
+  },
+  argTypes: {
+    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    label: { control: "text" },
+    decorative: { control: "boolean" },
+  },
 };
 
 export default meta;
@@ -27,4 +42,23 @@ export const Vertical: Story = {
       <span>Right</span>
     </div>
   ),
+};
+
+export const Labeled: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: "var(--space-4)" }}>
+      <div>
+        <p>Section one</p>
+        <Divider label="OR" />
+        <p>Section two</p>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: "A labeled divider renders a `div` (an `<hr>` cannot hold a label).",
+      },
+    },
+  },
 };

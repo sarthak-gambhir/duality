@@ -2,30 +2,30 @@
   margin: 0;
   color: inherit;
   font-family: var(--font-sans);
-  font-weight: 700;
-  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
 }
 
 .du_heading_1 {
-  font-size: 40px;
+  font-size: var(--font-size-7);
 }
 
 .du_heading_2 {
-  font-size: 32px;
+  font-size: var(--font-size-6);
 }
 
 .du_heading_3 {
-  font-size: 24px;
+  font-size: var(--font-size-5);
 }
 
 .du_heading_4 {
-  font-size: 20px;
+  font-size: var(--font-size-4);
 }
 
 .du_heading_5 {
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 .du_heading_6 {
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }

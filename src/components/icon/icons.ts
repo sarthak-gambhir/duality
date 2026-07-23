@@ -16,6 +16,7 @@ import {
   RiCircleLine,
   RiCloseLine,
   RiErrorWarningLine,
+  RiExternalLinkLine,
   RiInboxLine,
   RiInformationLine,
   RiLoader4Line,
@@ -69,6 +70,7 @@ export interface DualityIcons {
   empty: IconType;
   avatarFallback: IconType;
   upload: IconType;
+  externalLink: IconType;
 }
 
 /** Built-in Remix (`ri`) line icons. Override via `IconsProvider`. */
@@ -111,4 +113,5 @@ export const defaultIcons: DualityIcons = {
   empty: RiInboxLine,
   avatarFallback: RiQuestionLine,
   upload: RiUploadCloud2Line,
+  externalLink: RiExternalLinkLine,
 };

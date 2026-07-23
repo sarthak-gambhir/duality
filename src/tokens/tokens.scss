@@ -125,8 +125,31 @@ $default_palette: "classic";
   // Typography
   --font-sans: #{$font_sans};
   --font-mono: #{$font_mono};
-  --font-size: 16px;
+
+  // Stepped type scale (mirrors the numeric spacing scale). Body text and
+  // headings both draw from this so there is one shared set of sizes.
+  --font-size-1: 14px;
+  --font-size-2: 16px;
+  --font-size-3: 18px;
+  --font-size-4: 20px;
+  --font-size-5: 24px;
+  --font-size-6: 32px;
+  --font-size-7: 40px;
+
+  // Body base alias (kept for backwards compatibility).
+  --font-size: var(--font-size-2);
   --line-height: 1.5;
+  --line-height-heading: 1.2;
+
+  // The two-color model only uses normal / bold.
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  // Container max-width presets.
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 960px;
+  --container-xl: 1200px;
 
   // Default theme pair.
   --fg: #{list.nth(map.get($palettes, $default_palette), 1)};

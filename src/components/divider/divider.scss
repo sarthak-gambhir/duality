@@ -1,6 +1,7 @@
 .du_divider {
   border: 0;
   border-block-start: var(--border-width) solid var(--fg);
+  margin: 0;
   block-size: 0;
   inline-size: 100%;
 }
@@ -11,4 +12,28 @@
   align-self: stretch;
   block-size: auto;
   inline-size: 0;
+}
+
+// Labeled divider: a centered label flanked by rules. Overrides the plain
+// single-border rule above.
+.du_divider_labeled {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: 0;
+  block-size: auto;
+  inline-size: 100%;
+}
+
+.du_divider_line {
+  flex: 1 1 auto;
+  border-block-start: var(--border-width) solid var(--fg);
+  block-size: 0;
+}
+
+.du_divider_label {
+  flex: 0 0 auto;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-1);
 }

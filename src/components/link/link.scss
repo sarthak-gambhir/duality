@@ -3,3 +3,25 @@
 .du_link {
   @include m.du_link_text;
 }
+
+// Underline policy overrides. The mixin underlines by default (= "always").
+.du_link_underline_hover {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.du_link_underline_none {
+  text-decoration: none;
+}
+
+// Lay the label and trailing glyph out as aligned flex items so the icon stays
+// on the same line (an inline-block/SVG otherwise gets a wrap opportunity before
+// it and can orphan onto its own line) and is vertically centered to the text.
+.du_link_external {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}

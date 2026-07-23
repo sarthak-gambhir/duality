@@ -1,6 +1,25 @@
+@use "../../styles/mixins" as m;
+
 .du_code {
   padding-inline: var(--space-1);
   color: inherit;
   font-family: var(--font-mono);
   font-size: 0.9em;
+}
+
+// Block code: a bordered surface that scrolls horizontally, preserving
+// whitespace instead of wrapping.
+.du_code_block {
+  margin: 0;
+  padding: var(--space-3);
+  overflow: auto;
+  color: inherit;
+
+  @include m.du_border;
+}
+
+.du_code_in_block {
+  display: block;
+  padding-inline: 0;
+  white-space: pre;
 }

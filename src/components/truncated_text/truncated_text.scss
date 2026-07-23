@@ -1,0 +1,19 @@
+// Truncation variant that reveals the full text in a tooltip when clipped.
+
+// Neutralize the tooltip root's inline-flex so single-line truncation keeps a
+// constrained (parent) width instead of growing to fit its content.
+.du_tooltip_root:has(> .du_truncated_text) {
+  display: block;
+  min-inline-size: 0;
+}
+
+.du_truncated_text {
+  max-inline-size: 100%;
+}
+
+// Let clamped (multi-line) tooltips wrap instead of forcing one long line.
+// Two classes out-specify `.du_tooltip`'s nowrap regardless of import order.
+.du_tooltip.du_truncated_text_tip {
+  max-inline-size: 320px;
+  white-space: normal;
+}
