@@ -103,7 +103,7 @@ export function AccordionItem({
         >
           <span className="du_accordion_title">{title}</span>
           <Icon
-            icon={open ? icons.chevronUp : icons.chevronDown}
+            icon={open ? icons.chevronDown : icons.chevronRight}
             className="du_accordion_icon"
           />
         </button>

@@ -1,0 +1,14 @@
+// Brand mark. The two paths map to the theme's two colors so the glyph inverts
+// with its surface (disk = --fg, inner cut = --bg).
+.du_logo {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.du_logo_disk {
+  fill: var(--fg);
+}
+
+.du_logo_cut {
+  fill: var(--bg);
+}

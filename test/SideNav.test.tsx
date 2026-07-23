@@ -1,7 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { SideNav, type SideNavItem } from "../src/components/side_nav/SideNav";
+import {
+  SideNav,
+  type SideNavItem,
+  type SideNavSection,
+} from "../src/components/side_nav/SideNav";
 
 function renderNav(onSelect = vi.fn(), activeId = "overview") {
   const items: SideNavItem[] = [
@@ -46,5 +50,52 @@ describe("SideNav", () => {
     expect(
       screen.getByRole("navigation", { name: "Main" }),
     ).toBeInTheDocument();
+  });
+
+  it("renders a trailing badge for an item", () => {
+    const items: SideNavItem[] = [
+      { id: "files", label: "Files", badge: "12", onSelect: vi.fn() },
+    ];
+    render(<SideNav items={items} aria-label="Main" />);
+    expect(screen.getByText("12")).toBeInTheDocument();
+  });
+
+  it("surfaces a label+badge tooltip on hover when collapsed", async () => {
+    const user = userEvent.setup();
+    const items: SideNavItem[] = [
+      { id: "files", label: "Files", badge: "12", onSelect: vi.fn() },
+    ];
+    render(<SideNav items={items} collapsed aria-label="Main" />);
+
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+
+    await user.hover(screen.getByRole("button", { name: /Files/ }));
+
+    const tooltip = await screen.findByRole("tooltip");
+    expect(tooltip).toHaveTextContent("Files");
+    expect(tooltip).toHaveTextContent("12");
+  });
+
+  it("toggles a collapsible section", async () => {
+    const user = userEvent.setup();
+    const sections: SideNavSection[] = [
+      {
+        id: "s1",
+        label: "Workspace",
+        collapsible: true,
+        items: [{ id: "overview", label: "Overview", onSelect: vi.fn() }],
+      },
+    ];
+    render(<SideNav sections={sections} aria-label="Main" />);
+
+    const heading = screen.getByRole("button", { name: "Workspace" });
+    expect(heading).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("button", { name: "Overview" })).toBeVisible();
+
+    await user.click(heading);
+    expect(heading).toHaveAttribute("aria-expanded", "false");
+    expect(
+      screen.getByRole("button", { name: "Overview", hidden: true }),
+    ).not.toBeVisible();
   });
 });

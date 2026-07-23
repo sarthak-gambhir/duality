@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as m;
+
 .du_breadcrumbs_list {
   display: flex;
   flex-wrap: wrap;
@@ -10,8 +12,44 @@
   list-style: none;
 }
 
+.du_breadcrumbs_item {
+  display: inline-flex;
+  align-items: center;
+}
+
+// Shared layout for every crumb variant (link, button, current/plain span):
+// the optional leading icon and label as a centered row with a consistent gap.
+.du_breadcrumbs_item_content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+}
+
+// Leading per-crumb glyph, sized to sit with the label text.
+.du_breadcrumbs_icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--icon-md);
+}
+
 .du_breadcrumbs_separator {
   color: var(--fg);
   font-family: var(--font-mono);
   font-size: var(--icon-sm);
+}
+
+// Interactive crumb that isn't a real link (onClick without href): a <button>
+// that should read as a text link. Strips native chrome, then borrows the same
+// link appearance as `.du_link` via the shared mixin - so the look is defined
+// once and no link class is branded onto a button.
+.du_breadcrumbs_action {
+  @include m.du_reset_control;
+  @include m.du_link_text;
+}
+
+// Collapsed-middle marker (the ellipsis crumb).
+.du_breadcrumbs_overflow {
+  color: var(--fg);
+  font-size: var(--icon-md);
 }

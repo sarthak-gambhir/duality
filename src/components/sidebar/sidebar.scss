@@ -1,0 +1,98 @@
+@use "../../styles/mixins" as m;
+
+// Persistent in-flow rail. Width is driven by CSS vars so the collapsed state
+// is a pure width swap; content is composed (usually a SideNav) as children.
+.du_sidebar {
+  display: flex;
+  flex-direction: column;
+  inline-size: var(--du-sidebar-w);
+  block-size: 100%;
+  overflow: hidden;
+  color: var(--fg);
+  background-color: var(--bg);
+  border-inline-end: var(--border-width) solid var(--fg);
+}
+
+.du_sidebar[data-collapsed] {
+  inline-size: var(--du-sidebar-collapsed-w);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .du_sidebar {
+    transition: inline-size 0.2s ease;
+  }
+}
+
+.du_sidebar_header {
+  display: flex;
+  flex: 0 0 auto;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-3);
+  border-block-end: var(--border-width) solid var(--fg);
+}
+
+.du_sidebar_body {
+  flex: 1 1 auto;
+  padding: var(--space-3);
+  overflow-y: auto;
+}
+
+.du_sidebar_footer {
+  flex: 0 0 auto;
+  padding: var(--space-3);
+  border-block-start: var(--border-width) solid var(--fg);
+}
+
+.du_sidebar_trigger {
+  @include m.du_reset_control;
+
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-sm);
+  block-size: var(--size-sm);
+  color: var(--fg);
+  cursor: pointer;
+  font-size: var(--icon-md);
+
+  @include m.du_focus;
+
+  &:hover {
+    @include m.du_invert;
+  }
+}
+
+// Rail (collapsed) mode: hide SideNav labels/headings while keeping their
+// accessible names in the DOM (clip, not display:none). Only glyphs remain, so
+// items center in the narrow rail.
+.du_sidebar[data-collapsed] .du_side_nav_label,
+.du_sidebar[data-collapsed] .du_side_nav_heading {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+// The composed SideNav reserves a min width for its expanded (label) layout.
+// In the rail we must let it shrink to the collapsed width, otherwise it stays
+// 180px wide, overflows the clipped rail, and centered glyphs land off-screen.
+.du_sidebar[data-collapsed] .du_side_nav {
+  min-inline-size: 0;
+}
+
+.du_sidebar[data-collapsed] .du_side_nav_item {
+  justify-content: center;
+}
+
+// Trailing badges have nowhere to sit in the rail; hiding them keeps every
+// glyph truly centered (the accessible label still carries the count).
+.du_sidebar[data-collapsed] .du_side_nav_badge {
+  display: none;
+}

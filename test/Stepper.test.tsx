@@ -36,4 +36,50 @@ describe("Stepper", () => {
     await user.click(screen.getByRole("button", { name: /Account/ }));
     expect(onStepChange).toHaveBeenCalledWith(0);
   });
+
+  it("applies explicit error/warning status overrides", () => {
+    render(
+      <Stepper
+        aria-label="Progress"
+        activeStep={2}
+        steps={[
+          { label: "Select" },
+          { label: "Validate", status: "error" },
+          { label: "Upload", status: "warning" },
+        ]}
+      />,
+    );
+    const items = screen
+      .getByRole("list", { name: "Progress" })
+      .querySelectorAll("li");
+    expect(items[1]).toHaveAttribute("data-status", "error");
+    expect(items[2]).toHaveAttribute("data-status", "warning");
+  });
+
+  it("renders an Optional caption", () => {
+    render(
+      <Stepper
+        aria-label="Progress"
+        activeStep={0}
+        steps={[{ label: "Email" }, { label: "Photo", optional: true }]}
+      />,
+    );
+    expect(screen.getByText("Optional")).toBeInTheDocument();
+  });
+
+  it("makes upcoming steps clickable when allowAllSteps is set", async () => {
+    const onStepChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <Stepper
+        steps={steps}
+        activeStep={0}
+        onStepChange={onStepChange}
+        allowAllSteps
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /Payment/ }));
+    expect(onStepChange).toHaveBeenCalledWith(2);
+  });
 });

@@ -43,6 +43,23 @@
   appearance: none;
 }
 
+// Text-link appearance: underlined, inverts on hover, color-safe focus. Shared
+// by the Link component and any control that should read as a text link (e.g. a
+// breadcrumb crumb rendered as a <button>), so the look has one definition.
+@mixin du_link_text {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: 2px;
+  cursor: pointer;
+
+  @include du_focus;
+
+  &:hover {
+    @include du_invert;
+  }
+}
+
 // Two-color checkerboard used for disabled surfaces (a "gray" made from fg/bg).
 @mixin du_dither {
   background-color: var(--bg);

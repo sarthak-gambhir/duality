@@ -61,6 +61,20 @@ const withTheme: Decorator = (Story, context) => {
   // anchored) have room instead of being trapped/overlapping in Docs.
   const isDocs = context.viewMode === "docs";
   const docsMinHeight = context.parameters.docsMinHeight as number | undefined;
+  // Height a "fill the story" child (e.g. a full-height Sidebar rail) should
+  // take: the viewport in canvas, but only the reserved docs block in Docs, so
+  // it doesn't blow the embedded preview up to a full screen each.
+  const fillHeight = isDocs
+    ? docsMinHeight
+      ? `calc(${docsMinHeight}px - 2 * var(--space-5))`
+      : undefined
+    : "calc(100vh - 2 * var(--space-5))";
+
+  const wrapperStyle = {
+    padding: "var(--space-5)",
+    minHeight: isDocs ? docsMinHeight : "100vh",
+  } as React.CSSProperties & Record<string, string | number | undefined>;
+  if (fillHeight) wrapperStyle["--du-story-fill"] = fillHeight;
 
   return (
     // Remount when the toolbar changes so the uncontrolled ThemeProvider picks
@@ -70,13 +84,7 @@ const withTheme: Decorator = (Story, context) => {
       defaultTheme={theme}
       defaultDensity={density}
     >
-      <div
-        dir={direction}
-        style={{
-          padding: "var(--space-5)",
-          minHeight: isDocs ? docsMinHeight : "100vh",
-        }}
-      >
+      <div dir={direction} style={wrapperStyle}>
         <Story />
       </div>
     </ThemeProvider>

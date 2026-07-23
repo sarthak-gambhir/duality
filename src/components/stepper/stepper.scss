@@ -26,7 +26,7 @@
 
 .du_stepper_horizontal .du_stepper_item {
   flex: 1 1 0;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .du_stepper_vertical .du_stepper_item {
@@ -47,9 +47,10 @@
   text-align: start;
 }
 
-// Vertical: pin the marker to the top so it occupies a known [0, size-md] band.
-// The connector is positioned from that assumption; centering it (the default)
-// would let multi-line text push the marker down into the connector line.
+// Pin the marker to the top in both orientations so every marker lands on one
+// line regardless of how many text rows a step carries; otherwise a taller
+// (multi-line) step would push its marker and connector out of alignment.
+.du_stepper_horizontal .du_stepper_button,
 .du_stepper_vertical .du_stepper_button {
   align-items: flex-start;
 }
@@ -86,6 +87,21 @@ button.du_stepper_button {
   border-width: var(--border-width-thick);
 }
 
+// Error/warning: the tone glyph carries its own circle/triangle outline, so it
+// reads as the marker on its own. Drop the square box chrome to avoid nesting
+// two outlines - status stays shape-based, never color-only.
+.du_stepper_item[data-status="error"] .du_stepper_marker,
+.du_stepper_item[data-status="warning"] .du_stepper_marker {
+  color: var(--fg);
+  background-color: transparent;
+  border: 0;
+}
+
+// The standalone tone glyph fills the marker footprint.
+.du_stepper_glyph {
+  font-size: var(--size-md);
+}
+
 .du_stepper_label {
   font-weight: 700;
 }
@@ -97,6 +113,14 @@ button.du_stepper_button {
 
 .du_stepper_description {
   font-size: 14px;
+}
+
+// Optional caption: quiet, uppercase tag under the label.
+.du_stepper_optional {
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .du_stepper_item[data-status="upcoming"] .du_stepper_text {
@@ -116,8 +140,12 @@ button.du_stepper_button {
   background-color: var(--fg);
 }
 
+// Sit the line at the marker's vertical center. With the marker pinned to the
+// top, that center is a fixed offset from the item top, so the connector stays
+// aligned no matter how tall a step's text is.
 .du_stepper_horizontal .du_stepper_connector {
   block-size: var(--border-width);
+  margin-block-start: calc((var(--size-md) - var(--border-width)) / 2);
   margin-inline: var(--space-2);
 }
 

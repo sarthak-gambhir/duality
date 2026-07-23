@@ -1,15 +1,5 @@
 @use "../../styles/mixins" as m;
 
 .du_link {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: var(--border-width);
-  text-underline-offset: 2px;
-  cursor: pointer;
-
-  @include m.du_focus;
-
-  &:hover {
-    @include m.du_invert;
-  }
+  @include m.du_link_text;
 }

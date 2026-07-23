@@ -3,7 +3,9 @@ import {
   RiAddLine,
   RiAlertLine,
   RiArrowDownSLine,
+  RiArrowLeftDoubleLine,
   RiArrowLeftSLine,
+  RiArrowRightDoubleLine,
   RiArrowRightSLine,
   RiArrowUpDownLine,
   RiArrowUpSLine,
@@ -40,6 +42,8 @@ export interface DualityIcons {
   chevronUp: IconType;
   chevronLeft: IconType;
   chevronRight: IconType;
+  firstPage: IconType;
+  lastPage: IconType;
   sortNone: IconType;
   sortAsc: IconType;
   sortDesc: IconType;
@@ -78,6 +82,8 @@ export const defaultIcons: DualityIcons = {
   chevronUp: RiArrowUpSLine,
   chevronLeft: RiArrowLeftSLine,
   chevronRight: RiArrowRightSLine,
+  firstPage: RiArrowLeftDoubleLine,
+  lastPage: RiArrowRightDoubleLine,
   sortNone: RiArrowUpDownLine,
   sortAsc: RiArrowUpSLine,
   sortDesc: RiArrowDownSLine,

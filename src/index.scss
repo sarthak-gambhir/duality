@@ -6,6 +6,7 @@
 
 // Shared
 @use "components/icon/icon";
+@use "components/logo/logo";
 
 // Layout
 @use "components/stack/stack";
@@ -69,6 +70,7 @@
 @use "components/pagination/pagination";
 @use "components/stepper/stepper";
 @use "components/side_nav/side_nav";
+@use "components/sidebar/sidebar";
 
 // Disclosure
 @use "components/tabs/tabs";

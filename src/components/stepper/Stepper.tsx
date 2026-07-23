@@ -2,11 +2,18 @@ import { cx } from "../../utils/cx";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
+/** Explicit per-step status override (beyond the computed progress state). */
+export type StepStatusOverride = "error" | "warning";
+
 export interface StepperStep {
   /** Short step label. */
   label: string;
   /** Optional secondary description. */
   description?: string;
+  /** Flags the step as optional (renders an "Optional" caption). */
+  optional?: boolean;
+  /** Overrides the computed status to flag a problem on this step. */
+  status?: StepStatusOverride;
 }
 
 export interface StepperProps {
@@ -14,8 +21,10 @@ export interface StepperProps {
   steps: StepperStep[];
   /** Index of the active (current) step. */
   activeStep: number;
-  /** When provided, completed/current steps become clickable. */
+  /** When provided, steps become clickable (see `allowAllSteps`). */
   onStepChange?: (index: number) => void;
+  /** Allow clicking upcoming steps too (non-linear flows). Defaults to false. */
+  allowAllSteps?: boolean;
   /** Layout direction. Defaults to horizontal. */
   orientation?: "horizontal" | "vertical";
   /** Accessible name for the step list. */
@@ -23,23 +32,25 @@ export interface StepperProps {
   className?: string;
 }
 
-type StepStatus = "complete" | "current" | "upcoming";
+type StepStatus = "complete" | "current" | "upcoming" | StepStatusOverride;
 
 /**
  * Progress indicator for a multi-step flow. Steps are numbered pixel markers;
  * completed steps show a check, the current step is filled, upcoming steps are
- * outlined - status is never conveyed by color alone.
+ * outlined, and error/warning steps swap in a tone glyph - status is never
+ * conveyed by color alone.
  */
 export function Stepper({
   steps,
   activeStep,
   onStepChange,
+  allowAllSteps = false,
   orientation = "horizontal",
   className,
   "aria-label": ariaLabel,
 }: StepperProps) {
   const icons = useIcons();
-  const statusOf = (index: number): StepStatus =>
+  const progressOf = (index: number): "complete" | "current" | "upcoming" =>
     index < activeStep
       ? "complete"
       : index === activeStep
@@ -52,23 +63,41 @@ export function Stepper({
       aria-label={ariaLabel}
     >
       {steps.map((step, index) => {
-        const status = statusOf(index);
-        const isCurrent = status === "current";
-        const interactive = Boolean(onStepChange) && status !== "upcoming";
+        const progress = progressOf(index);
+        const status: StepStatus = step.status ?? progress;
+        const isCurrent = index === activeStep;
+        const interactive =
+          Boolean(onStepChange) && (allowAllSteps || progress !== "upcoming");
+
+        let markerContent;
+        if (status === "error") {
+          markerContent = (
+            <Icon icon={icons.toneError} className="du_stepper_glyph" />
+          );
+        } else if (status === "warning") {
+          markerContent = (
+            <Icon icon={icons.toneWarning} className="du_stepper_glyph" />
+          );
+        } else if (status === "complete") {
+          markerContent = (
+            <Icon icon={icons.stepComplete} className="du_stepper_check" />
+          );
+        } else {
+          markerContent = index + 1;
+        }
 
         const marker = (
           <span className="du_stepper_marker" aria-hidden="true">
-            {status === "complete" ? (
-              <Icon icon={icons.stepComplete} className="du_stepper_check" />
-            ) : (
-              index + 1
-            )}
+            {markerContent}
           </span>
         );
 
         const text = (
           <span className="du_stepper_text">
             <span className="du_stepper_label">{step.label}</span>
+            {step.optional && (
+              <span className="du_stepper_optional">Optional</span>
+            )}
             {step.description && (
               <span className="du_stepper_description">{step.description}</span>
             )}

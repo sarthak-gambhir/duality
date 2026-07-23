@@ -24,18 +24,47 @@
   letter-spacing: 1px;
 }
 
+// Collapsible heading is a full-width toggle with a trailing chevron.
+.du_side_nav_heading_button {
+  @include m.du_reset_control;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  cursor: pointer;
+  text-align: start;
+  text-transform: inherit;
+  letter-spacing: inherit;
+
+  @include m.du_focus;
+}
+
+.du_side_nav_heading_icon {
+  flex: 0 0 auto;
+  font-size: var(--icon-md);
+}
+
 .du_side_nav_list {
   display: flex;
   flex-direction: column;
   padding: 0;
   margin: 0;
   list-style: none;
+
+  // Author `display: flex` beats the UA `[hidden]` rule, so restore hiding for
+  // collapsed sections explicitly.
+  &[hidden] {
+    display: none;
+  }
 }
 
 .du_side_nav_item {
   @include m.du_reset_control;
 
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   inline-size: 100%;
   padding: var(--space-2) var(--space-3);
   color: var(--fg);
@@ -45,6 +74,10 @@
   text-decoration: none;
   cursor: pointer;
   border-inline-start: var(--border-width-thick) solid transparent;
+
+  // Keep every state's fill (hover invert, disabled dither, active) inside the
+  // reserved marker-bar border so no state paints under it and reads wider.
+  background-clip: padding-box;
 
   &:focus-visible,
   &:hover:not([aria-disabled="true"]) {
@@ -61,6 +94,27 @@
   }
 }
 
+// Leading glyph column.
+.du_side_nav_icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  font-size: var(--icon-md);
+}
+
+// Label fills the row so the badge sits flush to the trailing edge.
+.du_side_nav_label {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+// Trailing adornment (count/tag).
+.du_side_nav_badge {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
 // Active item inverts and gains a leading marker bar (shape, not color). The
 // bar is drawn in --bg so it stays visible against the inverted --fg fill.
 .du_side_nav_item_active {
@@ -68,4 +122,17 @@
 
   font-weight: 700;
   border-inline-start-color: var(--bg);
+}
+
+// In collapsed rail mode each item is wrapped in a Tooltip; its inline root must
+// stretch so the item keeps its full-width row/hit area.
+.du_side_nav_list .du_tooltip_root {
+  display: block;
+}
+
+// Label + badge layout inside the rail tooltip.
+.du_side_nav_tooltip {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
 }

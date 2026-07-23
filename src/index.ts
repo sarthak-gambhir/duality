@@ -31,6 +31,10 @@ export type { IconsProviderProps } from "./components/icon/IconsProvider";
 export { defaultIcons } from "./components/icon/icons";
 export type { DualityIcons } from "./components/icon/icons";
 
+// Brand
+export { Logo } from "./components/logo/Logo";
+export type { LogoProps } from "./components/logo/Logo";
+
 // Shared
 export { cx } from "./utils/cx";
 export type {
@@ -195,15 +199,35 @@ export type {
   BreadcrumbItem,
 } from "./components/breadcrumbs/Breadcrumbs";
 export { Pagination } from "./components/pagination/Pagination";
-export type { PaginationProps } from "./components/pagination/Pagination";
+export type {
+  PaginationProps,
+  PaginationVariant,
+} from "./components/pagination/Pagination";
 export { Stepper } from "./components/stepper/Stepper";
-export type { StepperProps, StepperStep } from "./components/stepper/Stepper";
+export type {
+  StepperProps,
+  StepperStep,
+  StepStatusOverride,
+} from "./components/stepper/Stepper";
 export { SideNav } from "./components/side_nav/SideNav";
 export type {
   SideNavProps,
   SideNavItem,
   SideNavSection,
 } from "./components/side_nav/SideNav";
+export {
+  Sidebar,
+  SidebarHeader,
+  SidebarBody,
+  SidebarFooter,
+  SidebarTrigger,
+  useSidebar,
+} from "./components/sidebar/Sidebar";
+export type {
+  SidebarProps,
+  SidebarSectionProps,
+  SidebarTriggerProps,
+} from "./components/sidebar/Sidebar";
 
 // Disclosure
 export { Tabs, TabList, Tab, TabPanel } from "./components/tabs/Tabs";

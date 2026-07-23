@@ -21,6 +21,17 @@
   font-family: var(--font-mono);
 }
 
+// Compact variant readout ("Page X of Y") shown in place of page buttons.
+.du_pagination_status {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-2);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 // Prev/next/ellipsis icons read small at the button's text size, so scale them
 // up relative to the icon-only control.
 .du_pagination_list .du_icon {
