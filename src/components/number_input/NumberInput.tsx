@@ -7,6 +7,11 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -49,6 +54,10 @@ export interface NumberInputProps extends Omit<
   suffix?: ReactNode;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 /**
@@ -74,6 +83,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       name,
       id,
       disabled,
+      disabledReason,
+      disabledTooltip,
       className,
       "aria-invalid": ariaInvalid,
       "aria-label": ariaLabel,
@@ -89,6 +100,14 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       onChange: onValueChange,
     });
     const icons = useIcons();
+    const field = useFormField();
+    const isDisabled = disabled ?? field?.disabled;
+    const disabledTooltipProps = {
+      disabled: isDisabled,
+      reason: disabledReason ?? field?.disabledReason,
+      formatter: disabledTooltip ?? field?.disabledTooltip,
+      getValue: () => (current === undefined ? "" : String(current)),
+    };
 
     const clamp = (n: number): number => {
       let result = n;
@@ -121,7 +140,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     };
 
     const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-      if (disabled) return;
+      if (isDisabled) return;
       if (event.key === "ArrowUp") {
         event.preventDefault();
         stepBy(1);
@@ -147,12 +166,13 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const atMax = max !== undefined && current !== undefined && current >= max;
 
     return (
+      <DisabledTooltip {...disabledTooltipProps}>
       <div
         className={cx(
           "du_number_input",
           `du_number_input_${size}`,
           invalid && "du_number_input_invalid",
-          disabled && "du_number_input_disabled",
+          isDisabled && "du_number_input_disabled",
           className,
         )}
       >
@@ -162,7 +182,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             className="du_number_input_step"
             tabIndex={-1}
             aria-label="Decrease"
-            disabled={disabled || atMin}
+            disabled={isDisabled || atMin}
             onClick={() => stepBy(-1)}
           >
             <Icon icon={icons.dash} />
@@ -187,7 +207,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
-          disabled={disabled}
+          disabled={isDisabled}
           value={current ?? ""}
           className="du_number_input_field"
           onChange={onInputChange}
@@ -205,7 +225,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             className="du_number_input_step"
             tabIndex={-1}
             aria-label="Increase"
-            disabled={disabled || atMax}
+            disabled={isDisabled || atMax}
             onClick={() => stepBy(1)}
           >
             <Icon icon={icons.add} />
@@ -213,6 +233,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         )}
         {name && <input type="hidden" name={name} value={current ?? ""} />}
       </div>
+      </DisabledTooltip>
     );
   },
 );

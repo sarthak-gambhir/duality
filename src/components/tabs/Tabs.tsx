@@ -9,10 +9,15 @@ import {
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 
+export type TabsOrientation = "horizontal" | "vertical";
+export type TabsActivationMode = "automatic" | "manual";
+
 interface TabsContextValue {
   value: string;
   setValue: (value: string) => void;
   idBase: string;
+  orientation: TabsOrientation;
+  activationMode: TabsActivationMode;
 }
 
 const TabsContext = createContext<TabsContextValue | null>(null);
@@ -23,16 +28,21 @@ function useTabs(): TabsContextValue {
   return ctx;
 }
 
-export interface TabsProps extends Omit<
-  ComponentPropsWithoutRef<"div">,
-  "onChange"
-> {
+export interface TabsProps
+  extends Omit<ComponentPropsWithoutRef<"div">, "onChange"> {
   /** Selected tab value (controlled). */
   value?: string;
-  /** Initial selected value (uncontrolled). */
-  defaultValue: string;
+  /** Initial selected value (uncontrolled). Optional when fully controlled. */
+  defaultValue?: string;
   /** Called with the newly selected value. */
   onValueChange?: (value: string) => void;
+  /** Layout + arrow-key axis. Defaults to horizontal. */
+  orientation?: TabsOrientation;
+  /**
+   * Whether arrow keys select on focus (`automatic`) or only move focus
+   * (`manual`, activate with Enter/Space/click). Defaults to automatic.
+   */
+  activationMode?: TabsActivationMode;
 }
 
 /** Tabbed interface root. Provides selection state to Tab/TabPanel. */
@@ -40,22 +50,34 @@ export function Tabs({
   value,
   defaultValue,
   onValueChange,
+  orientation = "horizontal",
+  activationMode = "automatic",
   className,
   children,
   ...rest
 }: TabsProps) {
   const [current, setCurrent] = useControllableState({
     value,
-    defaultValue,
+    defaultValue: defaultValue ?? "",
     onChange: onValueChange,
   });
   const idBase = useId();
 
   return (
     <TabsContext.Provider
-      value={{ value: current, setValue: setCurrent, idBase }}
+      value={{
+        value: current,
+        setValue: setCurrent,
+        idBase,
+        orientation,
+        activationMode,
+      }}
     >
-      <div className={cx("du_tabs", className)} {...rest}>
+      <div
+        className={cx("du_tabs", className)}
+        data-orientation={orientation}
+        {...rest}
+      >
         {children}
       </div>
     </TabsContext.Provider>
@@ -64,9 +86,10 @@ export function Tabs({
 
 export type TabListProps = ComponentPropsWithoutRef<"div">;
 
-/** Row of tabs with arrow-key roving focus. */
+/** Row (or column) of tabs with arrow-key roving focus. */
 export function TabList({ className, children, ...rest }: TabListProps) {
   const listRef = useRef<HTMLDivElement>(null);
+  const { orientation, activationMode } = useTabs();
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const tabs = Array.from(
@@ -77,9 +100,12 @@ export function TabList({ className, children, ...rest }: TabListProps) {
     const index = tabs.indexOf(document.activeElement as HTMLButtonElement);
     if (index < 0) return;
 
+    const nextKey = orientation === "vertical" ? "ArrowDown" : "ArrowRight";
+    const prevKey = orientation === "vertical" ? "ArrowUp" : "ArrowLeft";
+
     let next = -1;
-    if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
-    else if (event.key === "ArrowLeft")
+    if (event.key === nextKey) next = (index + 1) % tabs.length;
+    else if (event.key === prevKey)
       next = (index - 1 + tabs.length) % tabs.length;
     else if (event.key === "Home") next = 0;
     else if (event.key === "End") next = tabs.length - 1;
@@ -88,7 +114,9 @@ export function TabList({ className, children, ...rest }: TabListProps) {
     if (next >= 0 && target) {
       event.preventDefault();
       target.focus();
-      target.click();
+      target.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+      // Automatic mode selects on focus; manual waits for Enter/Space/click.
+      if (activationMode === "automatic") target.click();
     }
   };
 
@@ -96,6 +124,7 @@ export function TabList({ className, children, ...rest }: TabListProps) {
     <div
       ref={listRef}
       role="tablist"
+      aria-orientation={orientation}
       className={cx("du_tablist", className)}
       onKeyDown={onKeyDown}
       {...rest}
@@ -105,16 +134,14 @@ export function TabList({ className, children, ...rest }: TabListProps) {
   );
 }
 
-export interface TabProps extends Omit<
-  ComponentPropsWithoutRef<"button">,
-  "value"
-> {
+export interface TabProps
+  extends Omit<ComponentPropsWithoutRef<"button">, "value"> {
   /** This tab's value. */
   value: string;
 }
 
 /** A single tab button. */
-export function Tab({ value, className, disabled, ...rest }: TabProps) {
+export function Tab({ value, className, disabled, onClick, ...rest }: TabProps) {
   const ctx = useTabs();
   const selected = ctx.value === value;
   return (
@@ -128,7 +155,14 @@ export function Tab({ value, className, disabled, ...rest }: TabProps) {
       disabled={disabled}
       data-selected={selected || undefined}
       className={cx("du_tab", className)}
-      onClick={() => ctx.setValue(value)}
+      onClick={(event) => {
+        ctx.setValue(value);
+        event.currentTarget.scrollIntoView?.({
+          block: "nearest",
+          inline: "nearest",
+        });
+        onClick?.(event);
+      }}
       {...rest}
     />
   );
@@ -137,11 +171,14 @@ export function Tab({ value, className, disabled, ...rest }: TabProps) {
 export interface TabPanelProps extends ComponentPropsWithoutRef<"div"> {
   /** Value of the tab this panel belongs to. */
   value: string;
+  /** Keep the panel mounted (hidden) when inactive instead of unmounting. */
+  keepMounted?: boolean;
 }
 
 /** Content panel shown when its tab is selected. */
 export function TabPanel({
   value,
+  keepMounted,
   className,
   children,
   ...rest
@@ -157,7 +194,7 @@ export function TabPanel({
       className={cx("du_tabpanel", className)}
       {...rest}
     >
-      {selected && children}
+      {(selected || keepMounted) && children}
     </div>
   );
 }

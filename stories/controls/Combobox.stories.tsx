@@ -56,3 +56,23 @@ function Demo() {
 }
 
 export const Default: Story = { render: () => <Demo /> };
+
+/**
+ * When disabled, hovering the input shows the selected label (and an optional
+ * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
+ * receive keyboard focus.
+ */
+export const DisabledWithReason: Story = {
+  render: () => (
+    <div style={{ maxWidth: 260 }}>
+      <Combobox
+        options={fruits}
+        defaultValue="banana"
+        disabled
+        disabledReason="Selection is fixed for this order"
+        placeholder="Search fruit..."
+        aria-label="fruit"
+      />
+    </div>
+  ),
+};

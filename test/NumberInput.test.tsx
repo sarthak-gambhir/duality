@@ -97,3 +97,39 @@ describe("NumberInput", () => {
     expect(screen.getByText("USD")).toBeInTheDocument();
   });
 });
+
+describe("NumberInput disabled tooltip", () => {
+  it("shows the value in a hover tooltip when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <NumberInput aria-label="qty" defaultValue={5} disabled />,
+    );
+    const root = container.querySelector(".du_disabled_tooltip");
+    expect(root).not.toBeNull();
+    await user.hover(root!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Value: 5");
+  });
+
+  it("shows the reason when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <NumberInput
+        aria-label="qty"
+        defaultValue={5}
+        disabled
+        disabledReason="Set by your plan"
+      />,
+    );
+    await user.hover(container.querySelector(".du_disabled_tooltip")!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Disabled due to: Set by your plan");
+  });
+
+  it("does not wrap when enabled", () => {
+    const { container } = render(
+      <NumberInput aria-label="qty" defaultValue={5} />,
+    );
+    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+  });
+});

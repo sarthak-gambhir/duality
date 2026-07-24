@@ -16,6 +16,11 @@ import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 
 export interface SelectOption {
   value: string;
@@ -57,6 +62,10 @@ export interface SelectProps extends Omit<
   align?: "start" | "end";
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 function optionsFromChildren(children: ReactNode): SelectOption[] {
@@ -113,9 +122,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       name,
       id,
       disabled,
+      disabledReason,
+      disabledTooltip,
       className,
       "aria-invalid": ariaInvalid,
       "aria-describedby": ariaDescribedby,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledby,
       ...rest
@@ -126,6 +139,16 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       () => options ?? optionsFromChildren(children),
       [options, children],
     );
+
+    // Explicit props always win; the FormField context is a fallback.
+    const field = useFormField();
+    const resolvedId = id ?? field?.id;
+    const showInvalid = invalid || field?.invalid || undefined;
+    const describedBy = ariaDescribedby ?? field?.describedBy;
+    const requiredAttr = ariaRequired ?? (field?.required || undefined);
+    const errorMessageAttr =
+      ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
+    const isDisabled = disabled ?? field?.disabled;
 
     const isControlled = value !== undefined;
     const [internalValue, setInternalValue] = useState<string | undefined>(
@@ -151,12 +174,12 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const optionId = (index: number) => `${baseId}_option_${index}`;
 
     const openList = useCallback(() => {
-      if (disabled) return;
+      if (isDisabled) return;
       setActiveIndex(
         selectedIndex >= 0 ? selectedIndex : nextEnabledIndex(items, -1, 1),
       );
       setOpen(true);
-    }, [disabled, items, selectedIndex]);
+    }, [isDisabled, items, selectedIndex]);
 
     const closeList = useCallback((focusButton = true) => {
       setOpen(false);
@@ -234,16 +257,31 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       }
     };
 
+    const disabledTooltipProps = {
+      disabled: isDisabled,
+      reason: disabledReason ?? field?.disabledReason,
+      formatter: disabledTooltip ?? field?.disabledTooltip,
+      getValue: () =>
+        typeof selected?.label === "string"
+          ? selected.label
+          : currentValue ?? "",
+    };
+
     return (
-      <div
-        ref={rootRef}
-        className={cx("du_select", invalid && "du_select_invalid", className)}
-      >
+      <DisabledTooltip {...disabledTooltipProps}>
+        <div
+          ref={rootRef}
+          className={cx(
+            "du_select",
+            showInvalid && "du_select_invalid",
+            className,
+          )}
+        >
         <button
           ref={mergeRefs(buttonRef, ref)}
           type="button"
           {...rest}
-          id={id}
+          id={resolvedId}
           role="combobox"
           aria-haspopup="listbox"
           aria-expanded={open}
@@ -251,11 +289,13 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           aria-activedescendant={
             open && activeIndex >= 0 ? optionId(activeIndex) : undefined
           }
-          aria-invalid={ariaInvalid ?? (invalid || undefined)}
-          aria-describedby={ariaDescribedby}
+          aria-invalid={ariaInvalid ?? (showInvalid ? true : undefined)}
+          aria-describedby={describedBy}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          disabled={disabled}
+          disabled={isDisabled}
           data-open={open || undefined}
           className={cx("du_select_button", `du_select_${size}`)}
           onClick={() => (open ? closeList(false) : openList())}
@@ -309,8 +349,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           </ul>
         )}
 
-        {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
-      </div>
+        {name && (
+          <input type="hidden" name={name} value={currentValue ?? ""} />
+        )}
+        </div>
+      </DisabledTooltip>
     );
   },
 );

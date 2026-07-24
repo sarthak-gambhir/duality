@@ -88,8 +88,10 @@ function ProfileTab() {
       </FormField>
 
       <FormField label="Avatar" hint="PNG or JPG, up to 2 MB.">
-        {() => (
+        {(props) => (
           <FileUpload
+            id={props.id}
+            aria-describedby={props["aria-describedby"]}
             accept="image/*"
             value={avatar}
             onValueChange={setAvatar}

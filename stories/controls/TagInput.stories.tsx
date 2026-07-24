@@ -38,6 +38,24 @@ export const Disabled: Story = {
   ),
 };
 
+/**
+ * When disabled, hovering the field shows the committed tags (and an optional
+ * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
+ * receive keyboard focus.
+ */
+export const DisabledWithReason: Story = {
+  render: () => (
+    <div style={{ maxInlineSize: 360 }}>
+      <TagInput
+        defaultValue={["design", "system"]}
+        disabled
+        disabledReason="Tags are inherited from the parent"
+        aria-label="Tags"
+      />
+    </div>
+  ),
+};
+
 export const Invalid: Story = {
   render: () => (
     <div style={{ maxInlineSize: 360 }}>

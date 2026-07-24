@@ -8,11 +8,17 @@ import {
   type ChangeEvent,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
@@ -41,6 +47,10 @@ export interface ComboboxProps extends Omit<
   invalid?: boolean;
   /** Control size. */
   size?: "sm" | "md" | "lg";
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
 }
@@ -81,6 +91,8 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
       placeholder,
       invalid,
       size = "md",
+      disabledReason,
+      disabledTooltip,
       name,
       id,
       disabled,
@@ -116,6 +128,14 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
     const icons = useIcons();
+    const field = useFormField();
+    const isDisabled = disabled ?? field?.disabled;
+    const disabledTooltipProps = {
+      disabled: isDisabled,
+      reason: disabledReason ?? field?.disabledReason,
+      formatter: disabledTooltip ?? field?.disabledTooltip,
+      getValue: () => inputValue,
+    };
 
     const rootRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -213,6 +233,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
     };
 
     return (
+      <DisabledTooltip {...disabledTooltipProps}>
       <div
         ref={rootRef}
         className={cx(
@@ -238,7 +259,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
           aria-describedby={ariaDescribedby}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          disabled={disabled}
+          disabled={isDisabled}
           value={inputValue}
           placeholder={placeholder}
           className={cx("du_combobox_input", `du_combobox_${size}`)}
@@ -283,6 +304,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
 
         {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
       </div>
+      </DisabledTooltip>
     );
   },
 );

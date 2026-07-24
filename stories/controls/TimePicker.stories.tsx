@@ -49,3 +49,19 @@ export const Disabled: Story = {
     <TimePicker defaultValue="12:00" disabled aria-label="Meeting time" />
   ),
 };
+
+/**
+ * When disabled, hovering the trigger shows the selected time (and an optional
+ * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
+ * receive keyboard focus.
+ */
+export const DisabledWithReason: Story = {
+  render: () => (
+    <TimePicker
+      defaultValue="12:00"
+      disabled
+      disabledReason="Fixed by the event schedule"
+      aria-label="Meeting time"
+    />
+  ),
+};

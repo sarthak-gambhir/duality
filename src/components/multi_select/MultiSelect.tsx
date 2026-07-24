@@ -6,11 +6,17 @@ import {
   type ChangeEvent,
   type FocusEvent,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { Badge } from "../badge/Badge";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
@@ -29,6 +35,10 @@ export interface MultiSelectProps {
   /** Marks the field invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   disabled?: boolean;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
   /** When set, each selected value is mirrored to a hidden input of this name. */
   name?: string;
   /** Called when the text input loses focus (for form-library integration). */
@@ -68,6 +78,8 @@ export function MultiSelect({
   placeholder = "Select...",
   invalid,
   disabled,
+  disabledReason,
+  disabledTooltip,
   name,
   onBlur,
   id,
@@ -81,6 +93,8 @@ export function MultiSelect({
     defaultValue: defaultValue ?? [],
     onChange: onValueChange,
   });
+  const field = useFormField();
+  const isDisabled = disabled ?? field?.disabled;
 
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -173,7 +187,15 @@ export function MultiSelect({
     .map((v) => options.find((o) => o.value === v))
     .filter((o): o is SelectOption => o != null);
 
+  const disabledTooltipProps = {
+    disabled: isDisabled,
+    reason: disabledReason ?? field?.disabledReason,
+    formatter: disabledTooltip ?? field?.disabledTooltip,
+    getValue: () => selectedOptions.map((o) => labelText(o)).join(", "),
+  };
+
   return (
+    <DisabledTooltip {...disabledTooltipProps}>
     <div
       ref={rootRef}
       className={cx(
@@ -185,10 +207,10 @@ export function MultiSelect({
       <div
         className={cx(
           "du_multi_select_control",
-          disabled && "du_multi_select_disabled",
+          isDisabled && "du_multi_select_disabled",
         )}
         onClick={() => {
-          if (!disabled) {
+          if (!isDisabled) {
             setOpen(true);
             inputRef.current?.focus();
           }
@@ -201,7 +223,7 @@ export function MultiSelect({
               type="button"
               className="du_multi_select_chip_remove"
               aria-label={`Remove ${labelText(option)}`}
-              disabled={disabled}
+              disabled={isDisabled}
               onClick={(event) => {
                 event.stopPropagation();
                 remove(option.value);
@@ -227,7 +249,7 @@ export function MultiSelect({
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
-          disabled={disabled}
+          disabled={isDisabled}
           value={query}
           placeholder={selectedOptions.length === 0 ? placeholder : undefined}
           className="du_multi_select_input"
@@ -278,5 +300,6 @@ export function MultiSelect({
           <input key={value} type="hidden" name={name} value={value} />
         ))}
     </div>
+    </DisabledTooltip>
   );
 }

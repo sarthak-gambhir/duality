@@ -121,3 +121,43 @@ describe("DatePicker", () => {
     expect(headers[6]).toHaveTextContent("Su");
   });
 });
+
+describe("DatePicker disabled tooltip", () => {
+  it("shows the formatted value in a hover tooltip when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        disabled
+        aria-label="date"
+      />,
+    );
+    const root = container.querySelector(".du_disabled_tooltip");
+    expect(root).not.toBeNull();
+    await user.hover(root!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Value: 2026-07-15");
+  });
+
+  it("shows the reason when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        disabled
+        disabledReason="Billing period locked"
+        aria-label="date"
+      />,
+    );
+    await user.hover(container.querySelector(".du_disabled_tooltip")!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Disabled due to: Billing period locked");
+  });
+
+  it("does not wrap when enabled", () => {
+    const { container } = render(
+      <DatePicker defaultValue={new Date(2026, 6, 15)} aria-label="date" />,
+    );
+    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+  });
+});

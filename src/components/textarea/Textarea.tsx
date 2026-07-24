@@ -5,9 +5,15 @@ import {
   useState,
   type ChangeEvent,
   type ComponentPropsWithoutRef,
+  type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 
 export interface TextareaProps extends ComponentPropsWithoutRef<"textarea"> {
   /** Marks the field invalid (border-style change + `aria-invalid`). */
@@ -22,6 +28,10 @@ export interface TextareaProps extends ComponentPropsWithoutRef<"textarea"> {
   maxRows?: number;
   /** Show a character counter (uses `maxLength` when set). */
   showCount?: boolean;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 /** Multi-line text field sharing the Input styling. */
@@ -40,13 +50,36 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       onChange,
       maxLength,
       rows,
+      id,
+      disabled,
+      disabledReason,
+      disabledTooltip,
       "aria-invalid": ariaInvalid,
+      "aria-describedby": ariaDescribedby,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
       ...rest
     },
     ref,
   ) {
     const innerRef = useRef<HTMLTextAreaElement>(null);
+    const formField = useFormField();
     const isControlled = value !== undefined;
+
+    // Explicit props always win; the FormField context is a fallback.
+    const resolvedId = id ?? formField?.id;
+    const showInvalid = invalid || formField?.invalid || undefined;
+    const describedBy = ariaDescribedby ?? formField?.describedBy;
+    const requiredAttr = ariaRequired ?? (formField?.required || undefined);
+    const errorMessageAttr =
+      ariaErrorMessage ?? (formField?.invalid ? formField?.errorId : undefined);
+    const isDisabled = disabled ?? formField?.disabled;
+    const disabledTooltipProps = {
+      disabled: isDisabled,
+      reason: disabledReason ?? formField?.disabledReason,
+      formatter: disabledTooltip ?? formField?.disabledTooltip,
+      getValue: () => innerRef.current?.value ?? "",
+    };
     const [length, setLength] = useState(
       () => String(value ?? defaultValue ?? "").length,
     );
@@ -94,7 +127,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const field = (
       <textarea
         ref={mergeRefs(ref, innerRef)}
-        aria-invalid={ariaInvalid ?? (invalid || undefined)}
+        id={resolvedId}
+        aria-invalid={ariaInvalid ?? (showInvalid ? true : undefined)}
+        aria-describedby={describedBy}
+        aria-required={requiredAttr}
+        aria-errormessage={errorMessageAttr}
+        disabled={isDisabled}
         value={value}
         defaultValue={defaultValue}
         onChange={handleChange}
@@ -105,22 +143,30 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           "du_textarea",
           `du_textarea_${size}`,
           autosize && "du_textarea_autosize",
-          invalid && "du_input_invalid",
+          showInvalid && "du_input_invalid",
           !showCount && className,
         )}
         {...rest}
       />
     );
 
-    if (!showCount) return field;
+    if (!showCount) {
+      return (
+        <DisabledTooltip {...disabledTooltipProps}>{field}</DisabledTooltip>
+      );
+    }
 
     return (
-      <span className={cx("du_textarea_wrap", className)}>
-        {field}
-        <span className="du_textarea_count" aria-hidden="true">
-          {maxLength != null ? `${currentLength} / ${maxLength}` : currentLength}
+      <DisabledTooltip {...disabledTooltipProps}>
+        <span className={cx("du_textarea_wrap", className)}>
+          {field}
+          <span className="du_textarea_count" aria-hidden="true">
+            {maxLength != null
+              ? `${currentLength} / ${maxLength}`
+              : currentLength}
+          </span>
         </span>
-      </span>
+      </DisabledTooltip>
     );
   },
 );

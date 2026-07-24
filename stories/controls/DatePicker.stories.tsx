@@ -53,3 +53,19 @@ export const Disabled: Story = {
     />
   ),
 };
+
+/**
+ * When disabled, hovering the trigger shows the selected date (and an optional
+ * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
+ * receive keyboard focus.
+ */
+export const DisabledWithReason: Story = {
+  render: () => (
+    <DatePicker
+      defaultValue={new Date(2026, 6, 15)}
+      disabled
+      disabledReason="Billing period is locked"
+      aria-label="date"
+    />
+  ),
+};

@@ -1,7 +1,12 @@
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { Badge } from "../badge/Badge";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -20,6 +25,10 @@ export interface TagInputProps {
   max?: number;
   /** Disable the whole control. */
   disabled?: boolean;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
   /** Mark invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   /** Name for hidden inputs so tags submit with a form (one per tag). */
@@ -43,6 +52,8 @@ export function TagInput({
   allowDuplicates = false,
   max,
   disabled,
+  disabledReason,
+  disabledTooltip,
   invalid,
   name,
   id,
@@ -59,6 +70,14 @@ export function TagInput({
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const icons = useIcons();
+  const field = useFormField();
+  const isDisabled = disabled ?? field?.disabled;
+  const disabledTooltipProps = {
+    disabled: isDisabled,
+    reason: disabledReason ?? field?.disabledReason,
+    formatter: disabledTooltip ?? field?.disabledTooltip,
+    getValue: () => tags.join(", "),
+  };
 
   const commit = () => {
     const tag = draft.trim();
@@ -87,14 +106,15 @@ export function TagInput({
   };
 
   return (
+    <DisabledTooltip {...disabledTooltipProps}>
     <div
       className={cx(
         "du_tag_input",
         invalid && "du_tag_input_invalid",
-        disabled && "du_tag_input_disabled",
+        isDisabled && "du_tag_input_disabled",
         className,
       )}
-      data-disabled={disabled || undefined}
+      data-disabled={isDisabled || undefined}
       onClick={() => inputRef.current?.focus()}
     >
       <ul className="du_tag_input_list">
@@ -102,7 +122,7 @@ export function TagInput({
           <li key={`${tag}_${index}`} className="du_tag_input_chip">
             <Badge className="du_tag_input_badge du_badge_removable">
               <span className="du_tag_input_text">{tag}</span>
-              {!disabled && (
+              {!isDisabled && (
                 <button
                   type="button"
                   className="du_tag_input_remove"
@@ -125,7 +145,7 @@ export function TagInput({
             type="text"
             value={draft}
             placeholder={placeholder}
-            disabled={disabled}
+            disabled={isDisabled}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             aria-describedby={ariaDescribedby}
@@ -143,5 +163,6 @@ export function TagInput({
           <input key={index} type="hidden" name={name} value={tag} />
         ))}
     </div>
+    </DisabledTooltip>
   );
 }

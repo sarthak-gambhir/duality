@@ -32,8 +32,9 @@
 .du_multi_select_disabled {
   cursor: not-allowed;
 
+  // Dither only: the chips carry their own solid background and stay legible,
+  // so a text outline here would erode the chip labels (see TagInput).
   @include m.du_dither;
-  @include m.du_text_outline(2);
 }
 
 .du_multi_select_chip {

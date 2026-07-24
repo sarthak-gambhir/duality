@@ -3,6 +3,12 @@
   color: var(--fg);
   font-family: var(--font-sans);
   font-weight: 700;
+
+  // Disabled fields only change the cursor on the label; the control itself
+  // carries the dither, so the label stays plain and readable.
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
 }
 
 .du_label_required {

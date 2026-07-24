@@ -1,7 +1,19 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -55,6 +67,10 @@ export interface TimePickerProps {
   /** Control size. */
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
   id?: string;
   name?: string;
   className?: string;
@@ -83,6 +99,8 @@ export function TimePicker({
   invalid,
   size = "md",
   disabled,
+  disabledReason,
+  disabledTooltip,
   id,
   name,
   className,
@@ -95,6 +113,8 @@ export function TimePicker({
     defaultValue: defaultValue ?? null,
     onChange: onValueChange,
   });
+  const field = useFormField();
+  const isDisabled = disabled ?? field?.disabled;
 
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -171,12 +191,12 @@ export function TimePicker({
   };
 
   const openPanel = () => {
-    if (disabled) return;
+    if (isDisabled) return;
     setOpen(true);
   };
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (disabled) return;
+    if (isDisabled) return;
     if (
       event.key === "ArrowDown" ||
       event.key === "Enter" ||
@@ -265,7 +285,15 @@ export function TimePicker({
     return `${pad(parts.hour)}:${pad(parts.minute)}`;
   })();
 
+  const disabledTooltipProps = {
+    disabled: isDisabled,
+    reason: disabledReason ?? field?.disabledReason,
+    formatter: disabledTooltip ?? field?.disabledTooltip,
+    getValue: () => (parts ? label : ""),
+  };
+
   return (
+    <DisabledTooltip {...disabledTooltipProps}>
     <div
       ref={rootRef}
       className={cx(
@@ -285,7 +313,7 @@ export function TimePicker({
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
-          disabled={disabled}
+          disabled={isDisabled}
           data-open={open || undefined}
           className={cx("du_time_picker_trigger", `du_time_picker_${size}`)}
           onClick={() => (open ? closePanel(false) : openPanel())}
@@ -301,7 +329,7 @@ export function TimePicker({
           </span>
           <Icon icon={icons.clock} className="du_time_picker_glyph" />
         </button>
-        {clearable && parts && !disabled && (
+        {clearable && parts && !isDisabled && (
           <button
             type="button"
             className="du_time_picker_clear"
@@ -409,5 +437,6 @@ export function TimePicker({
 
       {name && <input type="hidden" name={name} value={current ?? ""} />}
     </div>
+    </DisabledTooltip>
   );
 }

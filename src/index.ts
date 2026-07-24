@@ -13,6 +13,8 @@ export { palettes, paletteNames, defaultPalette } from "./theme/palettes";
 export type { Palette, PaletteName } from "./theme/palettes";
 export { PaletteSelect } from "./components/theme_controls/PaletteSelect";
 export type { PaletteSelectProps } from "./components/theme_controls/PaletteSelect";
+export { DensitySelect } from "./components/theme_controls/DensitySelect";
+export type { DensitySelectProps } from "./components/theme_controls/DensitySelect";
 export {
   contrastRatio,
   relativeLuminance,
@@ -147,6 +149,12 @@ export type {
   FormFieldProps,
   FormFieldControlProps,
 } from "./components/form_field/FormField";
+export { useFormField } from "./components/form_field/FormFieldContext";
+export type { FormFieldContextValue } from "./components/form_field/FormFieldContext";
+export type {
+  DisabledTooltipInfo,
+  DisabledTooltipFormatter,
+} from "./components/form_field/disabledTooltip";
 
 // Display
 export {
@@ -238,11 +246,14 @@ export type {
   TabListProps,
   TabProps,
   TabPanelProps,
+  TabsOrientation,
+  TabsActivationMode,
 } from "./components/tabs/Tabs";
 export { Accordion, AccordionItem } from "./components/accordion/Accordion";
 export type {
   AccordionProps,
   AccordionItemProps,
+  AccordionHeadingLevel,
 } from "./components/accordion/Accordion";
 
 // Overlays

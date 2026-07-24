@@ -1,7 +1,19 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -61,6 +73,10 @@ export interface DatePickerProps {
   /** Control size. */
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
   id?: string;
   className?: string;
   name?: string;
@@ -88,6 +104,8 @@ export function DatePicker({
   invalid,
   size = "md",
   disabled,
+  disabledReason,
+  disabledTooltip,
   id,
   className,
   name,
@@ -100,6 +118,14 @@ export function DatePicker({
     defaultValue: defaultValue ?? null,
     onChange: onValueChange,
   });
+  const field = useFormField();
+  const isDisabled = disabled ?? field?.disabled;
+  const disabledTooltipProps = {
+    disabled: isDisabled,
+    reason: disabledReason ?? field?.disabledReason,
+    formatter: disabledTooltip ?? field?.disabledTooltip,
+    getValue: () => (current ? format(current) : ""),
+  };
 
   const [open, setOpen] = useState(false);
   const [viewMonth, setViewMonth] = useState(() =>
@@ -138,7 +164,7 @@ export function DatePicker({
   };
 
   const openCalendar = () => {
-    if (disabled) return;
+    if (isDisabled) return;
     const base = startOfDay(current ?? new Date());
     setFocusedDate(base);
     setViewMonth(startOfMonth(base));
@@ -167,7 +193,7 @@ export function DatePicker({
   };
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (disabled) return;
+    if (isDisabled) return;
     if (
       event.key === "ArrowDown" ||
       event.key === "Enter" ||
@@ -260,6 +286,7 @@ export function DatePicker({
   };
 
   return (
+    <DisabledTooltip {...disabledTooltipProps}>
     <div
       ref={rootRef}
       className={cx(
@@ -279,7 +306,7 @@ export function DatePicker({
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={ariaDescribedby}
-          disabled={disabled}
+          disabled={isDisabled}
           data-open={open || undefined}
           className={cx("du_date_picker_trigger", `du_date_picker_${size}`)}
           onClick={() => (open ? closeCalendar(false) : openCalendar())}
@@ -295,7 +322,7 @@ export function DatePicker({
           </span>
           <Icon icon={icons.calendar} className="du_date_picker_glyph" />
         </button>
-        {clearable && current && !disabled && (
+        {clearable && current && !isDisabled && (
           <button
             type="button"
             className="du_date_picker_clear"
@@ -415,5 +442,6 @@ export function DatePicker({
         />
       )}
     </div>
+    </DisabledTooltip>
   );
 }

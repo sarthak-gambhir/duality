@@ -4,9 +4,15 @@ import {
   type FocusEvent,
   type KeyboardEvent,
   type ChangeEvent,
+  type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 
 export interface PinInputProps {
   /** Number of cells. Defaults to 4. */
@@ -24,6 +30,10 @@ export interface PinInputProps {
   /** Obscure entered characters. */
   mask?: boolean;
   disabled?: boolean;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
   /** When set, the assembled value is mirrored to a hidden input of this name. */
   name?: string;
   /** Called when focus leaves the group (for form-library integration). */
@@ -48,6 +58,8 @@ export function PinInput({
   type = "numeric",
   mask,
   disabled,
+  disabledReason,
+  disabledTooltip,
   name,
   onBlur,
   "aria-label": ariaLabel = "Verification code",
@@ -59,6 +71,14 @@ export function PinInput({
     onChange: onValueChange,
   });
   const refs = useRef<Array<HTMLInputElement | null>>([]);
+  const field = useFormField();
+  const isDisabled = disabled ?? field?.disabled;
+  const disabledTooltipProps = {
+    disabled: isDisabled,
+    reason: disabledReason ?? field?.disabledReason,
+    formatter: disabledTooltip ?? field?.disabledTooltip,
+    getValue: () => (mask ? "" : (current ?? "")),
+  };
 
   const chars = (current ?? "").slice(0, length).split("");
   const cellValue = (index: number) => chars[index] ?? "";
@@ -140,6 +160,7 @@ export function PinInput({
   };
 
   return (
+    <DisabledTooltip {...disabledTooltipProps}>
     <div
       role="group"
       aria-label={ariaLabel}
@@ -157,7 +178,7 @@ export function PinInput({
           inputMode={type === "numeric" ? "numeric" : "text"}
           autoComplete={index === 0 ? "one-time-code" : "off"}
           maxLength={1}
-          disabled={disabled}
+          disabled={isDisabled}
           aria-label={`${ariaLabel}, character ${index + 1} of ${length}`}
           className="du_pin_input_cell"
           value={cellValue(index)}
@@ -168,5 +189,6 @@ export function PinInput({
         />
       ))}
     </div>
+    </DisabledTooltip>
   );
 }

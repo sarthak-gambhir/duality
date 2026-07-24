@@ -36,7 +36,10 @@ export interface TooltipProps {
   defaultOpen?: boolean;
   /** Called when open state changes. */
   onOpenChange?: (open: boolean) => void;
+  /** Class applied to the tooltip bubble. */
   className?: string;
+  /** Class applied to the wrapper that anchors the trigger. */
+  rootClassName?: string;
 }
 
 /**
@@ -55,6 +58,7 @@ export function Tooltip({
   defaultOpen = false,
   onOpenChange,
   className,
+  rootClassName,
 }: TooltipProps) {
   const [isOpen, setOpen] = useControllableState({
     value: open,
@@ -98,7 +102,7 @@ export function Tooltip({
   return (
     <span
       ref={rootRef}
-      className="du_tooltip_root"
+      className={cx("du_tooltip_root", rootClassName)}
       onMouseEnter={show}
       onMouseLeave={hide}
       onFocus={show}

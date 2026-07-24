@@ -52,3 +52,45 @@ describe("Combobox", () => {
     expect(screen.queryByRole("option")).not.toBeInTheDocument();
   });
 });
+
+describe("Combobox disabled tooltip", () => {
+  it("shows the selected label in a hover tooltip when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Combobox
+        options={options}
+        defaultValue="banana"
+        disabled
+        aria-label="fruit"
+      />,
+    );
+    const root = container.querySelector(".du_disabled_tooltip");
+    expect(root).not.toBeNull();
+    await user.hover(root!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Value: Banana");
+  });
+
+  it("shows the reason when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <Combobox
+        options={options}
+        defaultValue="banana"
+        disabled
+        disabledReason="Fixed for this order"
+        aria-label="fruit"
+      />,
+    );
+    await user.hover(container.querySelector(".du_disabled_tooltip")!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Disabled due to: Fixed for this order");
+  });
+
+  it("does not wrap when enabled", () => {
+    const { container } = render(
+      <Combobox options={options} defaultValue="banana" aria-label="fruit" />,
+    );
+    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+  });
+});

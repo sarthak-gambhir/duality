@@ -8,6 +8,11 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
+import { useFormField } from "../form_field/FormFieldContext";
+import {
+  DisabledTooltip,
+  type DisabledTooltipFormatter,
+} from "../form_field/disabledTooltip";
 
 export interface InputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -25,6 +30,10 @@ export interface InputProps extends Omit<
   clearable?: boolean;
   /** Called after the field is cleared. */
   onClear?: () => void;
+  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  disabledReason?: ReactNode;
+  /** Override the default disabled-tooltip content formatting. */
+  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 const nativeValueSetter = () =>
@@ -41,15 +50,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     clearable,
     onClear,
     disabled,
+    disabledReason,
+    disabledTooltip,
     value,
     defaultValue,
     onChange,
+    id,
     "aria-invalid": ariaInvalid,
+    "aria-describedby": ariaDescribedby,
+    "aria-required": ariaRequired,
+    "aria-errormessage": ariaErrorMessage,
     ...rest
   },
   ref,
 ) {
   const innerRef = useRef<HTMLInputElement>(null);
+  const field = useFormField();
   const isControlled = value !== undefined;
   const [uncontrolledHasValue, setUncontrolledHasValue] = useState(
     () => defaultValue != null && String(defaultValue).length > 0,
@@ -58,8 +74,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     ? String(value ?? "").length > 0
     : uncontrolledHasValue;
 
-  const invalidAttr = ariaInvalid ?? (invalid || undefined);
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const showInvalid = invalid || field?.invalid || undefined;
+  const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+  const describedBy = ariaDescribedby ?? field?.describedBy;
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+  const errorMessageAttr =
+    ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
+  const isDisabled = disabled ?? field?.disabled;
   const grouped = prefix != null || suffix != null || clearable;
+
+  const disabledTooltipProps = {
+    disabled: isDisabled,
+    reason: disabledReason ?? field?.disabledReason,
+    formatter: disabledTooltip ?? field?.disabledTooltip,
+    getValue: () => innerRef.current?.value ?? "",
+  };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!isControlled) setUncontrolledHasValue(event.target.value.length > 0);
@@ -79,31 +110,38 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
   if (!grouped) {
     return (
-      <input
-        ref={ref}
-        aria-invalid={invalidAttr}
-        disabled={disabled}
-        value={value}
-        defaultValue={defaultValue}
-        onChange={handleChange}
-        className={cx(
-          "du_input",
-          `du_input_${size}`,
-          invalid && "du_input_invalid",
-          className,
-        )}
-        {...rest}
-      />
+      <DisabledTooltip {...disabledTooltipProps}>
+        <input
+          ref={mergeRefs(ref, innerRef)}
+          id={resolvedId}
+          aria-invalid={invalidAttr}
+          aria-describedby={describedBy}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
+          disabled={isDisabled}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={handleChange}
+          className={cx(
+            "du_input",
+            `du_input_${size}`,
+            showInvalid && "du_input_invalid",
+            className,
+          )}
+          {...rest}
+        />
+      </DisabledTooltip>
     );
   }
 
   return (
-    <span
+    <DisabledTooltip {...disabledTooltipProps}>
+      <span
       className={cx(
         "du_input_group",
         `du_input_group_${size}`,
-        invalid && "du_input_group_invalid",
-        disabled && "du_input_group_disabled",
+        showInvalid && "du_input_group_invalid",
+        isDisabled && "du_input_group_disabled",
         className,
       )}
     >
@@ -112,15 +150,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       )}
       <input
         ref={mergeRefs(ref, innerRef)}
+        id={resolvedId}
         aria-invalid={invalidAttr}
-        disabled={disabled}
+        aria-describedby={describedBy}
+        aria-required={requiredAttr}
+        aria-errormessage={errorMessageAttr}
+        disabled={isDisabled}
         value={value}
         defaultValue={defaultValue}
         onChange={handleChange}
         className="du_input_field"
         {...rest}
       />
-      {clearable && hasValue && !disabled && (
+      {clearable && hasValue && !isDisabled && (
         <button
           type="button"
           className="du_input_clear"
@@ -133,6 +175,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {suffix != null && (
         <span className="du_input_affix du_input_suffix">{suffix}</span>
       )}
-    </span>
+      </span>
+    </DisabledTooltip>
   );
 });

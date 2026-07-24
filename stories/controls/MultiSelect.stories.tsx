@@ -47,3 +47,23 @@ function Demo() {
 }
 
 export const Default: Story = { render: () => <Demo /> };
+
+/**
+ * When disabled, hovering the control shows the selected labels (and an
+ * optional `disabledReason`) in a tooltip. Hover-only, since disabled controls
+ * cannot receive keyboard focus.
+ */
+export const DisabledWithReason: Story = {
+  render: () => (
+    <div style={{ maxWidth: 320 }}>
+      <MultiSelect
+        options={options}
+        defaultValue={["react", "svelte"]}
+        disabled
+        disabledReason="Framework set is locked for this project"
+        placeholder="Pick frameworks..."
+        aria-label="frameworks"
+      />
+    </div>
+  ),
+};

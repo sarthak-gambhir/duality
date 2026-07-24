@@ -2,8 +2,11 @@
 
 .du_tablist {
   display: flex;
-  flex-wrap: wrap;
+
+  // Single scrollable row: clipped tabs scroll into view rather than wrapping.
+  flex-wrap: nowrap;
   gap: var(--space-1);
+  overflow: auto;
   border-block-end: var(--border-width) solid var(--fg);
   padding-block-end: var(--space-1);
 }
@@ -11,11 +14,13 @@
 .du_tab {
   @include m.du_reset_control;
 
+  flex: 0 0 auto;
   padding: var(--space-2) var(--space-3);
   color: var(--fg);
   background-color: var(--bg);
   font-family: var(--font-sans);
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
   border: var(--border-width) solid var(--fg);
 
@@ -48,4 +53,26 @@
 
 .du_tabpanel {
   padding: var(--space-4) 0;
+}
+
+// Vertical orientation: list sits beside the panels, rule on the inline edge.
+// Declared after the base rules so the higher-specificity overrides win.
+.du_tabs[data-orientation="vertical"] {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.du_tabs[data-orientation="vertical"] .du_tablist {
+  flex-direction: column;
+  flex: 0 0 auto;
+  overflow: visible;
+  border-block-end: 0;
+  border-inline-end: var(--border-width) solid var(--fg);
+  padding-block-end: 0;
+  padding-inline-end: var(--space-1);
+}
+
+.du_tabs[data-orientation="vertical"] .du_tabpanel {
+  flex: 1 1 auto;
+  padding: 0 var(--space-4);
 }

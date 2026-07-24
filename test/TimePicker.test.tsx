@@ -112,3 +112,39 @@ describe("TimePicker", () => {
     expect(hours.getByRole("option", { name: "09" })).toHaveFocus();
   });
 });
+
+describe("TimePicker disabled tooltip", () => {
+  it("shows the formatted value in a hover tooltip when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <TimePicker defaultValue="09:30" disabled aria-label="Time" />,
+    );
+    const root = container.querySelector(".du_disabled_tooltip");
+    expect(root).not.toBeNull();
+    await user.hover(root!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Value: 09:30");
+  });
+
+  it("shows the reason when disabled", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <TimePicker
+        defaultValue="09:30"
+        disabled
+        disabledReason="Fixed by the schedule"
+        aria-label="Time"
+      />,
+    );
+    await user.hover(container.querySelector(".du_disabled_tooltip")!);
+    const tip = await screen.findByRole("tooltip");
+    expect(tip).toHaveTextContent("Disabled due to: Fixed by the schedule");
+  });
+
+  it("does not wrap when enabled", () => {
+    const { container } = render(
+      <TimePicker defaultValue="09:30" aria-label="Time" />,
+    );
+    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+  });
+});

@@ -32,3 +32,19 @@ export const Masked: Story = { render: () => <Demo mask /> };
 export const Alphanumeric: Story = {
   render: () => <Demo type="alphanumeric" />,
 };
+
+/**
+ * When disabled, hovering the group shows the entered code (and an optional
+ * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
+ * receive keyboard focus. With `mask`, the value line is omitted so only the
+ * reason shows.
+ */
+export const DisabledWithReason: Story = {
+  render: () => (
+    <PinInput
+      defaultValue="1234"
+      disabled
+      disabledReason="Verified on a previous step"
+    />
+  ),
+};

@@ -46,3 +46,16 @@ export const Disabled: Story = {
   render: (args) => <Demo {...args} />,
   args: { disabled: true },
 };
+
+/**
+ * When disabled, hovering the field shows the current value (and an optional
+ * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
+ * receive keyboard focus.
+ */
+export const DisabledWithReason: Story = {
+  render: (args) => <Demo {...args} />,
+  args: {
+    disabled: true,
+    disabledReason: "Set by your plan tier",
+  },
+};

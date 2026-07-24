@@ -34,7 +34,14 @@
 
   @include m.du_focus_inset;
 
-  &:hover,
+  &:disabled {
+    cursor: not-allowed;
+
+    @include m.du_dither;
+    @include m.du_text_outline(2);
+  }
+
+  &:hover:not(:disabled),
   &[data-open] {
     color: var(--bg);
     background-color: var(--fg);
@@ -47,8 +54,7 @@
   }
 }
 
-// Pixel caret that flips when the section is open.
-// Caret icon (swapped in TSX): chevron down when collapsed, up when open.
+// Caret icon (swapped in TSX): chevron points right when collapsed, down when open.
 .du_accordion_icon {
   flex: 0 0 auto;
   font-size: var(--icon-md);
