@@ -25,13 +25,13 @@
 .du_avatar_md {
   inline-size: var(--size-lg);
   block-size: var(--size-lg);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_avatar_lg {
   inline-size: var(--size-xl);
   block-size: var(--size-xl);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 .du_avatar_img {

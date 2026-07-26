@@ -37,19 +37,19 @@
 .du_combobox_sm {
   min-block-size: var(--size-sm);
   padding: 0 var(--space-2);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_combobox_md {
   min-block-size: var(--size-md);
   padding: 0 var(--space-2);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_combobox_lg {
   min-block-size: var(--size-lg);
   padding: 0 var(--space-3);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 .du_combobox_listbox {

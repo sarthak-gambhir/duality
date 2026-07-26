@@ -12,12 +12,13 @@ import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useFormField } from "../form_field/FormFieldContext";
 import { DisabledMessage } from "../form_field/disabledMessage";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface TextareaProps extends ComponentPropsWithoutRef<"textarea"> {
   /** Marks the field invalid (border-style change + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Grow the field to fit its content. */
   autosize?: boolean;
   /** Minimum visible rows (also the starting height). */

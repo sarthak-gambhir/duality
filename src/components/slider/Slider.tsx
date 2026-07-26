@@ -1,11 +1,11 @@
 import {
   forwardRef,
-  useState,
   type ChangeEvent,
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { useControllableState } from "../../utils/useControllableState";
 
 /** A tick mark on the track: a bare value, or a value with a visible caption. */
 export type SliderMark = number | { value: number; label?: ReactNode };
@@ -74,17 +74,16 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
   // A native range with no value defaults to the midpoint; mirror that so the
   // value bubble and marks line up with the thumb before any interaction.
   const midpoint = minNum + (maxNum - minNum) / 2;
-  const isControlled = value !== undefined;
-  const [internal, setInternal] = useState<number>(() =>
-    toNum(value ?? defaultValue, midpoint),
-  );
-  const current = isControlled ? toNum(value, midpoint) : internal;
+  const [current, setCurrent] = useControllableState<number>({
+    value: value !== undefined ? toNum(value, midpoint) : undefined,
+    defaultValue: toNum(value ?? defaultValue, midpoint),
+    onChange: onValueChange,
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const num = Number(event.target.value);
-    if (!isControlled) setInternal(num);
+    setCurrent(num);
     onChange?.(event);
-    onValueChange?.(num);
   };
 
   const input = (

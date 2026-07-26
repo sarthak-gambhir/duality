@@ -49,17 +49,17 @@
 
 .du_select_sm {
   min-block-size: var(--size-sm);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_select_md {
   min-block-size: var(--size-md);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_select_lg {
   min-block-size: var(--size-lg);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 // Caret icon: chevron that swaps direction (in TSX) when the list opens.

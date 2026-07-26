@@ -14,13 +14,10 @@
   color: var(--fg);
   background-color: var(--bg);
   font-family: var(--font-mono);
-  font-size: 20px;
+  font-size: var(--font-size-4);
   text-align: center;
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: 2px;
-  }
+  @include m.du_focus;
 
   &:disabled {
     cursor: not-allowed;

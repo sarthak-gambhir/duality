@@ -1,11 +1,12 @@
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   /** Visual style. `solid` is filled, `inverse` is outlined, `ghost` is borderless. */
   variant?: "solid" | "inverse" | "ghost";
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
 }
 
 /** Primary action control. Inverts on hover; disabled state uses a dither fill. */

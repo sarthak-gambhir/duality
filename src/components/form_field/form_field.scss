@@ -7,7 +7,7 @@
 .du_form_field_hint {
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-size-1);
   font-style: italic;
 }
 
@@ -24,14 +24,14 @@
   padding-inline-start: var(--space-1);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-size-1);
   font-style: italic;
 }
 
 .du_form_field_error {
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-size-1);
   font-weight: 700;
 
   // Error is conveyed by text + a leading pixel marker, never color alone.

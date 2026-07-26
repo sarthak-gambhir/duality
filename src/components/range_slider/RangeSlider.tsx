@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   useRef,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
@@ -68,7 +69,9 @@ function normalizeMarks(
  * Two-color dual-thumb range slider. Each thumb is a `role="slider"` control
  * with full keyboard support; a fill spans between them. Thumbs can't cross.
  */
-export function RangeSlider({
+export const RangeSlider = forwardRef<HTMLDivElement, RangeSliderProps>(
+  function RangeSlider(
+    {
   value,
   defaultValue,
   onValueChange,
@@ -90,7 +93,9 @@ export function RangeSlider({
   name,
   className,
   ...rest
-}: RangeSliderProps) {
+    },
+    ref,
+  ) {
   const [range, setRange] = useControllableState<Range>({
     value,
     defaultValue: defaultValue ?? [min, max],
@@ -207,6 +212,7 @@ export function RangeSlider({
 
   return (
     <div
+      ref={ref}
       className={cx(
         "du_range_slider",
         disabled && "du_range_slider_disabled",
@@ -242,6 +248,7 @@ export function RangeSlider({
             aria-valuenow={thumb.value}
             aria-valuetext={getAriaValueText?.(thumb.value, thumb.which)}
             aria-orientation="horizontal"
+            aria-invalid={invalid || undefined}
             aria-disabled={disabled || undefined}
             tabIndex={disabled ? -1 : 0}
             className="du_range_slider_thumb"
@@ -289,4 +296,4 @@ export function RangeSlider({
       )}
     </div>
   );
-}
+});

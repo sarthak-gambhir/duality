@@ -1,6 +1,6 @@
 .du_container {
-  width: 100%;
-  max-width: var(--du-max, var(--container-lg));
+  inline-size: 100%;
+  max-inline-size: var(--du-max, var(--container-lg));
   margin-inline: auto;
   padding-inline: var(--du-pad, var(--space-4));
 }

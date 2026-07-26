@@ -97,7 +97,12 @@ export function Tooltip({
   };
   const cancelHide = () => clearTimeout(timer.current);
 
-  const trigger = cloneElement(children, { "aria-describedby": tooltipId });
+  const existingDescribedBy = (
+    children.props as { "aria-describedby"?: string }
+  )["aria-describedby"];
+  const trigger = cloneElement(children, {
+    "aria-describedby": cx(existingDescribedBy, tooltipId),
+  });
 
   return (
     <span

@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   useId,
   useMemo,
   useRef,
@@ -9,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { Badge } from "../badge/Badge";
@@ -38,11 +40,20 @@ export interface MultiSelectProps {
   name?: string;
   /** Called when the text input loses focus (for form-library integration). */
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+  /** Whether the listbox is open (controlled). */
+  open?: boolean;
+  /** Initial open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Called when the open state should change. */
+  onOpenChange?: (open: boolean) => void;
   id?: string;
   className?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
+  "aria-required"?: boolean;
+  "aria-errormessage"?: string;
 }
 
 function labelText(option: SelectOption): string {
@@ -65,35 +76,57 @@ function nextEnabledIndex(
 }
 
 /** Multi-value combobox: selected options show as removable chips. */
-export function MultiSelect({
-  options,
-  value,
-  defaultValue,
-  onValueChange,
-  placeholder = "Select...",
-  invalid,
-  disabled,
-  disabledReason,
-  name,
-  onBlur,
-  id,
-  className,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
-  "aria-describedby": ariaDescribedby,
-}: MultiSelectProps) {
+export const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
+  function MultiSelect(
+    {
+      options,
+      value,
+      defaultValue,
+      onValueChange,
+      placeholder = "Select...",
+      invalid,
+      disabled,
+      disabledReason,
+      name,
+      onBlur,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      id,
+      className,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      "aria-describedby": ariaDescribedby,
+      "aria-invalid": ariaInvalid,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
+    },
+    forwardedRef,
+  ) {
   const [selected, setSelected] = useControllableState<string[]>({
     value,
     defaultValue: defaultValue ?? [],
     onChange: onValueChange,
   });
   const field = useFormField();
+
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const showInvalid = invalid || field?.invalid || undefined;
+  const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+  const errorMessageAttr =
+    ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
   const isDisabled = disabled ?? field?.disabled;
   const resolvedReason = disabledReason ?? field?.disabledReason;
   const showDisabledReason = !!isDisabled && resolvedReason != null;
 
   const [query, setQuery] = useState("");
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useControllableState<boolean>({
+    value: openProp,
+    defaultValue: defaultOpen ?? false,
+    onChange: onOpenChange,
+  });
   const [activeIndex, setActiveIndex] = useState(-1);
   const icons = useIcons();
 
@@ -105,7 +138,10 @@ export function MultiSelect({
   const disabledMsgId = `${baseId}_disabled`;
   const optionId = (index: number) => `${baseId}_option_${index}`;
   const describedBy =
-    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
+    cx(
+      ariaDescribedby ?? field?.describedBy,
+      showDisabledReason && disabledMsgId,
+    ) || undefined;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -196,7 +232,7 @@ export function MultiSelect({
       ref={rootRef}
       className={cx(
         "du_multi_select",
-        invalid && "du_multi_select_invalid",
+        showInvalid && "du_multi_select_invalid",
         className,
       )}
     >
@@ -231,8 +267,8 @@ export function MultiSelect({
           </Badge>
         ))}
         <input
-          ref={inputRef}
-          id={id}
+          ref={mergeRefs(inputRef, forwardedRef)}
+          id={resolvedId}
           type="text"
           role="combobox"
           autoComplete="off"
@@ -242,7 +278,9 @@ export function MultiSelect({
           aria-activedescendant={
             open && activeIndex >= 0 ? optionId(activeIndex) : undefined
           }
-          aria-invalid={invalid || undefined}
+          aria-invalid={invalidAttr}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={describedBy}
@@ -299,4 +337,4 @@ export function MultiSelect({
     </div>
     </DisabledMessage>
   );
-}
+});

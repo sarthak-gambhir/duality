@@ -72,7 +72,7 @@
 }
 
 .du_date_picker_affix {
-  border-left: var(--border-width) solid var(--fg);
+  border-inline-start: var(--border-width) solid var(--fg);
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
@@ -97,17 +97,17 @@
 
 .du_date_picker_sm {
   min-block-size: var(--size-sm);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_date_picker_md {
   min-block-size: var(--size-md);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_date_picker_lg {
   min-block-size: var(--size-lg);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 .du_date_picker_panel {
@@ -144,10 +144,7 @@
   cursor: pointer;
   border: var(--border-width) solid var(--fg);
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: 2px;
-  }
+  @include m.du_focus;
 
   &:hover {
     @include m.du_invert;
@@ -240,7 +237,7 @@
   color: var(--fg);
   background-color: var(--bg);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-size-1);
   cursor: pointer;
 
   &:hover {

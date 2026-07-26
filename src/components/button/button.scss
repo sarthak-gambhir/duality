@@ -59,17 +59,17 @@
 .du_button_sm {
   min-block-size: var(--size-sm);
   padding: 0 var(--space-2);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_button_md {
   min-block-size: var(--size-md);
   padding: 0 var(--space-3);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_button_lg {
   min-block-size: var(--size-lg);
   padding: 0 var(--space-4);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }

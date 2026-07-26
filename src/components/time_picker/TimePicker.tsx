@@ -1,18 +1,20 @@
 import {
+  forwardRef,
   useEffect,
   useId,
   useRef,
-  useState,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFormField } from "../form_field/FormFieldContext";
 import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -62,16 +64,25 @@ export interface TimePickerProps {
   /** Marks the field invalid. */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   disabled?: boolean;
   /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
+  /** Whether the panel is open (controlled). */
+  open?: boolean;
+  /** Initial open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Called when the open state should change. */
+  onOpenChange?: (open: boolean) => void;
   id?: string;
   name?: string;
   className?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
+  "aria-required"?: boolean;
+  "aria-errormessage"?: string;
 }
 
 /**
@@ -79,40 +90,62 @@ export interface TimePickerProps {
  * columns (plus AM/PM in 12h mode). Value is `"HH:mm"` in 24h; selected cells
  * invert rather than relying on color.
  */
-export function TimePicker({
-  value,
-  defaultValue,
-  onValueChange,
-  step = 5,
-  hour12 = false,
-  min,
-  max,
-  disabledHours,
-  disabledMinutes,
-  clearable,
-  placeholder = "Select time...",
-  invalid,
-  size = "md",
-  disabled,
-  disabledReason,
-  id,
-  name,
-  className,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
-  "aria-describedby": ariaDescribedby,
-}: TimePickerProps) {
+export const TimePicker = forwardRef<HTMLButtonElement, TimePickerProps>(
+  function TimePicker(
+    {
+      value,
+      defaultValue,
+      onValueChange,
+      step = 5,
+      hour12 = false,
+      min,
+      max,
+      disabledHours,
+      disabledMinutes,
+      clearable,
+      placeholder = "Select time...",
+      invalid,
+      size = "md",
+      disabled,
+      disabledReason,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      id,
+      name,
+      className,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      "aria-describedby": ariaDescribedby,
+      "aria-invalid": ariaInvalid,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
+    },
+    forwardedRef,
+  ) {
   const [current, setCurrent] = useControllableState<string | null>({
     value,
     defaultValue: defaultValue ?? null,
     onChange: onValueChange,
   });
   const field = useFormField();
+
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const showInvalid = invalid || field?.invalid || undefined;
+  const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+  const errorMessageAttr =
+    ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
   const isDisabled = disabled ?? field?.disabled;
   const resolvedReason = disabledReason ?? field?.disabledReason;
   const showDisabledReason = !!isDisabled && resolvedReason != null;
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useControllableState<boolean>({
+    value: openProp,
+    defaultValue: defaultOpen ?? false,
+    onChange: onOpenChange,
+  });
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -120,7 +153,10 @@ export function TimePicker({
   const baseId = useId();
   const disabledMsgId = `${baseId}_disabled`;
   const describedBy =
-    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
+    cx(
+      ariaDescribedby ?? field?.describedBy,
+      showDisabledReason && disabledMsgId,
+    ) || undefined;
 
   useDismiss({
     enabled: open,
@@ -294,18 +330,20 @@ export function TimePicker({
       ref={rootRef}
       className={cx(
         "du_time_picker",
-        invalid && "du_time_picker_invalid",
+        showInvalid && "du_time_picker_invalid",
         className,
       )}
     >
       <div className="du_time_picker_control">
         <button
-          ref={triggerRef}
+          ref={mergeRefs(triggerRef, forwardedRef)}
           type="button"
-          id={id}
+          id={resolvedId}
           aria-haspopup="dialog"
           aria-expanded={open}
-          aria-invalid={invalid || undefined}
+          aria-invalid={invalidAttr}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={describedBy}
@@ -437,4 +475,4 @@ export function TimePicker({
     </div>
     </DisabledMessage>
   );
-}
+});

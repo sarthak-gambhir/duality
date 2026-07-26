@@ -65,13 +65,13 @@
 }
 
 .du_timeline_time {
-  font-size: 14px;
+  font-size: var(--font-size-1);
   font-variant-numeric: tabular-nums;
 }
 
 .du_timeline_description {
   margin-block-start: var(--space-1);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 // Status is conveyed by the marker icon shape (chosen in TSX); upcoming keeps

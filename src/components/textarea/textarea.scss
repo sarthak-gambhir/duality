@@ -14,15 +14,15 @@
 }
 
 .du_textarea_sm {
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_textarea_md {
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_textarea_lg {
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 // Autosize manages height in JS, so disable manual resize and clip overflow.
@@ -40,6 +40,6 @@
   display: block;
   margin-block-start: var(--space-1);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-size-1);
   text-align: end;
 }

@@ -22,10 +22,7 @@
   // bordered cell; the star icon marks filled/half. Empty = an empty cell.
   border: var(--border-width) solid var(--fg);
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: 2px;
-  }
+  @include m.du_focus;
 
   &:disabled {
     cursor: default;

@@ -73,6 +73,12 @@
     color: var(--fg);
     font-style: italic;
   }
+
+  // The control owns the focus ring via :focus-within, so the chromeless input
+  // must not draw its own (global :focus-visible) ring or they double up.
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .du_multi_select_listbox {

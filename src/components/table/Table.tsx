@@ -1,9 +1,10 @@
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface TableProps extends ComponentPropsWithoutRef<"table"> {
   /** Cell padding scale. Defaults to `md`. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Pin the header row while the table's scroll container scrolls. */
   stickyHeader?: boolean;
 }

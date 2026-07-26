@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   useId,
   useRef,
   type ClipboardEvent,
@@ -34,8 +35,14 @@ export interface PinInputProps {
   name?: string;
   /** Called when focus leaves the group (for form-library integration). */
   onBlur?: (event: FocusEvent<HTMLDivElement>) => void;
+  id?: string;
   /** Base accessible name; each cell is labelled "<label>, digit N of M". */
   "aria-label"?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
+  "aria-required"?: boolean;
+  "aria-errormessage"?: string;
   className?: string;
 }
 
@@ -45,21 +52,31 @@ function sanitize(raw: string, type: "numeric" | "alphanumeric"): string {
 }
 
 /** Segmented one-time-code entry with auto-advance, Backspace, and paste. */
-export function PinInput({
-  length = 4,
-  value,
-  defaultValue,
-  onValueChange,
-  onComplete,
-  type = "numeric",
-  mask,
-  disabled,
-  disabledReason,
-  name,
-  onBlur,
-  "aria-label": ariaLabel = "Verification code",
-  className,
-}: PinInputProps) {
+export const PinInput = forwardRef<HTMLInputElement, PinInputProps>(
+  function PinInput(
+    {
+      length = 4,
+      value,
+      defaultValue,
+      onValueChange,
+      onComplete,
+      type = "numeric",
+      mask,
+      disabled,
+      disabledReason,
+      name,
+      onBlur,
+      id,
+      "aria-label": ariaLabel = "Verification code",
+      "aria-labelledby": ariaLabelledby,
+      "aria-describedby": ariaDescribedby,
+      "aria-invalid": ariaInvalid,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
+      className,
+    },
+    forwardedRef,
+  ) {
   const [current, setCurrent] = useControllableState<string>({
     value,
     defaultValue: defaultValue ?? "",
@@ -68,9 +85,22 @@ export function PinInput({
   const refs = useRef<Array<HTMLInputElement | null>>([]);
   const field = useFormField();
   const disabledMsgId = useId();
+
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const showInvalid = field?.invalid || undefined;
+  const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+  const errorMessageAttr =
+    ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
   const isDisabled = disabled ?? field?.disabled;
   const resolvedReason = disabledReason ?? field?.disabledReason;
   const showDisabledReason = !!isDisabled && resolvedReason != null;
+  const describedBy =
+    cx(
+      ariaDescribedby ?? field?.describedBy,
+      showDisabledReason && disabledMsgId,
+    ) || undefined;
 
   const chars = (current ?? "").slice(0, length).split("");
   const cellValue = (index: number) => chars[index] ?? "";
@@ -159,8 +189,13 @@ export function PinInput({
     >
     <div
       role="group"
+      id={resolvedId}
       aria-label={ariaLabel}
-      aria-describedby={showDisabledReason ? disabledMsgId : undefined}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={describedBy}
+      aria-invalid={invalidAttr}
+      aria-required={requiredAttr}
+      aria-errormessage={errorMessageAttr}
       className={cx("du_pin_input", className)}
       onBlur={onGroupBlur}
     >
@@ -170,6 +205,10 @@ export function PinInput({
           key={index}
           ref={(node) => {
             refs.current[index] = node;
+            if (index === 0) {
+              if (typeof forwardedRef === "function") forwardedRef(node);
+              else if (forwardedRef) forwardedRef.current = node;
+            }
           }}
           type={mask ? "password" : "text"}
           inputMode={type === "numeric" ? "numeric" : "text"}
@@ -188,4 +227,4 @@ export function PinInput({
     </div>
     </DisabledMessage>
   );
-}
+});

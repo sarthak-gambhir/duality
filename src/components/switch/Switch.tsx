@@ -4,6 +4,7 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { useFormField } from "../form_field/FormFieldContext";
 
 export interface SwitchProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -15,14 +16,32 @@ export interface SwitchProps extends Omit<
 
 /** Two-color toggle switch built on a native checkbox with `role="switch"`. */
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
-  { label, className, ...rest },
+  {
+    label,
+    className,
+    id,
+    disabled,
+    "aria-invalid": ariaInvalid,
+    "aria-describedby": ariaDescribedby,
+    "aria-required": ariaRequired,
+    ...rest
+  },
   ref,
 ) {
+  const field = useFormField();
+
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const isDisabled = disabled ?? field?.disabled;
+  const describedBy = ariaDescribedby ?? field?.describedBy;
+  const invalidAttr = ariaInvalid ?? (field?.invalid ? true : undefined);
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+
   return (
     <label
       className={cx(
         "du_switch",
-        rest.disabled && "du_switch_disabled",
+        isDisabled && "du_switch_disabled",
         className,
       )}
     >
@@ -31,6 +50,11 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
         type="checkbox"
         role="switch"
         className="du_switch_input"
+        id={resolvedId}
+        disabled={isDisabled}
+        aria-invalid={invalidAttr}
+        aria-describedby={describedBy}
+        aria-required={requiredAttr}
         {...rest}
       />
       <span className="du_switch_track" aria-hidden="true">

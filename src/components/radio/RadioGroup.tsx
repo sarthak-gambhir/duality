@@ -7,6 +7,7 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
+import { useFormField } from "../form_field/FormFieldContext";
 
 interface RadioGroupContextValue {
   name: string;
@@ -57,6 +58,8 @@ export function RadioGroup({
 }: RadioGroupProps) {
   const autoName = useId();
   const groupName = name ?? autoName;
+  const field = useFormField();
+  const isDisabled = disabled ?? field?.disabled;
 
   const [selected, setSelected] = useControllableState<string>({
     value,
@@ -69,6 +72,9 @@ export function RadioGroup({
       role="radiogroup"
       aria-label={typeof label === "string" ? label : undefined}
       aria-orientation={orientation}
+      aria-describedby={field?.describedBy}
+      aria-invalid={field?.invalid || undefined}
+      aria-required={field?.required || undefined}
       className={cx(
         "du_radio_group",
         orientation === "horizontal" && "du_radio_group_horizontal",
@@ -81,7 +87,7 @@ export function RadioGroup({
           name: groupName,
           value: selected,
           onValueChange: setSelected,
-          disabled,
+          disabled: isDisabled,
         }}
       >
         {children}

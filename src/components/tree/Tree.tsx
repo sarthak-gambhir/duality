@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   useEffect,
   useMemo,
   useRef,
@@ -8,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
@@ -95,19 +97,22 @@ function nodeText(node: TreeNode): string {
  * Up/Down move, Right expands or descends, Left collapses or ascends, Home/End
  * jump, Enter/Space select. Selection inverts the row (never color alone).
  */
-export function Tree({
-  items,
-  expanded,
-  defaultExpanded,
-  defaultExpandAll,
-  onExpandedChange,
-  selected,
-  defaultSelected,
-  onSelectedChange,
-  label,
-  className,
-  ...rest
-}: TreeProps) {
+export const Tree = forwardRef<HTMLUListElement, TreeProps>(function Tree(
+  {
+    items,
+    expanded,
+    defaultExpanded,
+    defaultExpandAll,
+    onExpandedChange,
+    selected,
+    defaultSelected,
+    onSelectedChange,
+    label,
+    className,
+    ...rest
+  },
+  ref,
+) {
   const [expandedList, setExpandedList] = useControllableState<string[]>({
     value: expanded,
     defaultValue:
@@ -277,7 +282,7 @@ export function Tree({
       role={level === 1 ? "tree" : "group"}
       aria-label={level === 1 ? label : undefined}
       className={level === 1 ? cx("du_tree", className) : "du_tree_group"}
-      ref={level === 1 ? rootRef : undefined}
+      ref={level === 1 ? mergeRefs(rootRef, ref) : undefined}
       onKeyDown={level === 1 ? onKeyDown : undefined}
       {...(level === 1 ? rest : {})}
     >
@@ -338,4 +343,4 @@ export function Tree({
   );
 
   return renderNodes(items, 1);
-}
+});

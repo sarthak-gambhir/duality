@@ -51,7 +51,7 @@
   color: var(--fg);
   background-color: var(--bg);
   font-family: var(--font-sans);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 
   &::placeholder {
     color: var(--fg);
@@ -121,7 +121,6 @@
 
 .du_command_option_desc {
   font-size: 12px;
-  opacity: 0.75;
 }
 
 // Shortcut badges inherit the active row's inverted colors.

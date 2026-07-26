@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   useEffect,
   useId,
   useRef,
@@ -7,12 +8,14 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFormField } from "../form_field/FormFieldContext";
 import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 const MONTHS = [
   "January",
@@ -68,16 +71,25 @@ export interface DatePickerProps {
   /** Marks the field invalid. */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   disabled?: boolean;
   /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
+  /** Whether the calendar is open (controlled). */
+  open?: boolean;
+  /** Initial open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Called when the open state should change. */
+  onOpenChange?: (open: boolean) => void;
   id?: string;
   className?: string;
   name?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
+  "aria-required"?: boolean;
+  "aria-errormessage"?: string;
 }
 
 /**
@@ -85,39 +97,61 @@ export interface DatePickerProps {
  * Native `Date` only; today is marked by a border (not color), the selected day
  * inverts, and the grid supports full keyboard navigation.
  */
-export function DatePicker({
-  value,
-  defaultValue,
-  onValueChange,
-  min,
-  max,
-  isDateDisabled,
-  format = toISO,
-  weekStartsOn = 0,
-  clearable,
-  placeholder = "Select date...",
-  invalid,
-  size = "md",
-  disabled,
-  disabledReason,
-  id,
-  className,
-  name,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
-  "aria-describedby": ariaDescribedby,
-}: DatePickerProps) {
+export const DatePicker = forwardRef<HTMLButtonElement, DatePickerProps>(
+  function DatePicker(
+    {
+      value,
+      defaultValue,
+      onValueChange,
+      min,
+      max,
+      isDateDisabled,
+      format = toISO,
+      weekStartsOn = 0,
+      clearable,
+      placeholder = "Select date...",
+      invalid,
+      size = "md",
+      disabled,
+      disabledReason,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
+      id,
+      className,
+      name,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      "aria-describedby": ariaDescribedby,
+      "aria-invalid": ariaInvalid,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
+    },
+    forwardedRef,
+  ) {
   const [current, setCurrent] = useControllableState<Date | null>({
     value,
     defaultValue: defaultValue ?? null,
     onChange: onValueChange,
   });
   const field = useFormField();
+
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const showInvalid = invalid || field?.invalid || undefined;
+  const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+  const errorMessageAttr =
+    ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
   const isDisabled = disabled ?? field?.disabled;
   const resolvedReason = disabledReason ?? field?.disabledReason;
   const showDisabledReason = !!isDisabled && resolvedReason != null;
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useControllableState<boolean>({
+    value: openProp,
+    defaultValue: defaultOpen ?? false,
+    onChange: onOpenChange,
+  });
   const [viewMonth, setViewMonth] = useState(() =>
     startOfMonth(current ?? new Date()),
   );
@@ -134,7 +168,10 @@ export function DatePicker({
   const gridLabelId = `${baseId}_grid_label`;
   const disabledMsgId = `${baseId}_disabled`;
   const describedBy =
-    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
+    cx(
+      ariaDescribedby ?? field?.describedBy,
+      showDisabledReason && disabledMsgId,
+    ) || undefined;
 
   useDismiss({
     enabled: open,
@@ -288,18 +325,20 @@ export function DatePicker({
       ref={rootRef}
       className={cx(
         "du_date_picker",
-        invalid && "du_date_picker_invalid",
+        showInvalid && "du_date_picker_invalid",
         className,
       )}
     >
       <div className="du_date_picker_control">
         <button
-          ref={triggerRef}
+          ref={mergeRefs(triggerRef, forwardedRef)}
           type="button"
-          id={id}
+          id={resolvedId}
           aria-haspopup="dialog"
           aria-expanded={open}
-          aria-invalid={invalid || undefined}
+          aria-invalid={invalidAttr}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={describedBy}
@@ -443,4 +482,4 @@ export function DatePicker({
     </div>
     </DisabledMessage>
   );
-}
+});

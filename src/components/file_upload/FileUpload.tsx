@@ -1,13 +1,18 @@
 import {
+  forwardRef,
   useId,
   useRef,
   useState,
   type ChangeEvent,
   type DragEvent,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
+import { useFormField } from "../form_field/FormFieldContext";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -23,6 +28,8 @@ export interface FileUploadProps {
   /** Allow selecting more than one file. */
   multiple?: boolean;
   disabled?: boolean;
+  /** When disabled, reason shown in a persistent caption below the field. */
+  disabledReason?: ReactNode;
   /** Prompt shown inside the dropzone. */
   label?: string;
   id?: string;
@@ -37,18 +44,23 @@ function formatSize(bytes: number): string {
 }
 
 /** File picker with a drag-and-drop dropzone and a removable file list. */
-export function FileUpload({
-  value,
-  defaultValue,
-  onValueChange,
-  accept,
-  multiple,
-  disabled,
-  label = "Drop files here or click to browse",
-  id,
-  className,
-  "aria-describedby": ariaDescribedby,
-}: FileUploadProps) {
+export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
+  function FileUpload(
+    {
+      value,
+      defaultValue,
+      onValueChange,
+      accept,
+      multiple,
+      disabled,
+      disabledReason,
+      label = "Drop files here or click to browse",
+      id,
+      className,
+      "aria-describedby": ariaDescribedby,
+    },
+    ref,
+  ) {
   const [files, setFiles] = useControllableState<File[]>({
     value,
     defaultValue: defaultValue ?? [],
@@ -57,9 +69,19 @@ export function FileUpload({
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const icons = useIcons();
+  const field = useFormField();
   const baseId = useId();
-  const inputId = id ?? `${baseId}_input`;
+  const isDisabled = disabled ?? field?.disabled;
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
+  const disabledMsgId = `${baseId}_disabled`;
+  const inputId = id ?? field?.id ?? `${baseId}_input`;
   const listId = `${baseId}_list`;
+  const describedBy =
+    cx(
+      ariaDescribedby ?? field?.describedBy,
+      showDisabledReason && disabledMsgId,
+    ) || undefined;
 
   const addFiles = (incoming: FileList | null) => {
     if (!incoming || incoming.length === 0) return;
@@ -77,17 +99,17 @@ export function FileUpload({
   const onDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setDragOver(false);
-    if (disabled) return;
+    if (isDisabled) return;
     addFiles(event.dataTransfer.files);
   };
 
   const onDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    if (!disabled) setDragOver(true);
+    if (!isDisabled) setDragOver(true);
   };
 
   const openPicker = () => {
-    if (!disabled) inputRef.current?.click();
+    if (!isDisabled) inputRef.current?.click();
   };
 
   const onZoneKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -104,22 +126,27 @@ export function FileUpload({
   const current = files ?? [];
 
   return (
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
     <div className={cx("du_file_upload", className)}>
       <input
-        ref={inputRef}
+        ref={mergeRefs(ref, inputRef)}
         id={inputId}
         type="file"
         accept={accept}
         multiple={multiple}
-        disabled={disabled}
+        disabled={isDisabled}
         className="du_file_upload_input"
-        aria-describedby={ariaDescribedby}
+        aria-describedby={describedBy}
         onChange={onInputChange}
       />
       <div
         role="button"
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled || undefined}
+        tabIndex={isDisabled ? -1 : 0}
+        aria-disabled={isDisabled || undefined}
         aria-controls={current.length > 0 ? listId : undefined}
         className={cx(
           "du_file_upload_zone",
@@ -147,7 +174,7 @@ export function FileUpload({
               <span className="du_file_upload_size">
                 {formatSize(file.size)}
               </span>
-              {!disabled && (
+              {!isDisabled && (
                 <button
                   type="button"
                   className="du_file_upload_remove"
@@ -162,5 +189,6 @@ export function FileUpload({
         </ul>
       )}
     </div>
+    </DisabledMessage>
   );
-}
+});

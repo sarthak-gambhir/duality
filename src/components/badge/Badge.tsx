@@ -2,12 +2,13 @@ import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface BadgeProps extends ComponentPropsWithoutRef<"span"> {
   /** `solid` is filled, `outline` is bordered only. */
   variant?: "solid" | "outline";
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Show a leading status dot (a two-color square). */
   dot?: boolean;
   /** Render a numeric count, overflowing to `max+`. Takes over the content. */

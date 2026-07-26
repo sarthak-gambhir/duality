@@ -14,6 +14,7 @@ import { useIcons } from "../icon/IconsProvider";
 import { Pagination } from "../pagination/Pagination";
 import { Skeleton } from "../skeleton/Skeleton";
 import { Table, TBody, THead, Td, Th, Tr } from "../table/Table";
+import type { ControlSize } from "../../tokens/scale";
 
 export type RowId = string | number;
 
@@ -73,7 +74,7 @@ export interface DataTableProps<T> {
   /** Max height of the scroll container (used with `stickyHeader`). */
   maxHeight?: number | string;
   /** Cell padding scale, forwarded to the underlying table. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Accessible name for the table. */
   "aria-label"?: string;
   className?: string;

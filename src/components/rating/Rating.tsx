@@ -10,6 +10,7 @@ import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface RatingProps extends Omit<
   ComponentPropsWithoutRef<"div">,
@@ -32,7 +33,7 @@ export interface RatingProps extends Omit<
   /** Disables interaction and dithers the control. */
   disabled?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
   /** Accessible group label. */

@@ -12,6 +12,7 @@ import { useFormField } from "../form_field/FormFieldContext";
 import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface NumberInputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -43,7 +44,7 @@ export interface NumberInputProps extends Omit<
   /** Marks the field invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Hide the increment/decrement buttons. */
   hideSteppers?: boolean;
   /** Content rendered before the field (e.g. a currency symbol). */
@@ -85,6 +86,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledby,
       "aria-describedby": ariaDescribedby,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
       ...rest
     },
     ref,
@@ -97,11 +100,22 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const icons = useIcons();
     const field = useFormField();
     const disabledMsgId = useId();
+
+    // Explicit props always win; the FormField context is a fallback.
+    const resolvedId = id ?? field?.id;
+    const showInvalid = invalid || field?.invalid || undefined;
+    const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+    const requiredAttr = ariaRequired ?? (field?.required || undefined);
+    const errorMessageAttr =
+      ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
     const isDisabled = disabled ?? field?.disabled;
     const resolvedReason = disabledReason ?? field?.disabledReason;
     const showDisabledReason = !!isDisabled && resolvedReason != null;
     const describedBy =
-      cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
+      cx(
+        ariaDescribedby ?? field?.describedBy,
+        showDisabledReason && disabledMsgId,
+      ) || undefined;
 
     const clamp = (n: number): number => {
       let result = n;
@@ -169,7 +183,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         className={cx(
           "du_number_input",
           `du_number_input_${size}`,
-          invalid && "du_number_input_invalid",
+          showInvalid && "du_number_input_invalid",
           isDisabled && "du_number_input_disabled",
           className,
         )}
@@ -194,14 +208,16 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         <input
           ref={ref}
           {...rest}
-          id={id}
+          id={resolvedId}
           type="text"
           inputMode="decimal"
           role="spinbutton"
           aria-valuenow={current}
           aria-valuemin={min}
           aria-valuemax={max}
-          aria-invalid={ariaInvalid ?? (invalid || undefined)}
+          aria-invalid={invalidAttr}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           aria-describedby={describedBy}

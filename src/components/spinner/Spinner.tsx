@@ -2,10 +2,11 @@ import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../utils/cx";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface SpinnerProps extends ComponentPropsWithoutRef<"span"> {
   /** Size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Accessible loading label. Defaults to "Loading". */
   label?: string;
 }

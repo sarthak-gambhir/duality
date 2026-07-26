@@ -90,8 +90,5 @@
     @include m.du_invert;
   }
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: 2px;
-  }
+  @include m.du_focus;
 }

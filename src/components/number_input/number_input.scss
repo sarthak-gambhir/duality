@@ -39,6 +39,12 @@
   font-family: var(--font-sans);
   text-align: center;
 
+  // The root owns the focus ring via :focus-within, so the chromeless field
+  // must not draw its own (global :focus-visible) ring or they double up.
+  &:focus-visible {
+    outline: none;
+  }
+
   &:disabled {
     cursor: not-allowed;
     background-color: transparent;
@@ -111,15 +117,15 @@
 
 .du_number_input_sm {
   min-block-size: var(--size-sm);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_number_input_md {
   min-block-size: var(--size-md);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_number_input_lg {
   min-block-size: var(--size-lg);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }

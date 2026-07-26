@@ -11,6 +11,9 @@ import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useFormField } from "../form_field/FormFieldContext";
 import { DisabledMessage } from "../form_field/disabledMessage";
+import { Icon } from "../icon/Icon";
+import { useIcons } from "../icon/IconsProvider";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface InputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -19,7 +22,7 @@ export interface InputProps extends Omit<
   /** Marks the field invalid (border-style change + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Content rendered before the field (icon, unit, etc.). */
   prefix?: ReactNode;
   /** Content rendered after the field. */
@@ -61,6 +64,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   const innerRef = useRef<HTMLInputElement>(null);
   const field = useFormField();
+  const icons = useIcons();
   const disabledMsgId = useId();
   const isControlled = value !== undefined;
   const [uncontrolledHasValue, setUncontrolledHasValue] = useState(
@@ -171,7 +175,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           aria-label="Clear"
           onClick={handleClear}
         >
-          <span aria-hidden="true">&times;</span>
+          <Icon icon={icons.close} />
         </button>
       )}
       {suffix != null && (

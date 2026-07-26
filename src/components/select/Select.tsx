@@ -14,10 +14,12 @@ import {
 } from "react";
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
+import { useControllableState } from "../../utils/useControllableState";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import { useFormField } from "../form_field/FormFieldContext";
 import { DisabledMessage } from "../form_field/disabledMessage";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface SelectOption {
   value: string;
@@ -44,7 +46,7 @@ export interface SelectProps extends Omit<
   /** Marks the field invalid (border-style change + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /**
    * Which edge the selection marker sits on within each option. `"end"` moves
    * it to the trailing edge with the label filling the leading space. Defaults
@@ -61,6 +63,12 @@ export interface SelectProps extends Omit<
   name?: string;
   /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
+  /** Whether the dropdown is open (controlled). */
+  open?: boolean;
+  /** Initial open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Called when the open state should change. */
+  onOpenChange?: (open: boolean) => void;
 }
 
 function optionsFromChildren(children: ReactNode): SelectOption[] {
@@ -118,6 +126,9 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       id,
       disabled,
       disabledReason,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
       className,
       "aria-invalid": ariaInvalid,
       "aria-describedby": ariaDescribedby,
@@ -151,18 +162,24 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         showDisabledReason && disabledMsgId,
       ) || undefined;
 
-    const isControlled = value !== undefined;
-    const [internalValue, setInternalValue] = useState<string | undefined>(
+    const [currentValue, setCurrentValue] = useControllableState<
+      string | undefined
+    >({
+      value,
       defaultValue,
-    );
-    const currentValue = isControlled ? value : internalValue;
+      onChange: onValueChange as (v: string | undefined) => void,
+    });
 
     const selectedIndex = items.findIndex(
       (item) => item.value === currentValue,
     );
     const selected = selectedIndex >= 0 ? items[selectedIndex] : undefined;
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useControllableState<boolean>({
+      value: openProp,
+      defaultValue: defaultOpen ?? false,
+      onChange: onOpenChange,
+    });
     const [activeIndex, setActiveIndex] = useState(-1);
     const icons = useIcons();
 
@@ -180,22 +197,24 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         selectedIndex >= 0 ? selectedIndex : nextEnabledIndex(items, -1, 1),
       );
       setOpen(true);
-    }, [isDisabled, items, selectedIndex]);
+    }, [isDisabled, items, selectedIndex, setOpen]);
 
-    const closeList = useCallback((focusButton = true) => {
-      setOpen(false);
-      if (focusButton) buttonRef.current?.focus();
-    }, []);
+    const closeList = useCallback(
+      (focusButton = true) => {
+        setOpen(false);
+        if (focusButton) buttonRef.current?.focus();
+      },
+      [setOpen],
+    );
 
     const selectIndex = useCallback(
       (index: number) => {
         const item = items[index];
         if (!item || item.disabled) return;
-        if (!isControlled) setInternalValue(item.value);
-        onValueChange?.(item.value);
+        setCurrentValue(item.value);
         closeList();
       },
-      [items, isControlled, onValueChange, closeList],
+      [items, setCurrentValue, closeList],
     );
 
     useEffect(() => {
@@ -206,7 +225,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       };
       document.addEventListener("mousedown", onDocMouseDown);
       return () => document.removeEventListener("mousedown", onDocMouseDown);
-    }, [open]);
+    }, [open, setOpen]);
 
     useEffect(() => {
       if (open && activeIndex >= 0) {

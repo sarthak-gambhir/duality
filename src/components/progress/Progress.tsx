@@ -4,6 +4,7 @@ import {
   type CSSProperties,
 } from "react";
 import { cx } from "../../utils/cx";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface ProgressProps extends Omit<
   ComponentPropsWithoutRef<"div">,
@@ -16,7 +17,7 @@ export interface ProgressProps extends Omit<
   /** Unknown-progress mode with an animated dither fill. */
   indeterminate?: boolean;
   /** Control height. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** Show a value label beside the bar (ignored when indeterminate). */
   showValue?: boolean;
   /** Formats the value label. Defaults to a rounded percentage. */

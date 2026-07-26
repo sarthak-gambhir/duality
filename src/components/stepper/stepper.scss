@@ -112,7 +112,7 @@ button.du_stepper_button {
 }
 
 .du_stepper_description {
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 // Optional caption: quiet, uppercase tag under the label.

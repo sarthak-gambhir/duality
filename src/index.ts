@@ -47,7 +47,7 @@ export type {
   PolymorphicRef,
   AsProp,
 } from "./utils/polymorphic";
-export type { SpaceStep, SizeToken } from "./tokens/scale";
+export type { SpaceStep, SizeToken, ControlSize } from "./tokens/scale";
 export { Portal } from "./utils/Portal";
 export type { PortalProps } from "./utils/Portal";
 export { useDisclosure } from "./utils/useDisclosure";

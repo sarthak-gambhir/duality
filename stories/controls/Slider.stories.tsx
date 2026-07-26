@@ -29,13 +29,15 @@ export const Default: Story = {
 function Controlled() {
   const [value, setValue] = useState(40);
   return (
-    <Slider
-      min={0}
-      max={100}
-      value={value}
-      aria-label="volume"
-      onChange={(e) => setValue(Number(e.target.value))}
-    />
+    <div style={{ maxWidth: 320 }}>
+      <Slider
+        min={0}
+        max={100}
+        value={value}
+        aria-label="volume"
+        onChange={(e) => setValue(Number(e.target.value))}
+      />
+    </div>
   );
 }
 

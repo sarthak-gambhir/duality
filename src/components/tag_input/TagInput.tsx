@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   useId,
   useRef,
   useState,
@@ -6,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
+import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { Badge } from "../badge/Badge";
 import { useFormField } from "../form_field/FormFieldContext";
@@ -38,6 +40,9 @@ export interface TagInputProps {
   "aria-label"?: string;
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
+  "aria-required"?: boolean;
+  "aria-errormessage"?: string;
   className?: string;
 }
 
@@ -45,23 +50,30 @@ export interface TagInputProps {
  * Token entry field. Type and press Enter or comma to add a chip; remove via
  * the chip button or Backspace on an empty field. Chips reuse the Badge.
  */
-export function TagInput({
-  value,
-  defaultValue,
-  onValueChange,
-  placeholder,
-  allowDuplicates = false,
-  max,
-  disabled,
-  disabledReason,
-  invalid,
-  name,
-  id,
-  className,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
-  "aria-describedby": ariaDescribedby,
-}: TagInputProps) {
+export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
+  function TagInput(
+    {
+      value,
+      defaultValue,
+      onValueChange,
+      placeholder,
+      allowDuplicates = false,
+      max,
+      disabled,
+      disabledReason,
+      invalid,
+      name,
+      id,
+      className,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      "aria-describedby": ariaDescribedby,
+      "aria-invalid": ariaInvalid,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
+    },
+    forwardedRef,
+  ) {
   const [tags, setTags] = useControllableState<string[]>({
     value,
     defaultValue: defaultValue ?? [],
@@ -72,11 +84,22 @@ export function TagInput({
   const icons = useIcons();
   const field = useFormField();
   const disabledMsgId = useId();
+
+  // Explicit props always win; the FormField context is a fallback.
+  const resolvedId = id ?? field?.id;
+  const showInvalid = invalid || field?.invalid || undefined;
+  const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+  const requiredAttr = ariaRequired ?? (field?.required || undefined);
+  const errorMessageAttr =
+    ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
   const isDisabled = disabled ?? field?.disabled;
   const resolvedReason = disabledReason ?? field?.disabledReason;
   const showDisabledReason = !!isDisabled && resolvedReason != null;
   const describedBy =
-    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
+    cx(
+      ariaDescribedby ?? field?.describedBy,
+      showDisabledReason && disabledMsgId,
+    ) || undefined;
 
   const commit = () => {
     const tag = draft.trim();
@@ -113,7 +136,7 @@ export function TagInput({
     <div
       className={cx(
         "du_tag_input",
-        invalid && "du_tag_input_invalid",
+        showInvalid && "du_tag_input_invalid",
         isDisabled && "du_tag_input_disabled",
         className,
       )}
@@ -143,8 +166,8 @@ export function TagInput({
         ))}
         <li className="du_tag_input_field">
           <input
-            ref={inputRef}
-            id={id}
+            ref={mergeRefs(inputRef, forwardedRef)}
+            id={resolvedId}
             type="text"
             value={draft}
             placeholder={placeholder}
@@ -152,7 +175,9 @@ export function TagInput({
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
             aria-describedby={describedBy}
-            aria-invalid={invalid || undefined}
+            aria-invalid={invalidAttr}
+            aria-required={requiredAttr}
+            aria-errormessage={errorMessageAttr}
             className="du_tag_input_input"
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={onKeyDown}
@@ -168,4 +193,4 @@ export function TagInput({
     </div>
     </DisabledMessage>
   );
-}
+});

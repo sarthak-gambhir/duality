@@ -7,7 +7,7 @@
   padding: 0 var(--space-2);
   min-block-size: var(--size-sm);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--font-size-1);
   font-weight: 700;
   line-height: 1;
   border: var(--border-width) solid var(--fg);
@@ -27,19 +27,19 @@
 .du_badge_sm {
   min-block-size: var(--size-sm);
   padding: 0 var(--space-2);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_badge_md {
   min-block-size: var(--size-md);
   padding: 0 var(--space-3);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_badge_lg {
   min-block-size: var(--size-lg);
   padding: 0 var(--space-3);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 // Status dot: a small square that takes the current text color, so it stays
@@ -75,9 +75,11 @@
     background-color: var(--bg);
   }
 
+  // Inset ring; currentcolor (not --fg) so it stays visible on solid badges
+  // where the two colors are swapped. Offset is one border-width inward.
   &:focus-visible {
     outline: var(--border-width) solid currentcolor;
-    outline-offset: -2px;
+    outline-offset: calc(-1 * var(--border-width));
   }
 }
 

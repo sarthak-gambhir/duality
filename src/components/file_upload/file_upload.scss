@@ -35,10 +35,7 @@
   cursor: pointer;
   border: var(--border-width) dashed var(--fg);
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: 2px;
-  }
+  @include m.du_focus;
 
   &[aria-disabled="true"] {
     cursor: not-allowed;
@@ -84,7 +81,7 @@
 
 .du_file_upload_size {
   flex: 0 0 auto;
-  font-size: 14px;
+  font-size: var(--font-size-1);
   font-variant-numeric: tabular-nums;
 }
 
@@ -101,10 +98,7 @@
   line-height: 1;
   cursor: pointer;
 
-  &:focus-visible {
-    outline: var(--border-width) solid var(--fg);
-    outline-offset: 2px;
-  }
+  @include m.du_focus;
 
   &:hover:not(:disabled) {
     @include m.du_invert;

@@ -37,19 +37,19 @@
 .du_input_sm {
   min-block-size: var(--size-sm);
   padding: 0 var(--space-2);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_input_md {
   min-block-size: var(--size-md);
   padding: 0 var(--space-2);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_input_lg {
   min-block-size: var(--size-lg);
   padding: 0 var(--space-3);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 // -- Grouped input: border/focus live on the group so prefix/suffix/clear share
@@ -94,6 +94,12 @@
   &::placeholder {
     color: var(--fg);
     font-style: italic;
+  }
+
+  // The group owns the focus ring via :focus-within, so the chromeless field
+  // must not draw its own (global :focus-visible) ring or they double up.
+  &:focus-visible {
+    outline: none;
   }
 
   // The group paints the hatch fill and the --bg text-stroke plate; the field
@@ -149,17 +155,17 @@
 // affixes and the clear button sit flush to the frame and invert edge-to-edge.
 .du_input_group_sm {
   min-block-size: var(--size-sm);
-  font-size: 14px;
+  font-size: var(--font-size-1);
 }
 
 .du_input_group_md {
   min-block-size: var(--size-md);
-  font-size: 16px;
+  font-size: var(--font-size-2);
 }
 
 .du_input_group_lg {
   min-block-size: var(--size-lg);
-  font-size: 18px;
+  font-size: var(--font-size-3);
 }
 
 .du_input_group_sm .du_input_field,

@@ -19,6 +19,7 @@ import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
+import type { ControlSize } from "../../tokens/scale";
 
 export interface ComboboxProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -43,11 +44,17 @@ export interface ComboboxProps extends Omit<
   /** Marks the field invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   /** Control size. */
-  size?: "sm" | "md" | "lg";
+  size?: ControlSize;
   /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
+  /** Whether the listbox is open (controlled). */
+  open?: boolean;
+  /** Initial open state (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Called when the open state should change. */
+  onOpenChange?: (open: boolean) => void;
 }
 
 function labelText(option: SelectOption): string {
@@ -90,9 +97,14 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
       name,
       id,
       disabled,
+      open: openProp,
+      defaultOpen,
+      onOpenChange,
       className,
       "aria-invalid": ariaInvalid,
       "aria-describedby": ariaDescribedby,
+      "aria-required": ariaRequired,
+      "aria-errormessage": ariaErrorMessage,
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledby,
       ...rest
@@ -119,10 +131,22 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
       onInputValueChange?.(next);
     };
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useControllableState<boolean>({
+      value: openProp,
+      defaultValue: defaultOpen ?? false,
+      onChange: onOpenChange,
+    });
     const [activeIndex, setActiveIndex] = useState(-1);
     const icons = useIcons();
     const field = useFormField();
+
+    // Explicit props always win; the FormField context is a fallback.
+    const resolvedId = id ?? field?.id;
+    const showInvalid = invalid || field?.invalid || undefined;
+    const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
+    const requiredAttr = ariaRequired ?? (field?.required || undefined);
+    const errorMessageAttr =
+      ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
     const isDisabled = disabled ?? field?.disabled;
     const resolvedReason = disabledReason ?? field?.disabledReason;
     const showDisabledReason = !!isDisabled && resolvedReason != null;
@@ -136,7 +160,10 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
     const disabledMsgId = `${baseId}_disabled`;
     const optionId = (index: number) => `${baseId}_option_${index}`;
     const describedBy =
-      cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
+      cx(
+        ariaDescribedby ?? field?.describedBy,
+        showDisabledReason && disabledMsgId,
+      ) || undefined;
 
     const filtered = useMemo(() => {
       const predicate =
@@ -235,14 +262,14 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
         ref={rootRef}
         className={cx(
           "du_combobox",
-          invalid && "du_combobox_invalid",
+          showInvalid && "du_combobox_invalid",
           className,
         )}
       >
         <input
           ref={mergeRefs(inputRef, ref)}
           {...rest}
-          id={id}
+          id={resolvedId}
           type="text"
           role="combobox"
           autoComplete="off"
@@ -252,7 +279,9 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
           aria-activedescendant={
             open && activeIndex >= 0 ? optionId(activeIndex) : undefined
           }
-          aria-invalid={ariaInvalid ?? (invalid || undefined)}
+          aria-invalid={invalidAttr}
+          aria-required={requiredAttr}
+          aria-errormessage={errorMessageAttr}
           aria-describedby={describedBy}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
