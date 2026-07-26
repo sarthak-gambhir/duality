@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Input } from "../../src";
+import { Input, Stack } from "../../src";
 
 const meta: Meta<typeof Input> = {
   title: "Controls/Input",
@@ -47,4 +47,26 @@ export const WithAdornments: Story = {
 
 export const Clearable: Story = {
   args: { clearable: true, defaultValue: "clear me" },
+};
+
+/** The three sizes, stacked for comparison. */
+export const Sizes: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 280 }}>
+      <Input size="sm" placeholder="Small" />
+      <Input size="md" placeholder="Medium" />
+      <Input size="lg" placeholder="Large" />
+    </Stack>
+  ),
+};
+
+/** Default, invalid, and disabled side by side. */
+export const States: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 280 }}>
+      <Input placeholder="Default" />
+      <Input defaultValue="Invalid value" invalid />
+      <Input defaultValue="Disabled" disabled />
+    </Stack>
+  ),
 };

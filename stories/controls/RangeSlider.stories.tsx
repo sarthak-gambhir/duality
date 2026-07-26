@@ -6,16 +6,43 @@ const meta: Meta<typeof RangeSlider> = {
   title: "Controls/RangeSlider",
   component: RangeSlider,
   args: { min: 0, max: 100, step: 1 },
+  argTypes: {
+    invalid: { control: "boolean", description: "Marks the control invalid." },
+    disabled: { control: "boolean", description: "Disables the control." },
+    showValues: {
+      control: "boolean",
+      description: "Show a value label above each thumb.",
+    },
+    showLimits: {
+      control: "boolean",
+      description: "Show the min/max bounds under the track ends.",
+    },
+    minStepsBetweenThumbs: {
+      control: "number",
+      description: "Minimum steps that must remain between the two thumbs.",
+    },
+    min: { control: "number", description: "Minimum value." },
+    max: { control: "number", description: "Maximum value." },
+    step: { control: "number", description: "Step increment." },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof RangeSlider>;
 
-function Demo(args: React.ComponentProps<typeof RangeSlider>) {
+export const Default: Story = {
+  render: (args) => (
+    <div style={{ maxWidth: 320 }}>
+      <RangeSlider {...args} defaultValue={[20, 80]} showValues />
+    </div>
+  ),
+};
+
+function Controlled() {
   const [value, setValue] = useState<[number, number]>([20, 80]);
   return (
     <Stack gap={3} style={{ maxWidth: 320 }}>
-      <RangeSlider {...args} value={value} onValueChange={setValue} />
+      <RangeSlider value={value} onValueChange={setValue} />
       <Text size="sm">
         {value[0]} - {value[1]}
       </Text>
@@ -23,7 +50,26 @@ function Demo(args: React.ComponentProps<typeof RangeSlider>) {
   );
 }
 
-export const Default: Story = { render: (args) => <Demo {...args} /> };
+/** Controlled `value` + `onValueChange`, echoing the current range. */
+export const ControlledValue: Story = {
+  name: "Controlled",
+  render: () => <Controlled />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState<[number, number]>([20, 80]);
+  return (
+    <Stack gap={3}>
+      <RangeSlider value={value} onValueChange={setValue} />
+      <Text size="sm">{value[0]} - {value[1]}</Text>
+    </Stack>
+  );
+}`,
+      },
+    },
+  },
+};
 
 export const WithValues: Story = {
   name: "Value labels",
@@ -100,10 +146,15 @@ export const Combined: Story = {
   ),
 };
 
+/**
+ * A disabled range slider still needs its values legible, so surface the thumb
+ * values with `showValues` (and the bounds with `showLimits`) - both stay
+ * visible while disabled.
+ */
 export const Disabled: Story = {
   render: () => (
     <div style={{ maxWidth: 320 }}>
-      <RangeSlider defaultValue={[30, 70]} disabled />
+      <RangeSlider defaultValue={[30, 70]} disabled showValues showLimits />
     </div>
   ),
 };

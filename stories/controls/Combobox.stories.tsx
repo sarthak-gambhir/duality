@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Combobox, type SelectOption } from "../../src";
+import { Combobox, Stack, type SelectOption } from "../../src";
 
 const meta: Meta<typeof Combobox> = {
   title: "Controls/Combobox",
@@ -22,8 +22,14 @@ const meta: Meta<typeof Combobox> = {
     size: {
       control: "inline-radio",
       options: ["sm", "md", "lg"],
+      description: "Control size.",
       table: { defaultValue: { summary: "md" } },
     },
+    invalid: {
+      control: "boolean",
+      description: "Marks the field invalid (dashed border + `aria-invalid`).",
+    },
+    disabled: { control: "boolean", description: "Disables the control." },
   },
 };
 
@@ -40,7 +46,20 @@ const fruits: SelectOption[] = [
   { value: "grape", label: "Grape" },
 ];
 
-function Demo() {
+export const Default: Story = {
+  render: (args) => (
+    <div style={{ maxWidth: 260 }}>
+      <Combobox
+        {...args}
+        options={fruits}
+        placeholder="Search fruit..."
+        aria-label="fruit"
+      />
+    </div>
+  ),
+};
+
+function Controlled() {
   const [value, setValue] = useState("");
   return (
     <div style={{ maxWidth: 260 }}>
@@ -55,12 +74,33 @@ function Demo() {
   );
 }
 
-export const Default: Story = { render: () => <Demo /> };
+/** Controlled `value` + `onValueChange`. */
+export const ControlledValue: Story = {
+  name: "Controlled",
+  render: () => <Controlled />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState("");
+  return (
+    <Combobox
+      options={fruits}
+      value={value}
+      onValueChange={setValue}
+      placeholder="Search fruit..."
+      aria-label="fruit"
+    />
+  );
+}`,
+      },
+    },
+  },
+};
 
 /**
- * When disabled, hovering the input shows the selected label (and an optional
- * `disabledReason`) in a tooltip. Hover-only, since disabled controls cannot
- * receive keyboard focus.
+ * When disabled, the selected label stays readable on a solid background and
+ * the `disabledReason` appears in a persistent caption below the input.
  */
 export const DisabledWithReason: Story = {
   render: () => (
@@ -74,5 +114,42 @@ export const DisabledWithReason: Story = {
         aria-label="fruit"
       />
     </div>
+  ),
+};
+
+/** Invalid state: dashed border + `aria-invalid`. */
+export const Invalid: Story = {
+  render: () => (
+    <div style={{ maxWidth: 260 }}>
+      <Combobox
+        options={fruits}
+        defaultValue="banana"
+        invalid
+        placeholder="Search fruit..."
+        aria-label="fruit"
+      />
+    </div>
+  ),
+};
+
+/** The three sizes, stacked for comparison. */
+export const Sizes: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 260 }}>
+      <Combobox size="sm" options={fruits} defaultValue="apple" aria-label="small" />
+      <Combobox size="md" options={fruits} defaultValue="apple" aria-label="medium" />
+      <Combobox size="lg" options={fruits} defaultValue="apple" aria-label="large" />
+    </Stack>
+  ),
+};
+
+/** Default, invalid, and disabled side by side. */
+export const States: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 260 }}>
+      <Combobox options={fruits} placeholder="Default" aria-label="default" />
+      <Combobox options={fruits} defaultValue="banana" invalid aria-label="invalid" />
+      <Combobox options={fruits} defaultValue="banana" disabled aria-label="disabled" />
+    </Stack>
   ),
 };

@@ -37,13 +37,6 @@
   block-size: 80%;
 }
 
-// Disabled: dither each cell so state is never color-only.
-.du_rating_disabled .du_rating_item {
-  @include m.du_dither;
-
-  cursor: not-allowed;
-}
-
 .du_rating_sm .du_rating_item {
   inline-size: var(--size-sm);
   block-size: var(--size-sm);
@@ -52,4 +45,11 @@
 .du_rating_lg .du_rating_item {
   inline-size: var(--size-lg);
   block-size: var(--size-lg);
+}
+
+// Disabled: dither each cell so state is never color-only.
+.du_rating_disabled .du_rating_item:disabled {
+  @include m.du_texture_fill;
+
+  cursor: not-allowed;
 }

@@ -17,11 +17,15 @@
     font-style: italic;
   }
 
+  // Signal disabled with a diagonal hatch fill; the value stays legible on the
+  // --bg text-stroke plate painted behind it (see du_disabled_field). The indent
+  // reserves room for the outward stroke so the first glyph is not clipped.
   &:disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
-    @include m.du_text_outline(2);
+    @include m.du_disabled_field;
+
+    text-indent: var(--disabled-text-inset);
   }
 
   &[aria-invalid="true"],
@@ -69,10 +73,12 @@
     border-style: dashed;
   }
 
+  // Fill + label plate on the group so the field and any prefix/suffix inherit
+  // the --bg text stroke and stay readable over the hatch.
   &.du_input_group_disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
+    @include m.du_disabled_field;
   }
 }
 
@@ -90,10 +96,13 @@
     font-style: italic;
   }
 
+  // The group paints the hatch fill and the --bg text-stroke plate; the field
+  // is transparent and inherits both, so the value stays readable over it. The
+  // indent reserves room for the outward stroke so the first glyph is not
+  // clipped by the field's editing viewport.
   &:disabled {
     cursor: not-allowed;
-
-    @include m.du_text_outline(2);
+    text-indent: var(--disabled-text-inset);
   }
 }
 

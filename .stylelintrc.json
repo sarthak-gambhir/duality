@@ -31,6 +31,7 @@
         "message": "Keyframe names are snake_case with the du_ prefix (e.g. du_spinner_spin)."
       }
     ],
+    "property-no-vendor-prefix": [true, { "ignoreProperties": ["text-stroke"] }],
     "color-no-hex": null,
     "alpha-value-notation": "number",
     "declaration-block-no-redundant-longhand-properties": null,

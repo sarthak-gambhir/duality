@@ -36,7 +36,7 @@
 .du_tree_item[aria-disabled="true"] > .du_tree_row {
   cursor: not-allowed;
 
-  @include m.du_dither;
+  @include m.du_texture_fill;
 
   // The dither signals "disabled", but text over the checkerboard falls below
   // the AAA contrast floor. Ring each glyph with a solid --bg pixel outline so

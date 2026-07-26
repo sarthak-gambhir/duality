@@ -1,12 +1,15 @@
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import {
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { Badge } from "../badge/Badge";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -25,10 +28,8 @@ export interface TagInputProps {
   max?: number;
   /** Disable the whole control. */
   disabled?: boolean;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   /** Mark invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   /** Name for hidden inputs so tags submit with a form (one per tag). */
@@ -53,7 +54,6 @@ export function TagInput({
   max,
   disabled,
   disabledReason,
-  disabledTooltip,
   invalid,
   name,
   id,
@@ -71,13 +71,12 @@ export function TagInput({
   const inputRef = useRef<HTMLInputElement>(null);
   const icons = useIcons();
   const field = useFormField();
+  const disabledMsgId = useId();
   const isDisabled = disabled ?? field?.disabled;
-  const disabledTooltipProps = {
-    disabled: isDisabled,
-    reason: disabledReason ?? field?.disabledReason,
-    formatter: disabledTooltip ?? field?.disabledTooltip,
-    getValue: () => tags.join(", "),
-  };
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
+  const describedBy =
+    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
 
   const commit = () => {
     const tag = draft.trim();
@@ -106,7 +105,11 @@ export function TagInput({
   };
 
   return (
-    <DisabledTooltip {...disabledTooltipProps}>
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
     <div
       className={cx(
         "du_tag_input",
@@ -148,7 +151,7 @@ export function TagInput({
             disabled={isDisabled}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabelledby}
-            aria-describedby={ariaDescribedby}
+            aria-describedby={describedBy}
             aria-invalid={invalid || undefined}
             className="du_tag_input_input"
             onChange={(event) => setDraft(event.target.value)}
@@ -163,6 +166,6 @@ export function TagInput({
           <input key={index} type="hidden" name={name} value={tag} />
         ))}
     </div>
-    </DisabledTooltip>
+    </DisabledMessage>
   );
 }

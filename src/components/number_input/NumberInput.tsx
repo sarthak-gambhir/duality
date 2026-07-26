@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useId,
   type ChangeEvent,
   type ComponentPropsWithoutRef,
   type KeyboardEvent,
@@ -8,10 +9,7 @@ import {
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -54,10 +52,8 @@ export interface NumberInputProps extends Omit<
   suffix?: ReactNode;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 /**
@@ -84,7 +80,6 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       id,
       disabled,
       disabledReason,
-      disabledTooltip,
       className,
       "aria-invalid": ariaInvalid,
       "aria-label": ariaLabel,
@@ -101,13 +96,12 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     });
     const icons = useIcons();
     const field = useFormField();
+    const disabledMsgId = useId();
     const isDisabled = disabled ?? field?.disabled;
-    const disabledTooltipProps = {
-      disabled: isDisabled,
-      reason: disabledReason ?? field?.disabledReason,
-      formatter: disabledTooltip ?? field?.disabledTooltip,
-      getValue: () => (current === undefined ? "" : String(current)),
-    };
+    const resolvedReason = disabledReason ?? field?.disabledReason;
+    const showDisabledReason = !!isDisabled && resolvedReason != null;
+    const describedBy =
+      cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
 
     const clamp = (n: number): number => {
       let result = n;
@@ -166,7 +160,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const atMax = max !== undefined && current !== undefined && current >= max;
 
     return (
-      <DisabledTooltip {...disabledTooltipProps}>
+      <DisabledMessage
+        active={showDisabledReason}
+        id={disabledMsgId}
+        reason={resolvedReason}
+      >
       <div
         className={cx(
           "du_number_input",
@@ -206,7 +204,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           aria-invalid={ariaInvalid ?? (invalid || undefined)}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
+          aria-describedby={describedBy}
           disabled={isDisabled}
           value={current ?? ""}
           className="du_number_input_field"
@@ -233,7 +231,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         )}
         {name && <input type="hidden" name={name} value={current ?? ""} />}
       </div>
-      </DisabledTooltip>
+      </DisabledMessage>
     );
   },
 );

@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -10,10 +11,7 @@ import {
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 
 export interface TextareaProps extends ComponentPropsWithoutRef<"textarea"> {
   /** Marks the field invalid (border-style change + `aria-invalid`). */
@@ -28,10 +26,8 @@ export interface TextareaProps extends ComponentPropsWithoutRef<"textarea"> {
   maxRows?: number;
   /** Show a character counter (uses `maxLength` when set). */
   showCount?: boolean;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 /** Multi-line text field sharing the Input styling. */
@@ -53,7 +49,6 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       id,
       disabled,
       disabledReason,
-      disabledTooltip,
       "aria-invalid": ariaInvalid,
       "aria-describedby": ariaDescribedby,
       "aria-required": ariaRequired,
@@ -64,22 +59,23 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) {
     const innerRef = useRef<HTMLTextAreaElement>(null);
     const formField = useFormField();
+    const disabledMsgId = useId();
     const isControlled = value !== undefined;
 
     // Explicit props always win; the FormField context is a fallback.
     const resolvedId = id ?? formField?.id;
     const showInvalid = invalid || formField?.invalid || undefined;
-    const describedBy = ariaDescribedby ?? formField?.describedBy;
     const requiredAttr = ariaRequired ?? (formField?.required || undefined);
     const errorMessageAttr =
       ariaErrorMessage ?? (formField?.invalid ? formField?.errorId : undefined);
     const isDisabled = disabled ?? formField?.disabled;
-    const disabledTooltipProps = {
-      disabled: isDisabled,
-      reason: disabledReason ?? formField?.disabledReason,
-      formatter: disabledTooltip ?? formField?.disabledTooltip,
-      getValue: () => innerRef.current?.value ?? "",
-    };
+    const resolvedReason = disabledReason ?? formField?.disabledReason;
+    const showDisabledReason = !!isDisabled && resolvedReason != null;
+    const describedBy =
+      cx(
+        ariaDescribedby ?? formField?.describedBy,
+        showDisabledReason && disabledMsgId,
+      ) || undefined;
     const [length, setLength] = useState(
       () => String(value ?? defaultValue ?? "").length,
     );
@@ -152,12 +148,22 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     if (!showCount) {
       return (
-        <DisabledTooltip {...disabledTooltipProps}>{field}</DisabledTooltip>
+        <DisabledMessage
+          active={showDisabledReason}
+          id={disabledMsgId}
+          reason={resolvedReason}
+        >
+          {field}
+        </DisabledMessage>
       );
     }
 
     return (
-      <DisabledTooltip {...disabledTooltipProps}>
+      <DisabledMessage
+        active={showDisabledReason}
+        id={disabledMsgId}
+        reason={resolvedReason}
+      >
         <span className={cx("du_textarea_wrap", className)}>
           {field}
           <span className="du_textarea_count" aria-hidden="true">
@@ -166,7 +172,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               : currentLength}
           </span>
         </span>
-      </DisabledTooltip>
+      </DisabledMessage>
     );
   },
 );

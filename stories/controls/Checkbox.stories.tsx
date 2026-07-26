@@ -6,6 +6,18 @@ const meta: Meta<typeof Checkbox> = {
   title: "Controls/Checkbox",
   component: Checkbox,
   args: { label: "Accept terms" },
+  argTypes: {
+    label: { control: "text", description: "Text shown next to the box." },
+    disabled: { control: "boolean", description: "Disables the control." },
+    indeterminate: {
+      control: "boolean",
+      description: "Renders the mixed (indeterminate) state.",
+    },
+    defaultChecked: {
+      control: "boolean",
+      description: "Initial checked state (uncontrolled).",
+    },
+  },
 };
 
 export default meta;
@@ -30,7 +42,30 @@ function IndeterminateDemo() {
   );
 }
 
-export const Indeterminate: Story = { render: () => <IndeterminateDemo /> };
+export const Indeterminate: Story = {
+  render: () => <IndeterminateDemo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [indeterminate, setIndeterminate] = useState(true);
+  const [checked, setChecked] = useState(false);
+  return (
+    <Checkbox
+      label="Accept terms"
+      indeterminate={indeterminate}
+      checked={checked}
+      onChange={(e) => {
+        setIndeterminate(false);
+        setChecked(e.target.checked);
+      }}
+    />
+  );
+}`,
+      },
+    },
+  },
+};
 export const Disabled: Story = {
   args: { disabled: true, defaultChecked: true },
 };

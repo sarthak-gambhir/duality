@@ -20,10 +20,12 @@
   border-style: dashed;
 }
 
-.du_tag_input_disabled {
+.du_tag_input.du_tag_input_disabled {
   cursor: not-allowed;
 
-  @include m.du_dither;
+  // Hatch fill only ($label:false): the tags carry their own solid background
+  // and stay legible, so no text-stroke plate is needed behind the content.
+  @include m.du_disabled_field($label: false);
 }
 
 .du_tag_input_list {

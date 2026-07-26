@@ -98,21 +98,8 @@ describe("NumberInput", () => {
   });
 });
 
-describe("NumberInput disabled tooltip", () => {
-  it("shows the value in a hover tooltip when disabled", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
-      <NumberInput aria-label="qty" defaultValue={5} disabled />,
-    );
-    const root = container.querySelector(".du_disabled_tooltip");
-    expect(root).not.toBeNull();
-    await user.hover(root!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Value: 5");
-  });
-
-  it("shows the reason when disabled", async () => {
-    const user = userEvent.setup();
+describe("NumberInput disabled reason caption", () => {
+  it("renders the reason caption and wires it via aria-describedby", () => {
     const { container } = render(
       <NumberInput
         aria-label="qty"
@@ -121,15 +108,25 @@ describe("NumberInput disabled tooltip", () => {
         disabledReason="Set by your plan"
       />,
     );
-    await user.hover(container.querySelector(".du_disabled_tooltip")!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Disabled due to: Set by your plan");
+    const caption = container.querySelector(".du_disabled_message");
+    expect(caption).toHaveTextContent("Set by your plan");
+    expect(screen.getByRole("spinbutton").getAttribute("aria-describedby")).toBe(
+      caption!.id,
+    );
   });
 
-  it("does not wrap when enabled", () => {
+  it("renders no caption when disabled without a reason", () => {
     const { container } = render(
-      <NumberInput aria-label="qty" defaultValue={5} />,
+      <NumberInput aria-label="qty" defaultValue={5} disabled />,
     );
-    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
+    expect(container.querySelector(".du_disabled_message_wrap")).toBeNull();
+  });
+
+  it("renders no caption when enabled", () => {
+    const { container } = render(
+      <NumberInput aria-label="qty" defaultValue={5} disabledReason="nope" />,
+    );
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
   });
 });

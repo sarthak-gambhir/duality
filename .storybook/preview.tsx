@@ -48,6 +48,19 @@ export const globalTypes = {
       ],
     },
   },
+  texture: {
+    description: "Texture fill for disabled and decorative surfaces",
+    defaultValue: "dither",
+    toolbar: {
+      title: "Texture",
+      icon: "photo",
+      dynamicTitle: true,
+      items: [
+        { value: "dither", title: "Dither" },
+        { value: "hatch", title: "Hatch" },
+      ],
+    },
+  },
 };
 
 const withTheme: Decorator = (Story, context) => {
@@ -55,6 +68,7 @@ const withTheme: Decorator = (Story, context) => {
   const direction = context.globals.direction === "rtl" ? "rtl" : "ltr";
   const density =
     context.globals.density === "compact" ? "compact" : "comfortable";
+  const texture = context.globals.texture === "hatch" ? "hatch" : "dither";
   // In Docs, stories are embedded previews that should hug their content; only
   // fill the viewport in the standalone canvas view. Overlay-heavy stories can
   // reserve space via a `docsMinHeight` parameter so their panels (portaled or
@@ -80,9 +94,10 @@ const withTheme: Decorator = (Story, context) => {
     // Remount when the toolbar changes so the uncontrolled ThemeProvider picks
     // up the new defaults.
     <ThemeProvider
-      key={`${theme}-${density}`}
+      key={`${theme}-${density}-${texture}`}
       defaultTheme={theme}
       defaultDensity={density}
+      defaultTexture={texture}
     >
       <div dir={direction} style={wrapperStyle}>
         <Story />

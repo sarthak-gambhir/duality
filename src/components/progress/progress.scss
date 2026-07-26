@@ -48,7 +48,7 @@
 .du_progress_indeterminate .du_progress_fill {
   inline-size: 40%;
 
-  @include m.du_dither;
+  @include m.du_texture_fill;
 
   animation: du_progress_slide 1.2s steps(8) infinite;
 }

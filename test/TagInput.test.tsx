@@ -59,21 +59,8 @@ describe("TagInput", () => {
   });
 });
 
-describe("TagInput disabled tooltip", () => {
-  it("shows the committed tags in a hover tooltip when disabled", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
-      <TagInput defaultValue={["one", "two"]} disabled aria-label="Tags" />,
-    );
-    const root = container.querySelector(".du_disabled_tooltip");
-    expect(root).not.toBeNull();
-    await user.hover(root!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Value: one, two");
-  });
-
-  it("shows the reason when disabled", async () => {
-    const user = userEvent.setup();
+describe("TagInput disabled reason caption", () => {
+  it("renders the reason caption and wires it via aria-describedby", () => {
     const { container } = render(
       <TagInput
         defaultValue={["one", "two"]}
@@ -82,15 +69,25 @@ describe("TagInput disabled tooltip", () => {
         aria-label="Tags"
       />,
     );
-    await user.hover(container.querySelector(".du_disabled_tooltip")!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Disabled due to: Inherited from parent");
+    const caption = container.querySelector(".du_disabled_message");
+    expect(caption).toHaveTextContent("Inherited from parent");
+    expect(screen.getByRole("textbox").getAttribute("aria-describedby")).toBe(
+      caption!.id,
+    );
   });
 
-  it("does not wrap when enabled", () => {
+  it("renders no caption when disabled without a reason", () => {
+    const { container } = render(
+      <TagInput defaultValue={["one", "two"]} disabled aria-label="Tags" />,
+    );
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
+    expect(container.querySelector(".du_disabled_message_wrap")).toBeNull();
+  });
+
+  it("renders no caption when enabled", () => {
     const { container } = render(
       <TagInput defaultValue={["one"]} aria-label="Tags" />,
     );
-    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
   });
 });

@@ -5,6 +5,14 @@ const meta: Meta<typeof Switch> = {
   title: "Controls/Switch",
   component: Switch,
   args: { label: "Enable notifications" },
+  argTypes: {
+    label: { control: "text", description: "Text shown next to the switch." },
+    disabled: { control: "boolean", description: "Disables the control." },
+    defaultChecked: {
+      control: "boolean",
+      description: "Initial on/off state (uncontrolled).",
+    },
+  },
 };
 
 export default meta;

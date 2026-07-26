@@ -16,6 +16,41 @@ const meta: Meta<typeof Modal> = {
   title: "Overlays/Modal",
   component: Modal,
   parameters: { docsMinHeight: 480 },
+  argTypes: {
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg", "xl", "full"],
+      description: "Width preset (ignored when `maxWidth` is set).",
+      table: { defaultValue: { summary: "md" } },
+    },
+    role: {
+      control: "inline-radio",
+      options: ["dialog", "alertdialog"],
+      description: "Use `alertdialog` for urgent confirmations.",
+      table: { defaultValue: { summary: "dialog" } },
+    },
+    showCloseButton: {
+      control: "boolean",
+      description: "Render a close (X) button in the top corner.",
+    },
+    isDismissable: {
+      control: "boolean",
+      description: "When false, disables both backdrop and Escape dismissal.",
+    },
+    closeOnBackdrop: {
+      control: "boolean",
+      description: "Close when the backdrop is pressed.",
+      table: { defaultValue: { summary: "true" } },
+    },
+    closeOnEscape: {
+      control: "boolean",
+      description: "Close on Escape.",
+      table: { defaultValue: { summary: "true" } },
+    },
+    isOpen: { control: false },
+    onClose: { control: false },
+    children: { control: false },
+  },
 };
 
 export default meta;
@@ -64,7 +99,35 @@ function Demo() {
   );
 }
 
-export const Default: Story = { render: () => <Demo /> };
+export const Default: Story = {
+  render: () => <Demo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const { isOpen, open, close } = useDisclosure();
+  return (
+    <>
+      <Button onClick={open}>Open modal</Button>
+      <Modal isOpen={isOpen} onClose={close} aria-labelledby="title">
+        <ModalHeader>
+          <Text id="title" weight="bold" size="lg">Example dialog</Text>
+        </ModalHeader>
+        <ModalBody>
+          <Text>This dialog traps focus, closes on Escape, and dims with a dither scrim.</Text>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="ghost" onClick={close}>Cancel</Button>
+          <Button onClick={close}>Confirm</Button>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}`,
+      },
+    },
+  },
+};
 
 function SizeDemo({ size }: { size: ModalSize }) {
   const { isOpen, open, close } = useDisclosure();
@@ -161,6 +224,47 @@ export const NonDismissable: Story = {
       );
     }
     return <BlockingDemo />;
+  },
+};
+
+export const AlertDialog: Story = {
+  name: "Alert dialog role",
+  render: () => {
+    function AlertDemo() {
+      const { isOpen, open, close } = useDisclosure();
+      return (
+        <>
+          <Button onClick={open}>Delete item</Button>
+          <Modal
+            isOpen={isOpen}
+            onClose={close}
+            role="alertdialog"
+            isDismissable={false}
+            aria-labelledby="alert_title"
+            aria-describedby="alert_body"
+          >
+            <ModalHeader>
+              <Text id="alert_title" weight="bold" size="lg">
+                Delete this item?
+              </Text>
+            </ModalHeader>
+            <ModalBody>
+              <Text id="alert_body">
+                This action is permanent. Backdrop and Escape are disabled so the
+                choice is explicit.
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="ghost" onClick={close}>
+                Cancel
+              </Button>
+              <Button onClick={close}>Delete</Button>
+            </ModalFooter>
+          </Modal>
+        </>
+      );
+    }
+    return <AlertDemo />;
   },
 };
 

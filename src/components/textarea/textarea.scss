@@ -3,6 +3,14 @@
   padding: var(--space-2);
   line-height: var(--line-height);
   resize: vertical;
+
+  // Reserve room for the outward text-stroke plate on every line. text-indent
+  // (inherited from .du_input:disabled) only shifts the first line, so reset it
+  // and use logical start padding instead so all lines clear the stroke.
+  &:disabled {
+    padding-inline-start: calc(var(--space-2) + var(--disabled-text-inset));
+    text-indent: 0;
+  }
 }
 
 .du_textarea_sm {

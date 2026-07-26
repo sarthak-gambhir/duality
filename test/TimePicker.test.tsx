@@ -113,21 +113,8 @@ describe("TimePicker", () => {
   });
 });
 
-describe("TimePicker disabled tooltip", () => {
-  it("shows the formatted value in a hover tooltip when disabled", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
-      <TimePicker defaultValue="09:30" disabled aria-label="Time" />,
-    );
-    const root = container.querySelector(".du_disabled_tooltip");
-    expect(root).not.toBeNull();
-    await user.hover(root!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Value: 09:30");
-  });
-
-  it("shows the reason when disabled", async () => {
-    const user = userEvent.setup();
+describe("TimePicker disabled reason caption", () => {
+  it("renders the reason caption and wires it via aria-describedby", () => {
     const { container } = render(
       <TimePicker
         defaultValue="09:30"
@@ -136,15 +123,25 @@ describe("TimePicker disabled tooltip", () => {
         aria-label="Time"
       />,
     );
-    await user.hover(container.querySelector(".du_disabled_tooltip")!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Disabled due to: Fixed by the schedule");
+    const caption = container.querySelector(".du_disabled_message");
+    expect(caption).toHaveTextContent("Fixed by the schedule");
+    expect(
+      screen.getByRole("button", { name: "Time" }).getAttribute("aria-describedby"),
+    ).toBe(caption!.id);
   });
 
-  it("does not wrap when enabled", () => {
+  it("renders no caption when disabled without a reason", () => {
+    const { container } = render(
+      <TimePicker defaultValue="09:30" disabled aria-label="Time" />,
+    );
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
+    expect(container.querySelector(".du_disabled_message_wrap")).toBeNull();
+  });
+
+  it("renders no caption when enabled", () => {
     const { container } = render(
       <TimePicker defaultValue="09:30" aria-label="Time" />,
     );
-    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
   });
 });

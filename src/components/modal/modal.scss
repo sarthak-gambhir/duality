@@ -10,7 +10,7 @@
   padding: var(--space-4);
 
   // Two-color scrim: a dither instead of a translucent gray.
-  @include m.du_dither;
+  @include m.du_texture_fill;
 }
 
 .du_modal {

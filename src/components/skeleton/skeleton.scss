@@ -3,17 +3,17 @@
 .du_skeleton {
   border: var(--border-width) solid var(--fg);
 
-  @include m.du_dither;
+  @include m.du_texture_fill;
 
-  animation: du_skeleton_pulse 1.2s steps(2) infinite alternate;
+  animation: du_skeleton_pulse 2s infinite linear;
 }
 
 @keyframes du_skeleton_pulse {
-  from {
+  0% {
     background-position: 0 0;
   }
 
-  to {
-    background-position: 4px 4px;
+  100% {
+    background-position: 2px 0;
   }
 }

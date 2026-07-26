@@ -97,7 +97,7 @@
 }
 
 .du_range_slider_disabled .du_range_slider_track {
-  @include m.du_dither;
+  @include m.du_texture_fill;
 }
 
 .du_range_slider_disabled .du_range_slider_fill {

@@ -64,48 +64,43 @@ describe("PinInput", () => {
   });
 });
 
-describe("PinInput disabled tooltip", () => {
-  it("shows the entered value in a hover tooltip when disabled", async () => {
-    const user = userEvent.setup();
-    const { container } = render(<PinInput defaultValue="1234" disabled />);
-    const root = container.querySelector(".du_disabled_tooltip");
-    expect(root).not.toBeNull();
-    await user.hover(root!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Value: 1234");
-  });
-
-  it("omits the value line when masked, showing only the reason", async () => {
-    const user = userEvent.setup();
+describe("PinInput disabled reason caption", () => {
+  it("renders the reason caption and wires it via aria-describedby", () => {
     const { container } = render(
       <PinInput
         defaultValue="1234"
-        mask
         disabled
         disabledReason="Verified earlier"
       />,
     );
-    await user.hover(container.querySelector(".du_disabled_tooltip")!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Disabled due to: Verified earlier");
-    expect(tip).not.toHaveTextContent("Value:");
+    const caption = container.querySelector(".du_disabled_message");
+    expect(caption).toHaveTextContent("Verified earlier");
+    expect(screen.getByRole("group").getAttribute("aria-describedby")).toBe(
+      caption!.id,
+    );
   });
 
-  it("does not wrap when enabled", () => {
+  it("renders no caption when disabled without a reason", () => {
+    const { container } = render(<PinInput defaultValue="1234" disabled />);
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
+    expect(container.querySelector(".du_disabled_message_wrap")).toBeNull();
+  });
+
+  it("renders no caption when enabled", () => {
     const { container } = render(<PinInput defaultValue="1234" />);
-    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
   });
 
-  it("receives disabled and reason from FormField context", async () => {
-    const user = userEvent.setup();
+  it("receives disabled and reason from FormField context", () => {
     const { container } = render(
       <FormField label="Code" disabled disabledReason="Locked by admin">
         <PinInput defaultValue="1234" />
       </FormField>,
     );
-    await user.hover(container.querySelector(".du_disabled_tooltip")!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Disabled due to: Locked by admin");
-    expect(tip).toHaveTextContent("Value: 1234");
+    const caption = container.querySelector(".du_disabled_message");
+    expect(caption).toHaveTextContent("Locked by admin");
+    expect(screen.getByRole("group").getAttribute("aria-describedby")).toBe(
+      caption!.id,
+    );
   });
 });

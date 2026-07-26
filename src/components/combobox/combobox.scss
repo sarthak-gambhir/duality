@@ -24,8 +24,9 @@
   &:disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
-    @include m.du_text_outline(2);
+    @include m.du_disabled_field;
+
+    text-indent: var(--disabled-text-inset);
   }
 }
 
@@ -99,6 +100,6 @@
 .du_combobox_option[aria-disabled="true"] {
   cursor: not-allowed;
 
-  @include m.du_dither;
+  @include m.du_texture_fill;
   @include m.du_text_outline(2);
 }

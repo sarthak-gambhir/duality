@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useId,
   useRef,
   useState,
   type ChangeEvent,
@@ -9,10 +10,7 @@ import {
 import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 
 export interface InputProps extends Omit<
   ComponentPropsWithoutRef<"input">,
@@ -30,10 +28,8 @@ export interface InputProps extends Omit<
   clearable?: boolean;
   /** Called after the field is cleared. */
   onClear?: () => void;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 const nativeValueSetter = () =>
@@ -51,7 +47,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     onClear,
     disabled,
     disabledReason,
-    disabledTooltip,
     value,
     defaultValue,
     onChange,
@@ -66,6 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   const innerRef = useRef<HTMLInputElement>(null);
   const field = useFormField();
+  const disabledMsgId = useId();
   const isControlled = value !== undefined;
   const [uncontrolledHasValue, setUncontrolledHasValue] = useState(
     () => defaultValue != null && String(defaultValue).length > 0,
@@ -78,19 +74,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const resolvedId = id ?? field?.id;
   const showInvalid = invalid || field?.invalid || undefined;
   const invalidAttr = ariaInvalid ?? (showInvalid ? true : undefined);
-  const describedBy = ariaDescribedby ?? field?.describedBy;
   const requiredAttr = ariaRequired ?? (field?.required || undefined);
   const errorMessageAttr =
     ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
   const isDisabled = disabled ?? field?.disabled;
   const grouped = prefix != null || suffix != null || clearable;
 
-  const disabledTooltipProps = {
-    disabled: isDisabled,
-    reason: disabledReason ?? field?.disabledReason,
-    formatter: disabledTooltip ?? field?.disabledTooltip,
-    getValue: () => innerRef.current?.value ?? "",
-  };
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
+  const describedBy =
+    cx(ariaDescribedby ?? field?.describedBy, showDisabledReason && disabledMsgId) ||
+    undefined;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!isControlled) setUncontrolledHasValue(event.target.value.length > 0);
@@ -110,7 +104,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
   if (!grouped) {
     return (
-      <DisabledTooltip {...disabledTooltipProps}>
+      <DisabledMessage
+        active={showDisabledReason}
+        id={disabledMsgId}
+        reason={resolvedReason}
+      >
         <input
           ref={mergeRefs(ref, innerRef)}
           id={resolvedId}
@@ -130,12 +128,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           )}
           {...rest}
         />
-      </DisabledTooltip>
+      </DisabledMessage>
     );
   }
 
   return (
-    <DisabledTooltip {...disabledTooltipProps}>
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
       <span
       className={cx(
         "du_input_group",
@@ -176,6 +178,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         <span className="du_input_affix du_input_suffix">{suffix}</span>
       )}
       </span>
-    </DisabledTooltip>
+    </DisabledMessage>
   );
 });

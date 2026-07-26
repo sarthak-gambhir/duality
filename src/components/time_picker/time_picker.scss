@@ -41,11 +41,9 @@
   @include m.du_focus;
 
   display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+  align-items: stretch;
   inline-size: 100%;
-  padding-inline: var(--space-2);
+  padding: 0;
   color: var(--fg);
   background-color: var(--bg);
   font-family: var(--font-sans);
@@ -55,9 +53,28 @@
   &:disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
-    @include m.du_text_outline(2);
+    @include m.du_disabled_field;
   }
+}
+
+// The value grows to fill the trigger and keeps a leading inset; the affix is a
+// full-height solid --bg panel so the icon stays clean over the disabled texture.
+.du_time_picker_value {
+  display: inline-flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding-inline: var(--space-2);
+}
+
+.du_time_picker_affix {
+  border-left: var(--border-width) solid var(--fg);
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding-inline: var(--space-1);
+  color: var(--fg);
+  background-color: var(--bg);
 }
 
 .du_time_picker_invalid .du_time_picker_trigger {
@@ -158,7 +175,7 @@
   &:disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
+    @include m.du_texture_fill;
     @include m.du_text_outline(2);
   }
 }

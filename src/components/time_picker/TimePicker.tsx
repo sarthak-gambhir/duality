@@ -10,10 +10,7 @@ import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -67,10 +64,8 @@ export interface TimePickerProps {
   /** Control size. */
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   id?: string;
   name?: string;
   className?: string;
@@ -100,7 +95,6 @@ export function TimePicker({
   size = "md",
   disabled,
   disabledReason,
-  disabledTooltip,
   id,
   name,
   className,
@@ -115,6 +109,8 @@ export function TimePicker({
   });
   const field = useFormField();
   const isDisabled = disabled ?? field?.disabled;
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
 
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -122,6 +118,9 @@ export function TimePicker({
   const panelRef = useRef<HTMLDivElement>(null);
   const icons = useIcons();
   const baseId = useId();
+  const disabledMsgId = `${baseId}_disabled`;
+  const describedBy =
+    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
 
   useDismiss({
     enabled: open,
@@ -285,15 +284,12 @@ export function TimePicker({
     return `${pad(parts.hour)}:${pad(parts.minute)}`;
   })();
 
-  const disabledTooltipProps = {
-    disabled: isDisabled,
-    reason: disabledReason ?? field?.disabledReason,
-    formatter: disabledTooltip ?? field?.disabledTooltip,
-    getValue: () => (parts ? label : ""),
-  };
-
   return (
-    <DisabledTooltip {...disabledTooltipProps}>
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
     <div
       ref={rootRef}
       className={cx(
@@ -312,7 +308,7 @@ export function TimePicker({
           aria-invalid={invalid || undefined}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
+          aria-describedby={describedBy}
           disabled={isDisabled}
           data-open={open || undefined}
           className={cx("du_time_picker_trigger", `du_time_picker_${size}`)}
@@ -327,7 +323,9 @@ export function TimePicker({
           >
             {label}
           </span>
-          <Icon icon={icons.clock} className="du_time_picker_glyph" />
+          <span className="du_time_picker_affix">
+            <Icon icon={icons.clock} className="du_time_picker_glyph" />
+          </span>
         </button>
         {clearable && parts && !isDisabled && (
           <button
@@ -437,6 +435,6 @@ export function TimePicker({
 
       {name && <input type="hidden" name={name} value={current ?? ""} />}
     </div>
-    </DisabledTooltip>
+    </DisabledMessage>
   );
 }

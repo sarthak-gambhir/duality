@@ -60,11 +60,37 @@
   }
 }
 
-// Two-color checkerboard used for disabled surfaces (a "gray" made from fg/bg).
-@mixin du_dither {
+// Neutral two-color texture fill (a "gray" made from fg/bg) used for both
+// disabled surfaces and decorative fills (skeletons, scrims, tracks). The
+// pattern itself lives in --texture-image / --texture-size, switched globally
+// by [data-texture] (dither by default, hatch when toggled).
+@mixin du_texture_fill {
   background-color: var(--bg);
-  background-image: repeating-conic-gradient(var(--fg) 0 25%, var(--bg) 0 50%);
-  background-size: 4px 4px;
+  background-image: var(--texture-image);
+  background-size: var(--texture-size);
+  background-origin: border-box;
+}
+
+// Disabled value control: fill the whole field with the shared texture (a
+// clearly "unavailable"-reading pattern that can't be confused with the dashed
+// invalid border) while keeping the value legible. The fill follows the global
+// [data-texture] toggle via --texture-image. For text-bearing controls ($label:
+// true) the label is drawn in --fg with a wide --bg text stroke painted *behind*
+// the fill (paint-order: stroke); adjacent glyph strokes merge into a solid --bg
+// plate under the value so it stays readable over the texture. Pass $label:false
+// for controls whose value shows in solid chips (MultiSelect, TagInput). The
+// host keeps its own base border (du_border), so this only sets the fill/label.
+@mixin du_disabled_field($label: true) {
+  background-color: var(--bg);
+  background-image: var(--texture-image);
+  background-size: var(--texture-size);
+  background-origin: border-box;
+
+  @if $label {
+    color: var(--fg);
+    -webkit-text-stroke: var(--disabled-stroke) var(--bg);
+    paint-order: stroke;
+  }
 }
 
 // Crisp two-color text outline. Rings each glyph with a solid $color pixel

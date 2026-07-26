@@ -72,16 +72,46 @@ $font_mono:
 // Each entry: (fg, bg). Every pair MUST meet WCAG AAA (>= 7:1) contrast.
 // Mirrored in `src/theme/palettes.ts`.
 $palettes: (
-  "classic": (#141414, #fcfbff),
-  "dark": (#f0f0ee, #0d0d0d),
-  "paper": (#26221a, #f0eee7),
-  "slate": (#ccd2d9, #242930),
-  "sepia": (#55422a, #fff3c8),
-  "amber": (#ffc233, #201b1e),
-  "phosphor": (#2bff43, #05190b),
-  "blueprint": (#ffffff, #032b46),
-  "teal": (#45e0d2, #04211f),
-  "sakura": (#ff9cb4, #25212b),
+  "classic": (
+    #141414,
+    #fcfbff,
+  ),
+  "dark": (
+    #f0f0ee,
+    #0d0d0d,
+  ),
+  "paper": (
+    #26221a,
+    #f0eee7,
+  ),
+  "slate": (
+    #ccd2d9,
+    #242930,
+  ),
+  "sepia": (
+    #55422a,
+    #fff3c8,
+  ),
+  "amber": (
+    #ffc233,
+    #201b1e,
+  ),
+  "phosphor": (
+    #2bff43,
+    #05190b,
+  ),
+  "blueprint": (
+    #ffffff,
+    #032b46,
+  ),
+  "teal": (
+    #45e0d2,
+    #04211f,
+  ),
+  "sakura": (
+    #ff9cb4,
+    #25212b,
+  ),
 );
 
 $default_palette: "classic";
@@ -109,6 +139,21 @@ $default_palette: "classic";
   --border-width: 2px;
   --border-width-thick: 4px;
   --radius: 0;
+
+  // Texture fill (dither by default) - switched globally by [data-texture].
+  // Both du_texture_fill (decorative) and du_disabled_field (disabled controls)
+  // read these, so the toggle flips every textured surface at once.
+  --texture-image: repeating-conic-gradient(var(--fg) 0 25%, var(--bg) 0 50%);
+  --texture-size: 4px 4px;
+
+  // Width of the --bg text-stroke plate that keeps disabled control text legible
+  // over the texture fill. Scales down under compact density.
+  --disabled-stroke: 6px;
+
+  // Inline inset that reserves room for the outward text-stroke plate so the
+  // first/last glyph is not clipped by the control's edge or overflow box.
+  // Derived from the stroke, so it follows the compact scale automatically.
+  --disabled-text-inset: calc(var(--disabled-stroke) / 2 + 1px);
 
   // Layering - shared stacking order for overlays.
   --z-popover: 900;
@@ -166,6 +211,24 @@ $default_palette: "classic";
   }
 }
 
+// Texture scopes: switch the shared texture variables. `dither` is the default
+// (already set on :root); it is re-declared here so a nested scope can override
+// an ancestor `hatch`. The var(--fg)/var(--bg) references resolve at the element
+// that paints the fill, so local color context is preserved.
+[data-texture="dither"] {
+  --texture-image: repeating-conic-gradient(var(--fg) 0 25%, var(--bg) 0 50%);
+  --texture-size: 4px 4px;
+}
+
+[data-texture="hatch"] {
+  --texture-image: repeating-linear-gradient(
+    45deg,
+    var(--fg) 0 2px,
+    var(--bg) 2px 4px
+  );
+  --texture-size: auto;
+}
+
 // Compact density: re-declare the spacing/sizing tokens on the density scope so
 // every descendant picks up the tighter scale. Purely dimensional - the two
 // colors and border widths are unchanged.
@@ -183,4 +246,7 @@ $default_palette: "classic";
   --size-md: #{map.get($size_scale_compact, md)};
   --size-lg: #{map.get($size_scale_compact, lg)};
   --size-xl: #{map.get($size_scale_compact, xl)};
+
+  // Thinner stroke plate to match the tighter compact controls.
+  --disabled-stroke: 6px;
 }

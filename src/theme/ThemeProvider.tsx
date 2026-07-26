@@ -10,9 +10,12 @@ import { defaultPalette, type PaletteName } from "./palettes";
 
 export type Density = "comfortable" | "compact";
 
+export type Texture = "dither" | "hatch";
+
 interface PersistedTheme {
   theme?: PaletteName;
   density?: Density;
+  texture?: Texture;
 }
 
 function readPersisted(storageKey?: string): PersistedTheme | null {
@@ -40,8 +43,11 @@ export interface ThemeContextValue {
   theme: PaletteName;
   /** Active spacing/sizing density. */
   density: Density;
+  /** Active texture fill (dither or hatch) for disabled and decorative surfaces. */
+  texture: Texture;
   setTheme: (theme: PaletteName) => void;
   setDensity: (density: Density) => void;
+  setTexture: (texture: Texture) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
@@ -52,6 +58,8 @@ export interface ThemeProviderProps {
   defaultTheme?: PaletteName;
   /** Initial spacing/sizing density. Defaults to `comfortable`. */
   defaultDensity?: Density;
+  /** Initial texture fill. Defaults to `dither`. */
+  defaultTexture?: Texture;
   /**
    * When set, the active theme and density are persisted to `localStorage`
    * under this key and restored on next load.
@@ -64,14 +72,15 @@ export interface ThemeProviderProps {
 
 /**
  * Establishes a Duality theme scope. Renders a `du_theme_root` element carrying
- * `data-theme` and `data-density`, which the tokens stylesheet uses to resolve
- * `--fg` / `--bg` and the spacing / sizing scale. Requires
- * `import '@duality/ui/styles.css'` once in the app.
+ * `data-theme`, `data-density`, and `data-texture`, which the tokens stylesheet
+ * uses to resolve `--fg` / `--bg`, the spacing / sizing scale, and the texture
+ * fill. Requires `import '@duality/ui/styles.css'` once in the app.
  */
 export function ThemeProvider({
   children,
   defaultTheme = defaultPalette,
   defaultDensity = "comfortable",
+  defaultTexture = "dither",
   storageKey,
   as: Element = "div",
   className,
@@ -82,6 +91,9 @@ export function ThemeProvider({
   const [density, setDensity] = useState<Density>(
     () => readPersisted(storageKey)?.density ?? defaultDensity,
   );
+  const [texture, setTexture] = useState<Texture>(
+    () => readPersisted(storageKey)?.texture ?? defaultTexture,
+  );
   const [rootEl, setRootEl] = useState<HTMLElement | null>(null);
 
   // Persist on change.
@@ -90,21 +102,23 @@ export function ThemeProvider({
     try {
       window.localStorage.setItem(
         storageKey,
-        JSON.stringify({ theme, density }),
+        JSON.stringify({ theme, density, texture }),
       );
     } catch {
       // Ignore storage failures (private mode, quota, etc.).
     }
-  }, [storageKey, theme, density]);
+  }, [storageKey, theme, density, texture]);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
       theme,
       density,
+      texture,
       setTheme,
       setDensity,
+      setTexture,
     }),
-    [theme, density],
+    [theme, density, texture],
   );
 
   const rootClassName = className
@@ -118,6 +132,7 @@ export function ThemeProvider({
         className={rootClassName}
         data-theme={theme}
         data-density={density}
+        data-texture={texture}
       >
         <PortalContainerContext.Provider value={rootEl}>
           {children}

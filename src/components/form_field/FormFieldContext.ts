@@ -1,5 +1,4 @@
 import { createContext, useContext, type ReactNode } from "react";
-import type { DisabledTooltipFormatter } from "./disabledTooltip";
 
 /**
  * Field wiring shared by FormField with any control rendered inside it, so a
@@ -19,10 +18,8 @@ export interface FormFieldContextValue {
   required: boolean;
   /** Whether the field is disabled. */
   disabled: boolean;
-  /** Reason the field is disabled, surfaced in a tooltip by the control. */
+  /** Reason the field is disabled, surfaced as a caption by the control. */
   disabledReason?: ReactNode;
-  /** Overrides the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 export const FormFieldContext = createContext<FormFieldContextValue | null>(

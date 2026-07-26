@@ -72,9 +72,20 @@
 .du_checkbox_input:disabled ~ .du_checkbox_box {
   cursor: not-allowed;
 
-  @include m.du_dither;
+  svg {
+    stroke: var(--fg);
+    fill: var(--fg);
+    stroke-width: 4px;
+    paint-order: stroke;
+  }
+
+  @include m.du_texture_fill;
 }
 
-.du_checkbox_disabled {
+.du_checkbox.du_checkbox_disabled {
+  cursor: not-allowed;
+}
+
+.du_checkbox_input:disabled {
   cursor: not-allowed;
 }

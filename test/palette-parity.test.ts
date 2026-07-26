@@ -15,7 +15,7 @@ function parseScssPalettes(scss: string): Record<string, [string, string]> {
   const block = scss.slice(start, end);
 
   const entry =
-    /"([\w-]+)":\s*\(\s*(#[0-9a-fA-F]{3,8})\s*,\s*(#[0-9a-fA-F]{3,8})\s*\)/g;
+    /"([\w-]+)":\s*\(\s*(#[0-9a-fA-F]{3,8})\s*,\s*(#[0-9a-fA-F]{3,8})\s*,?\s*\)/g;
   const result: Record<string, [string, string]> = {};
   let match: RegExpExecArray | null;
   while ((match = entry.exec(block)) !== null) {

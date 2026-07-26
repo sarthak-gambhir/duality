@@ -127,4 +127,34 @@ function Demo() {
   );
 }
 
-export const Default: Story = { render: () => <Demo /> };
+export const Default: Story = {
+  render: () => <Demo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const { isOpen, open, close } = useDisclosure();
+
+  const commands: Command[] = [
+    { id: "new", label: "New file", group: "File", icon: RiFileAddLine, shortcut: ["Ctrl", "N"], onSelect: () => {} },
+    { id: "open", label: "Open file", group: "File", icon: RiFolderOpenLine, shortcut: ["Ctrl", "O"], onSelect: () => {} },
+    { id: "save", label: "Save", group: "File", icon: RiSaveLine, shortcut: ["Ctrl", "S"], onSelect: () => {} },
+    { id: "paste", label: "Paste", group: "Edit", icon: RiClipboardLine, disabled: true, onSelect: () => {} },
+  ];
+
+  return (
+    <>
+      <Button onClick={open}>Open command palette</Button>
+      <CommandPalette
+        isOpen={isOpen}
+        onClose={close}
+        commands={commands}
+        recentIds={["save"]}
+      />
+    </>
+  );
+}`,
+      },
+    },
+  },
+};

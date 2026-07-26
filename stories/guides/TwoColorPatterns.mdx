@@ -43,7 +43,7 @@ A checkerboard built from the two colors acts as the system's "gray". It marks d
 </Demo>
 
 ```scss
-@include m.du_dither;
+@include m.du_texture_fill;
 ```
 
 ## 3. Text outline
@@ -52,7 +52,7 @@ Text placed over a dither can lose legibility, so disabled labels get a crisp tw
 
 ```scss
 &:disabled {
-  @include m.du_dither;
+  @include m.du_texture_fill;
   @include m.du_text_outline(2);
 }
 ```

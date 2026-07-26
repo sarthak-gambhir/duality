@@ -17,6 +17,15 @@
   &.du_number_input_invalid {
     border-style: dashed;
   }
+
+  // Hatch fill + label plate on the root; the field and affix go transparent to
+  // share it, while the steppers keep their own dither backing so the +/- icons
+  // stay legible.
+  &.du_number_input_disabled {
+    cursor: not-allowed;
+
+    @include m.du_disabled_field;
+  }
 }
 
 .du_number_input_field {
@@ -32,9 +41,7 @@
 
   &:disabled {
     cursor: not-allowed;
-
-    @include m.du_dither;
-    @include m.du_text_outline(2);
+    background-color: transparent;
   }
 }
 
@@ -58,8 +65,7 @@
 }
 
 .du_number_input_disabled .du_number_input_affix {
-  @include m.du_dither;
-  @include m.du_text_outline(2);
+  background-color: transparent;
 }
 
 .du_number_input_step {
@@ -89,7 +95,7 @@
   &:disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
+    @include m.du_texture_fill;
     @include m.du_text_outline(2);
   }
 

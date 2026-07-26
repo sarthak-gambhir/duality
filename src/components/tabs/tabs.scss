@@ -29,7 +29,7 @@
   &:disabled {
     cursor: not-allowed;
 
-    @include m.du_dither;
+    @include m.du_texture_fill;
     @include m.du_text_outline(2);
   }
 

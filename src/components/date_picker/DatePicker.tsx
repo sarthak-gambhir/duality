@@ -10,10 +10,7 @@ import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 
@@ -73,10 +70,8 @@ export interface DatePickerProps {
   /** Control size. */
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   id?: string;
   className?: string;
   name?: string;
@@ -105,7 +100,6 @@ export function DatePicker({
   size = "md",
   disabled,
   disabledReason,
-  disabledTooltip,
   id,
   className,
   name,
@@ -120,12 +114,8 @@ export function DatePicker({
   });
   const field = useFormField();
   const isDisabled = disabled ?? field?.disabled;
-  const disabledTooltipProps = {
-    disabled: isDisabled,
-    reason: disabledReason ?? field?.disabledReason,
-    formatter: disabledTooltip ?? field?.disabledTooltip,
-    getValue: () => (current ? format(current) : ""),
-  };
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
 
   const [open, setOpen] = useState(false);
   const [viewMonth, setViewMonth] = useState(() =>
@@ -142,6 +132,9 @@ export function DatePicker({
 
   const baseId = useId();
   const gridLabelId = `${baseId}_grid_label`;
+  const disabledMsgId = `${baseId}_disabled`;
+  const describedBy =
+    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
 
   useDismiss({
     enabled: open,
@@ -286,7 +279,11 @@ export function DatePicker({
   };
 
   return (
-    <DisabledTooltip {...disabledTooltipProps}>
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
     <div
       ref={rootRef}
       className={cx(
@@ -305,7 +302,7 @@ export function DatePicker({
           aria-invalid={invalid || undefined}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
+          aria-describedby={describedBy}
           disabled={isDisabled}
           data-open={open || undefined}
           className={cx("du_date_picker_trigger", `du_date_picker_${size}`)}
@@ -320,7 +317,9 @@ export function DatePicker({
           >
             {current ? format(current) : placeholder}
           </span>
-          <Icon icon={icons.calendar} className="du_date_picker_glyph" />
+          <span className="du_date_picker_affix">
+            <Icon icon={icons.calendar} className="du_date_picker_glyph" />
+          </span>
         </button>
         {clearable && current && !isDisabled && (
           <button
@@ -442,6 +441,6 @@ export function DatePicker({
         />
       )}
     </div>
-    </DisabledTooltip>
+    </DisabledMessage>
   );
 }

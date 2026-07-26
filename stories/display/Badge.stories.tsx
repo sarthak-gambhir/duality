@@ -1,15 +1,49 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Badge, Button } from "../../src";
+import { Badge, Button, Tag } from "../../src";
 
 const meta: Meta<typeof Badge> = {
   title: "Display/Badge",
   component: Badge,
   args: { children: "Badge" },
+  argTypes: {
+    variant: {
+      control: "inline-radio",
+      options: ["solid", "outline"],
+      description: "`solid` is filled, `outline` is bordered only.",
+      table: { defaultValue: { summary: "solid" } },
+    },
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      description: "Control size.",
+      table: { defaultValue: { summary: "sm" } },
+    },
+    dot: {
+      control: "boolean",
+      description: "Show a leading status dot (a two-color square).",
+    },
+    count: {
+      control: "number",
+      description: "Render a numeric count, overflowing to `max+`.",
+    },
+    max: {
+      control: "number",
+      description: "Overflow threshold for `count`.",
+      table: { defaultValue: { summary: "99" } },
+    },
+    showZero: {
+      control: "boolean",
+      description: "Render the badge even when `count` is `0`.",
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Badge>;
+
+/** Args-driven playground; use the Controls panel to explore every prop. */
+export const Playground: Story = {};
 
 export const Variants: Story = {
   render: () => (
@@ -86,4 +120,20 @@ function RemovableDemo() {
 
 export const Removable: Story = {
   render: () => <RemovableDemo />,
+};
+
+/**
+ * `Tag` is a re-export of `Badge` under a name that reads better for
+ * user-authored labels/chips. It is the exact same component and props - use
+ * whichever name fits the context. The `outline` variant is the common tag look.
+ */
+export const TagAlias: Story = {
+  name: "Tag (alias)",
+  render: () => (
+    <div style={{ display: "flex", gap: "var(--space-2)" }}>
+      <Tag variant="outline">Design</Tag>
+      <Tag variant="outline">Engineering</Tag>
+      <Tag variant="solid">Featured</Tag>
+    </div>
+  ),
 };

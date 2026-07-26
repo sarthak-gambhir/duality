@@ -10,6 +10,40 @@ import {
 const meta: Meta<typeof DataTable> = {
   title: "Data/DataTable",
   component: DataTable,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Accessible data table with column sorting, optional row selection, pagination, a sticky header, loading and empty states, and clickable rows. Columns are declared with a `columns` array (`cell` for display, `value` for sorting/selection semantics); rows are keyed via `getRowId`.",
+      },
+    },
+  },
+  argTypes: {
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      description: "Row density / control size.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    selectable: {
+      control: "boolean",
+      description: "Render a selection checkbox column.",
+    },
+    stickyHeader: {
+      control: "boolean",
+      description: "Keep the header visible while the body scrolls.",
+    },
+    isLoading: {
+      control: "boolean",
+      description: "Show the loading state instead of rows.",
+    },
+    pageSize: {
+      control: "number",
+      description: "Rows per page (enables pagination when set).",
+    },
+    columns: { control: false },
+    data: { control: false },
+  },
 };
 
 export default meta;
@@ -121,6 +155,24 @@ export const Loading: Story = {
       isLoading
       aria-label="Team members"
     />
+  ),
+};
+
+/** The three row densities (`size`), stacked for comparison. */
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: "var(--space-6)" }}>
+      {(["sm", "md", "lg"] as const).map((size) => (
+        <DataTable
+          key={size}
+          columns={columns}
+          data={people.slice(0, 3)}
+          getRowId={(p) => p.name}
+          size={size}
+          aria-label={`Team members (${size})`}
+        />
+      ))}
+    </div>
   ),
 };
 

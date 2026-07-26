@@ -8,6 +8,7 @@ export type {
   ThemeProviderProps,
   ThemeContextValue,
   Density,
+  Texture,
 } from "./theme/ThemeProvider";
 export { palettes, paletteNames, defaultPalette } from "./theme/palettes";
 export type { Palette, PaletteName } from "./theme/palettes";
@@ -15,6 +16,8 @@ export { PaletteSelect } from "./components/theme_controls/PaletteSelect";
 export type { PaletteSelectProps } from "./components/theme_controls/PaletteSelect";
 export { DensitySelect } from "./components/theme_controls/DensitySelect";
 export type { DensitySelectProps } from "./components/theme_controls/DensitySelect";
+export { TextureSelect } from "./components/theme_controls/TextureSelect";
+export type { TextureSelectProps } from "./components/theme_controls/TextureSelect";
 export {
   contrastRatio,
   relativeLuminance,
@@ -151,10 +154,6 @@ export type {
 } from "./components/form_field/FormField";
 export { useFormField } from "./components/form_field/FormFieldContext";
 export type { FormFieldContextValue } from "./components/form_field/FormFieldContext";
-export type {
-  DisabledTooltipInfo,
-  DisabledTooltipFormatter,
-} from "./components/form_field/disabledTooltip";
 
 // Display
 export {

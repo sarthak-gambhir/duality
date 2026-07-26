@@ -6,6 +6,31 @@ const meta: Meta<typeof Tooltip> = {
   title: "Overlays/Tooltip",
   component: Tooltip,
   parameters: { docsMinHeight: 160 },
+  argTypes: {
+    content: { control: "text", description: "Tooltip contents." },
+    placement: {
+      control: "inline-radio",
+      options: ["top", "bottom", "left", "right"],
+      description: "Preferred side to render on.",
+      table: { defaultValue: { summary: "top" } },
+    },
+    arrow: {
+      control: "boolean",
+      description: "Render a pointer arrow toward the trigger.",
+    },
+    offset: {
+      control: "number",
+      description: "Gap in pixels between the trigger and the tooltip.",
+    },
+    openDelay: {
+      control: "number",
+      description: "Delay in ms before opening on hover/focus.",
+    },
+    closeDelay: {
+      control: "number",
+      description: "Delay in ms before closing after leaving.",
+    },
+  },
 };
 
 export default meta;
@@ -85,4 +110,20 @@ function ControlledDemo() {
 
 export const Controlled: Story = {
   render: () => <ControlledDemo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Tooltip content="Toggled by click, not hover" placement="right" open={open} arrow>
+      <Button variant="inverse" onClick={() => setOpen((prev) => !prev)}>
+        {open ? "Hide" : "Show"} tip
+      </Button>
+    </Tooltip>
+  );
+}`,
+      },
+    },
+  },
 };

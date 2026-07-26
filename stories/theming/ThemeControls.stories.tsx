@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DensitySelect, Inline, PaletteSelect, Stack, Text } from "../../src";
+import {
+  DensitySelect,
+  Inline,
+  PaletteSelect,
+  Stack,
+  Text,
+  TextureSelect,
+} from "../../src";
 
 const meta: Meta = {
   title: "Theming/Controls",
@@ -7,7 +14,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Ready-made `Select` controls bound to the ThemeProvider. `PaletteSelect` switches the active two-color theme; `DensitySelect` switches the comfortable/compact spacing scale. Both read and write the same provider the preview decorator mounts, so they stay in sync with the toolbar globals.",
+          "Ready-made `Select` controls bound to the ThemeProvider. `PaletteSelect` switches the active two-color theme; `DensitySelect` switches the comfortable/compact spacing scale; `TextureSelect` switches the dither/hatch texture fill used on disabled and decorative surfaces. All read and write the same provider the preview decorator mounts, so they stay in sync with the toolbar globals.",
       },
     },
   },
@@ -44,8 +51,24 @@ export const DensityControl: Story = {
   ),
 };
 
-/** Both controls side by side, as they would appear in a settings panel. */
-export const PaletteAndDensity: Story = {
+/**
+ * `TextureSelect` switches the texture fill between the checkerboard dither
+ * (default) and the diagonal hatch. It applies globally to every textured
+ * surface - disabled controls and decorative fills (skeletons, scrims, tracks)
+ * alike - so the whole scope flips at once.
+ */
+export const TextureControl: Story = {
+  render: () => (
+    <Inline gap={5} align="center">
+      <div style={{ minWidth: 200 }}>
+        <TextureSelect />
+      </div>
+    </Inline>
+  ),
+};
+
+/** All three controls side by side, as they would appear in a settings panel. */
+export const PaletteDensityAndTexture: Story = {
   render: () => (
     <Stack gap={3} style={{ maxWidth: 240 }}>
       <Stack gap={1}>
@@ -59,6 +82,12 @@ export const PaletteAndDensity: Story = {
           Density
         </Text>
         <DensitySelect />
+      </Stack>
+      <Stack gap={1}>
+        <Text size="sm" weight="bold">
+          Texture
+        </Text>
+        <TextureSelect />
       </Stack>
     </Stack>
   ),

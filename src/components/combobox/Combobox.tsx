@@ -15,10 +15,7 @@ import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
@@ -47,10 +44,8 @@ export interface ComboboxProps extends Omit<
   invalid?: boolean;
   /** Control size. */
   size?: "sm" | "md" | "lg";
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
 }
@@ -92,7 +87,6 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
       invalid,
       size = "md",
       disabledReason,
-      disabledTooltip,
       name,
       id,
       disabled,
@@ -130,12 +124,8 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
     const icons = useIcons();
     const field = useFormField();
     const isDisabled = disabled ?? field?.disabled;
-    const disabledTooltipProps = {
-      disabled: isDisabled,
-      reason: disabledReason ?? field?.disabledReason,
-      formatter: disabledTooltip ?? field?.disabledTooltip,
-      getValue: () => inputValue,
-    };
+    const resolvedReason = disabledReason ?? field?.disabledReason;
+    const showDisabledReason = !!isDisabled && resolvedReason != null;
 
     const rootRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -143,7 +133,10 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
 
     const baseId = useId();
     const listboxId = `${baseId}_listbox`;
+    const disabledMsgId = `${baseId}_disabled`;
     const optionId = (index: number) => `${baseId}_option_${index}`;
+    const describedBy =
+      cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
 
     const filtered = useMemo(() => {
       const predicate =
@@ -233,7 +226,11 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
     };
 
     return (
-      <DisabledTooltip {...disabledTooltipProps}>
+      <DisabledMessage
+        active={showDisabledReason}
+        id={disabledMsgId}
+        reason={resolvedReason}
+      >
       <div
         ref={rootRef}
         className={cx(
@@ -256,7 +253,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
             open && activeIndex >= 0 ? optionId(activeIndex) : undefined
           }
           aria-invalid={ariaInvalid ?? (invalid || undefined)}
-          aria-describedby={ariaDescribedby}
+          aria-describedby={describedBy}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           disabled={isDisabled}
@@ -304,7 +301,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
 
         {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
       </div>
-      </DisabledTooltip>
+      </DisabledMessage>
     );
   },
 );

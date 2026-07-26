@@ -182,4 +182,25 @@ function ControlledTabs() {
 /** Fully controlled: `value` + `onValueChange`, no `defaultValue` needed. */
 export const Controlled: Story = {
   render: () => <ControlledTabs />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState("overview");
+  return (
+    <Tabs value={value} onValueChange={setValue}>
+      <TabList aria-label="Controlled">
+        <Tab value="overview">Overview</Tab>
+        <Tab value="specs">Specs</Tab>
+        <Tab value="reviews">Reviews</Tab>
+      </TabList>
+      <TabPanel value="overview"><Text>Overview.</Text></TabPanel>
+      <TabPanel value="specs"><Text>Specs.</Text></TabPanel>
+      <TabPanel value="reviews"><Text>Reviews.</Text></TabPanel>
+    </Tabs>
+  );
+}`,
+      },
+    },
+  },
 };

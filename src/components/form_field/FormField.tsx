@@ -2,7 +2,6 @@ import { useId, type ReactNode } from "react";
 import { cx } from "../../utils/cx";
 import { Label } from "../label/Label";
 import { FormFieldContext } from "./FormFieldContext";
-import type { DisabledTooltipFormatter } from "./disabledTooltip";
 
 /** Props passed to the FormField render function for the wrapped control. */
 export interface FormFieldControlProps {
@@ -26,13 +25,10 @@ export interface FormFieldProps {
   /** Disable the field: dims the label and forwards `disabled` to the control. */
   disabled?: boolean;
   /**
-   * When the field is disabled, the reason shown in a hover tooltip on the
-   * control (alongside its current value). Hover-only, since disabled controls
-   * cannot receive focus.
+   * When the field is disabled, the reason shown in a persistent caption below
+   * the control.
    */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   /** Override the generated control id. */
   id?: string;
   className?: string;
@@ -57,7 +53,6 @@ export function FormField({
   required,
   disabled,
   disabledReason,
-  disabledTooltip,
   id: idProp,
   className,
   children,
@@ -88,7 +83,6 @@ export function FormField({
         required: !!required,
         disabled: !!disabled,
         disabledReason,
-        disabledTooltip,
       }}
     >
       <div className={cx("du_form_field", className)}>

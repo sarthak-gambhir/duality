@@ -17,10 +17,7 @@ import { mergeRefs } from "../../utils/mergeRefs";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 
 export interface SelectOption {
   value: string;
@@ -62,10 +59,8 @@ export interface SelectProps extends Omit<
   align?: "start" | "end";
   /** Name of a hidden input so the value participates in form submission. */
   name?: string;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
 }
 
 function optionsFromChildren(children: ReactNode): SelectOption[] {
@@ -123,7 +118,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       id,
       disabled,
       disabledReason,
-      disabledTooltip,
       className,
       "aria-invalid": ariaInvalid,
       "aria-describedby": ariaDescribedby,
@@ -142,13 +136,20 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
 
     // Explicit props always win; the FormField context is a fallback.
     const field = useFormField();
+    const disabledMsgId = useId();
     const resolvedId = id ?? field?.id;
     const showInvalid = invalid || field?.invalid || undefined;
-    const describedBy = ariaDescribedby ?? field?.describedBy;
     const requiredAttr = ariaRequired ?? (field?.required || undefined);
     const errorMessageAttr =
       ariaErrorMessage ?? (field?.invalid ? field?.errorId : undefined);
     const isDisabled = disabled ?? field?.disabled;
+    const resolvedReason = disabledReason ?? field?.disabledReason;
+    const showDisabledReason = !!isDisabled && resolvedReason != null;
+    const describedBy =
+      cx(
+        ariaDescribedby ?? field?.describedBy,
+        showDisabledReason && disabledMsgId,
+      ) || undefined;
 
     const isControlled = value !== undefined;
     const [internalValue, setInternalValue] = useState<string | undefined>(
@@ -257,18 +258,12 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       }
     };
 
-    const disabledTooltipProps = {
-      disabled: isDisabled,
-      reason: disabledReason ?? field?.disabledReason,
-      formatter: disabledTooltip ?? field?.disabledTooltip,
-      getValue: () =>
-        typeof selected?.label === "string"
-          ? selected.label
-          : currentValue ?? "",
-    };
-
     return (
-      <DisabledTooltip {...disabledTooltipProps}>
+      <DisabledMessage
+        active={showDisabledReason}
+        id={disabledMsgId}
+        reason={resolvedReason}
+      >
         <div
           ref={rootRef}
           className={cx(
@@ -353,7 +348,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           <input type="hidden" name={name} value={currentValue ?? ""} />
         )}
         </div>
-      </DisabledTooltip>
+      </DisabledMessage>
     );
   },
 );

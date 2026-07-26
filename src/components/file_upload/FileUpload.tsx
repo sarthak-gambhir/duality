@@ -147,15 +147,16 @@ export function FileUpload({
               <span className="du_file_upload_size">
                 {formatSize(file.size)}
               </span>
-              <button
-                type="button"
-                className="du_file_upload_remove"
-                aria-label={`Remove ${file.name}`}
-                disabled={disabled}
-                onClick={() => remove(index)}
-              >
-                <Icon icon={icons.close} />
-              </button>
+              {!disabled && (
+                <button
+                  type="button"
+                  className="du_file_upload_remove"
+                  aria-label={`Remove ${file.name}`}
+                  onClick={() => remove(index)}
+                >
+                  <Icon icon={icons.close} />
+                </button>
+              )}
             </li>
           ))}
         </ul>

@@ -29,12 +29,12 @@
   border-style: dashed;
 }
 
-.du_multi_select_disabled {
+.du_multi_select_control.du_multi_select_disabled {
   cursor: not-allowed;
 
-  // Dither only: the chips carry their own solid background and stay legible,
-  // so a text outline here would erode the chip labels (see TagInput).
-  @include m.du_dither;
+  // Hatch fill only ($label:false): the chips carry their own solid background
+  // and stay legible, so no text-stroke plate is needed behind the content.
+  @include m.du_disabled_field($label: false);
 }
 
 .du_multi_select_chip {
@@ -123,6 +123,6 @@
 .du_multi_select_option[aria-disabled="true"] {
   cursor: not-allowed;
 
-  @include m.du_dither;
+  @include m.du_texture_fill;
   @include m.du_text_outline(2);
 }

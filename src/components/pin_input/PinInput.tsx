@@ -1,4 +1,5 @@
 import {
+  useId,
   useRef,
   type ClipboardEvent,
   type FocusEvent,
@@ -9,10 +10,7 @@ import {
 import { cx } from "../../utils/cx";
 import { useControllableState } from "../../utils/useControllableState";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 
 export interface PinInputProps {
   /** Number of cells. Defaults to 4. */
@@ -30,10 +28,8 @@ export interface PinInputProps {
   /** Obscure entered characters. */
   mask?: boolean;
   disabled?: boolean;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   /** When set, the assembled value is mirrored to a hidden input of this name. */
   name?: string;
   /** Called when focus leaves the group (for form-library integration). */
@@ -59,7 +55,6 @@ export function PinInput({
   mask,
   disabled,
   disabledReason,
-  disabledTooltip,
   name,
   onBlur,
   "aria-label": ariaLabel = "Verification code",
@@ -72,13 +67,10 @@ export function PinInput({
   });
   const refs = useRef<Array<HTMLInputElement | null>>([]);
   const field = useFormField();
+  const disabledMsgId = useId();
   const isDisabled = disabled ?? field?.disabled;
-  const disabledTooltipProps = {
-    disabled: isDisabled,
-    reason: disabledReason ?? field?.disabledReason,
-    formatter: disabledTooltip ?? field?.disabledTooltip,
-    getValue: () => (mask ? "" : (current ?? "")),
-  };
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
 
   const chars = (current ?? "").slice(0, length).split("");
   const cellValue = (index: number) => chars[index] ?? "";
@@ -160,10 +152,15 @@ export function PinInput({
   };
 
   return (
-    <DisabledTooltip {...disabledTooltipProps}>
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
     <div
       role="group"
       aria-label={ariaLabel}
+      aria-describedby={showDisabledReason ? disabledMsgId : undefined}
       className={cx("du_pin_input", className)}
       onBlur={onGroupBlur}
     >
@@ -189,6 +186,6 @@ export function PinInput({
         />
       ))}
     </div>
-    </DisabledTooltip>
+    </DisabledMessage>
   );
 }

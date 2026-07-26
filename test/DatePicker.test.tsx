@@ -122,25 +122,8 @@ describe("DatePicker", () => {
   });
 });
 
-describe("DatePicker disabled tooltip", () => {
-  it("shows the formatted value in a hover tooltip when disabled", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
-      <DatePicker
-        defaultValue={new Date(2026, 6, 15)}
-        disabled
-        aria-label="date"
-      />,
-    );
-    const root = container.querySelector(".du_disabled_tooltip");
-    expect(root).not.toBeNull();
-    await user.hover(root!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Value: 2026-07-15");
-  });
-
-  it("shows the reason when disabled", async () => {
-    const user = userEvent.setup();
+describe("DatePicker disabled reason caption", () => {
+  it("renders the reason caption and wires it via aria-describedby", () => {
     const { container } = render(
       <DatePicker
         defaultValue={new Date(2026, 6, 15)}
@@ -149,15 +132,29 @@ describe("DatePicker disabled tooltip", () => {
         aria-label="date"
       />,
     );
-    await user.hover(container.querySelector(".du_disabled_tooltip")!);
-    const tip = await screen.findByRole("tooltip");
-    expect(tip).toHaveTextContent("Disabled due to: Billing period locked");
+    const caption = container.querySelector(".du_disabled_message");
+    expect(caption).toHaveTextContent("Billing period locked");
+    expect(
+      screen.getByRole("button", { name: "date" }).getAttribute("aria-describedby"),
+    ).toBe(caption!.id);
   });
 
-  it("does not wrap when enabled", () => {
+  it("renders no caption when disabled without a reason", () => {
+    const { container } = render(
+      <DatePicker
+        defaultValue={new Date(2026, 6, 15)}
+        disabled
+        aria-label="date"
+      />,
+    );
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
+    expect(container.querySelector(".du_disabled_message_wrap")).toBeNull();
+  });
+
+  it("renders no caption when enabled", () => {
     const { container } = render(
       <DatePicker defaultValue={new Date(2026, 6, 15)} aria-label="date" />,
     );
-    expect(container.querySelector(".du_disabled_tooltip")).toBeNull();
+    expect(container.querySelector(".du_disabled_message")).toBeNull();
   });
 });

@@ -65,9 +65,13 @@
 .du_radio_input:disabled ~ .du_radio_dot {
   cursor: not-allowed;
 
-  @include m.du_dither;
+  @include m.du_texture_fill;
 }
 
-.du_radio_disabled {
+.du_radio.du_radio_disabled {
+  cursor: not-allowed;
+}
+
+.du_radio_input:disabled {
   cursor: not-allowed;
 }

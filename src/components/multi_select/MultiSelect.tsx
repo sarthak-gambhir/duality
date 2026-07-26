@@ -13,10 +13,7 @@ import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { Badge } from "../badge/Badge";
 import { useFormField } from "../form_field/FormFieldContext";
-import {
-  DisabledTooltip,
-  type DisabledTooltipFormatter,
-} from "../form_field/disabledTooltip";
+import { DisabledMessage } from "../form_field/disabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";
@@ -35,10 +32,8 @@ export interface MultiSelectProps {
   /** Marks the field invalid (dashed border + `aria-invalid`). */
   invalid?: boolean;
   disabled?: boolean;
-  /** When disabled, reason shown in a hover tooltip alongside the value. */
+  /** When disabled, reason shown in a persistent caption below the field. */
   disabledReason?: ReactNode;
-  /** Override the default disabled-tooltip content formatting. */
-  disabledTooltip?: DisabledTooltipFormatter;
   /** When set, each selected value is mirrored to a hidden input of this name. */
   name?: string;
   /** Called when the text input loses focus (for form-library integration). */
@@ -79,7 +74,6 @@ export function MultiSelect({
   invalid,
   disabled,
   disabledReason,
-  disabledTooltip,
   name,
   onBlur,
   id,
@@ -95,6 +89,8 @@ export function MultiSelect({
   });
   const field = useFormField();
   const isDisabled = disabled ?? field?.disabled;
+  const resolvedReason = disabledReason ?? field?.disabledReason;
+  const showDisabledReason = !!isDisabled && resolvedReason != null;
 
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -106,7 +102,10 @@ export function MultiSelect({
 
   const baseId = useId();
   const listboxId = `${baseId}_listbox`;
+  const disabledMsgId = `${baseId}_disabled`;
   const optionId = (index: number) => `${baseId}_option_${index}`;
+  const describedBy =
+    cx(ariaDescribedby, showDisabledReason && disabledMsgId) || undefined;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -187,15 +186,12 @@ export function MultiSelect({
     .map((v) => options.find((o) => o.value === v))
     .filter((o): o is SelectOption => o != null);
 
-  const disabledTooltipProps = {
-    disabled: isDisabled,
-    reason: disabledReason ?? field?.disabledReason,
-    formatter: disabledTooltip ?? field?.disabledTooltip,
-    getValue: () => selectedOptions.map((o) => labelText(o)).join(", "),
-  };
-
   return (
-    <DisabledTooltip {...disabledTooltipProps}>
+    <DisabledMessage
+      active={showDisabledReason}
+      id={disabledMsgId}
+      reason={resolvedReason}
+    >
     <div
       ref={rootRef}
       className={cx(
@@ -219,18 +215,19 @@ export function MultiSelect({
         {selectedOptions.map((option) => (
           <Badge key={option.value} className="du_multi_select_chip du_badge_removable">
             <span>{option.label}</span>
-            <button
-              type="button"
-              className="du_multi_select_chip_remove"
-              aria-label={`Remove ${labelText(option)}`}
-              disabled={isDisabled}
-              onClick={(event) => {
-                event.stopPropagation();
-                remove(option.value);
-              }}
-            >
-              <Icon icon={icons.close} />
-            </button>
+            {!isDisabled && (
+              <button
+                type="button"
+                className="du_multi_select_chip_remove"
+                aria-label={`Remove ${labelText(option)}`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  remove(option.value);
+                }}
+              >
+                <Icon icon={icons.close} />
+              </button>
+            )}
           </Badge>
         ))}
         <input
@@ -248,7 +245,7 @@ export function MultiSelect({
           aria-invalid={invalid || undefined}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
-          aria-describedby={ariaDescribedby}
+          aria-describedby={describedBy}
           disabled={isDisabled}
           value={query}
           placeholder={selectedOptions.length === 0 ? placeholder : undefined}
@@ -300,6 +297,6 @@ export function MultiSelect({
           <input key={value} type="hidden" name={name} value={value} />
         ))}
     </div>
-    </DisabledTooltip>
+    </DisabledMessage>
   );
 }

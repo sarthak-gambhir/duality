@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Select, type SelectOption } from "../../src";
+import { Select, Stack, type SelectOption } from "../../src";
 
 const meta: Meta<typeof Select> = {
   title: "Controls/Select",
@@ -62,7 +62,26 @@ function Controlled() {
   );
 }
 
-export const Selected: Story = { render: () => <Controlled /> };
+export const Selected: Story = {
+  render: () => <Controlled />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState("classic");
+  return (
+    <Select
+      options={options}
+      value={value}
+      onValueChange={setValue}
+      aria-label="palette"
+    />
+  );
+}`,
+      },
+    },
+  },
+};
 
 export const Invalid: Story = {
   render: (args) => (
@@ -82,5 +101,27 @@ export const FromOptionChildren: Story = {
       <option value="classic">Classic</option>
       <option value="paper">Paper</option>
     </Select>
+  ),
+};
+
+/** The three sizes, stacked for comparison. */
+export const Sizes: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 280 }}>
+      <Select size="sm" options={options} defaultValue="classic" aria-label="small" />
+      <Select size="md" options={options} defaultValue="classic" aria-label="medium" />
+      <Select size="lg" options={options} defaultValue="classic" aria-label="large" />
+    </Stack>
+  ),
+};
+
+/** Default, invalid, and disabled side by side. */
+export const States: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 280 }}>
+      <Select options={options} placeholder="Default" aria-label="default" />
+      <Select options={options} defaultValue="amber" invalid aria-label="invalid" />
+      <Select options={options} defaultValue="amber" disabled aria-label="disabled" />
+    </Stack>
   ),
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { MultiSelect, type SelectOption } from "../../src";
+import { MultiSelect, Stack, type SelectOption } from "../../src";
 
 const meta: Meta<typeof MultiSelect> = {
   title: "Controls/MultiSelect",
@@ -16,6 +16,11 @@ const meta: Meta<typeof MultiSelect> = {
   },
   argTypes: {
     options: { control: false, description: "Options to choose from." },
+    invalid: {
+      control: "boolean",
+      description: "Marks the field invalid (dashed border + `aria-invalid`).",
+    },
+    disabled: { control: "boolean", description: "Disables the control." },
   },
 };
 
@@ -31,7 +36,21 @@ const options: SelectOption[] = [
   { value: "qwik", label: "Qwik" },
 ];
 
-function Demo() {
+export const Default: Story = {
+  render: (args) => (
+    <div style={{ maxWidth: 320 }}>
+      <MultiSelect
+        {...args}
+        options={options}
+        defaultValue={["react"]}
+        placeholder="Pick frameworks..."
+        aria-label="frameworks"
+      />
+    </div>
+  ),
+};
+
+function Controlled() {
   const [value, setValue] = useState<string[]>(["react"]);
   return (
     <div style={{ maxWidth: 320 }}>
@@ -46,12 +65,33 @@ function Demo() {
   );
 }
 
-export const Default: Story = { render: () => <Demo /> };
+/** Controlled `value` + `onValueChange`. */
+export const ControlledValue: Story = {
+  name: "Controlled",
+  render: () => <Controlled />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState<string[]>(["react"]);
+  return (
+    <MultiSelect
+      options={options}
+      value={value}
+      onValueChange={setValue}
+      placeholder="Pick frameworks..."
+      aria-label="frameworks"
+    />
+  );
+}`,
+      },
+    },
+  },
+};
 
 /**
- * When disabled, hovering the control shows the selected labels (and an
- * optional `disabledReason`) in a tooltip. Hover-only, since disabled controls
- * cannot receive keyboard focus.
+ * When disabled, the value stays readable on a solid background and the
+ * `disabledReason` appears in a persistent caption below the control.
  */
 export const DisabledWithReason: Story = {
   render: () => (
@@ -65,5 +105,41 @@ export const DisabledWithReason: Story = {
         aria-label="frameworks"
       />
     </div>
+  ),
+};
+
+/** Invalid state: dashed border + `aria-invalid`. */
+export const Invalid: Story = {
+  render: () => (
+    <div style={{ maxWidth: 320 }}>
+      <MultiSelect
+        options={options}
+        defaultValue={["react"]}
+        invalid
+        placeholder="Pick frameworks..."
+        aria-label="frameworks"
+      />
+    </div>
+  ),
+};
+
+/** Default, invalid, and disabled side by side. */
+export const States: Story = {
+  render: () => (
+    <Stack gap={3} style={{ maxWidth: 320 }}>
+      <MultiSelect options={options} placeholder="Default" aria-label="default" />
+      <MultiSelect
+        options={options}
+        defaultValue={["react"]}
+        invalid
+        aria-label="invalid"
+      />
+      <MultiSelect
+        options={options}
+        defaultValue={["react"]}
+        disabled
+        aria-label="disabled"
+      />
+    </Stack>
   ),
 };

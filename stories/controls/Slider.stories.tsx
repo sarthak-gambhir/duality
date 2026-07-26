@@ -5,12 +5,28 @@ import { Slider } from "../../src";
 const meta: Meta<typeof Slider> = {
   title: "Controls/Slider",
   component: Slider,
+  args: { min: 0, max: 100, step: 1, defaultValue: 40, "aria-label": "volume" },
+  argTypes: {
+    invalid: { control: "boolean", description: "Marks the control invalid." },
+    disabled: { control: "boolean", description: "Disables the control." },
+    showValue: {
+      control: "boolean",
+      description: "Show a value bubble above the thumb.",
+    },
+    min: { control: "number", description: "Minimum value." },
+    max: { control: "number", description: "Maximum value." },
+    step: { control: "number", description: "Step increment." },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Slider>;
 
-function Demo() {
+export const Default: Story = {
+  decorators: [(Story) => <div style={{ maxWidth: 320 }}><Story /></div>],
+};
+
+function Controlled() {
   const [value, setValue] = useState(40);
   return (
     <Slider
@@ -23,7 +39,29 @@ function Demo() {
   );
 }
 
-export const Default: Story = { render: () => <Demo /> };
+/** Controlled `value` + `onChange`. */
+export const ControlledValue: Story = {
+  name: "Controlled",
+  render: () => <Controlled />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(40);
+  return (
+    <Slider
+      min={0}
+      max={100}
+      value={value}
+      aria-label="volume"
+      onChange={(e) => setValue(Number(e.target.value))}
+    />
+  );
+}`,
+      },
+    },
+  },
+};
 
 export const WithValue: Story = {
   name: "Value bubble",
@@ -99,6 +137,22 @@ export const Combined: Story = {
   ),
 };
 
+/**
+ * A disabled slider still needs its value legible, so surface it with
+ * `showValue` - it stays visible while disabled. `minLabel`/`maxLabel` give the
+ * reading context.
+ */
 export const Disabled: Story = {
-  render: () => <Slider defaultValue={30} disabled aria-label="disabled" />,
+  render: () => (
+    <div style={{ maxWidth: 320 }}>
+      <Slider
+        defaultValue={30}
+        disabled
+        showValue
+        minLabel="0"
+        maxLabel="100"
+        aria-label="disabled"
+      />
+    </div>
+  ),
 };

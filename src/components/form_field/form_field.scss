@@ -2,16 +2,26 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-
-  // A disabled control wraps itself in a Tooltip (value / reason). Inside a
-  // field, stretch that wrapper full-width so the control fills the column.
-  .du_disabled_tooltip {
-    display: block;
-    inline-size: 100%;
-  }
 }
 
 .du_form_field_hint {
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-style: italic;
+}
+
+// A disabled control renders a persistent reason caption below it. The wrapper
+// is a plain block so full-width controls keep their width (no inline-flex
+// shrink), and it adds no layout of its own beyond the caption spacing.
+.du_disabled_message_wrap {
+  display: block;
+}
+
+.du_disabled_message {
+  display: block;
+  margin-block-start: var(--space-1);
+  padding-inline-start: var(--space-1);
   color: var(--fg);
   font-family: var(--font-sans);
   font-size: 14px;

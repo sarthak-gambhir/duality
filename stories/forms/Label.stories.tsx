@@ -10,14 +10,25 @@ import { Input, Label, Stack } from "../../src";
 const meta: Meta<typeof Label> = {
   title: "Forms/Label",
   component: Label,
+  args: { children: "Email" },
   argTypes: {
-    required: { control: "boolean" },
-    disabled: { control: "boolean" },
+    children: { control: "text", description: "Label text." },
+    required: {
+      control: "boolean",
+      description: "Show the (aria-hidden) required marker.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Dim the label to match a disabled control.",
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Label>;
+
+/** Args-driven playground; toggle `required`/`disabled` and edit the text. */
+export const Playground: Story = {};
 
 export const Default: Story = {
   render: () => (

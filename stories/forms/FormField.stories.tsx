@@ -12,20 +12,43 @@ const meta: Meta<typeof FormField> = {
   title: "Forms/FormField",
   component: FormField,
   argTypes: {
-    required: { control: "boolean" },
-    disabled: { control: "boolean" },
-    error: { control: "text" },
-    hint: { control: "text" },
+    label: { control: "text", description: "Field label." },
+    required: {
+      control: "boolean",
+      description: "Marks the field required (adds an asterisk + `aria-required`).",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Dims the label and forwards `disabled` to the control.",
+    },
+    error: {
+      control: "text",
+      description: "Error message; also sets invalid + `aria-errormessage`.",
+    },
+    hint: { control: "text", description: "Helper text under the label." },
     disabledReason: {
       control: "text",
       description:
-        "Shown (with the value) in a hover tooltip when the field is disabled. Hover-only, since disabled controls can't be focused.",
+        "Shown in a persistent caption below the control when the field is disabled.",
     },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof FormField>;
+
+/**
+ * Args-driven playground: use the Controls panel to toggle `required`,
+ * `disabled`, and to set the `label`, `hint`, and `error` text live.
+ */
+export const Playground: Story = {
+  args: { label: "Email", hint: "We never share it.", required: true },
+  render: (args) => (
+    <FormField {...args}>
+      <Input type="email" placeholder="you@example.com" />
+    </FormField>
+  ),
+};
 
 export const WithHint: Story = {
   render: () => (
@@ -59,10 +82,9 @@ export const WithSelect: Story = {
 };
 
 /**
- * A disabled field dims the label and forwards `disabled` to the control. When
- * the control has a value, hovering it shows the value in a tooltip (helpful
- * since the dithered field text can be hard to read). Hover-only, since
- * disabled controls cannot receive focus.
+ * A disabled field dims the label and forwards `disabled` to the control. The
+ * value stays crisp on a solid background, and the frame switches to a dithered
+ * border to signal the disabled state.
  */
 export const Disabled: Story = {
   render: () => (
@@ -73,8 +95,8 @@ export const Disabled: Story = {
 };
 
 /**
- * `disabledReason` adds a "Disabled due to:" line above the value in the hover
- * tooltip, explaining why the field is locked.
+ * `disabledReason` renders a persistent caption below the control explaining
+ * why the field is locked, and wires it to the control via `aria-describedby`.
  */
 export const DisabledWithReason: Story = {
   render: () => (
@@ -85,28 +107,6 @@ export const DisabledWithReason: Story = {
       disabledReason="Managed by your workspace admin"
     >
       {(props) => <Input defaultValue="acct_10423" {...props} />}
-    </FormField>
-  ),
-};
-
-/**
- * `disabledTooltip` overrides the default content formatting - here masking the
- * value and rewording the reason.
- */
-export const CustomDisabledTooltip: Story = {
-  render: () => (
-    <FormField
-      label="API token"
-      disabled
-      disabledReason="Rotate from the security page"
-      disabledTooltip={({ value, reason }) => (
-        <div>
-          <div>{reason}</div>
-          <div>Ends in ****{value.slice(-4)}</div>
-        </div>
-      )}
-    >
-      {(props) => <Input defaultValue="sk_live_8f2a91c4" {...props} />}
     </FormField>
   ),
 };
