@@ -6,12 +6,35 @@ import { Alert, Button, Icon } from "../../src";
 const meta: Meta<typeof Alert> = {
   title: "Display/Alert",
   component: Alert,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Callout box whose severity is conveyed by a pixel marker shape and border style (never color). Supports an optional `title`, a trailing `action` slot, and a close button via `onDismiss`.",
+      },
+    },
+  },
+  argTypes: {
+    tone: {
+      control: "inline-radio",
+      options: ["info", "success", "warning", "error"],
+      description: "Severity, signalled by marker shape + border style.",
+      table: { defaultValue: { summary: "info" } },
+    },
+    title: { control: "text", description: "Optional bold heading above the body." },
+    icon: { control: false, description: "Replaces the default tone marker." },
+    action: { control: false, description: "Trailing action slot (e.g. a Button)." },
+    onDismiss: {
+      control: false,
+      description: "Show a close button and call this when pressed.",
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Alert>;
 
-export const Tones: Story = {
+export const Default: Story = {
   render: () => (
     <div style={{ display: "grid", gap: "var(--space-3)", maxWidth: 420 }}>
       <Alert tone="info" title="Info">

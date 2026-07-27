@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../utils/cx";
-import { Portal } from "../../utils/Portal";
+import { Portal } from "../../utils/portal";
 import { useAnchorPosition, type Placement } from "../../utils/floating";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";

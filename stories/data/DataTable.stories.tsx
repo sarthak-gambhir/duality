@@ -126,6 +126,26 @@ export const Selectable: Story = {
       />
     );
   },
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [selected, setSelected] = useState<RowId[]>(["Ada Lovelace"]);
+  return (
+    <DataTable
+      columns={columns}
+      data={people}
+      getRowId={(p) => p.name}
+      selectable
+      selectedIds={selected}
+      onSelectionChange={setSelected}
+      aria-label="Team members"
+    />
+  );
+}`,
+      },
+    },
+  },
 };
 
 const manyPeople: Person[] = Array.from({ length: 23 }).map((_, i) => ({

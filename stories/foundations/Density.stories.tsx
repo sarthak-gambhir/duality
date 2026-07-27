@@ -77,7 +77,7 @@ function DensityColumn({
  * Two nested `[data-density]` roots render the identical component tree so the
  * spacing rescale is directly comparable.
  */
-export const DensityComparison: Story = {
+export const Default: Story = {
   render: () => (
     <Inline gap={6} align="start">
       <DensityColumn density="comfortable" title="Comfortable" />

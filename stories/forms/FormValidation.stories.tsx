@@ -9,7 +9,15 @@ import { Button, FormField, Input, Stack, Text } from "../../src";
  * context), so the accessible wiring stays in sync with no extra markup.
  */
 const meta: Meta = {
-  title: "Forms/Form Validation",
+  title: "Forms/FormValidation",
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "A live validation pattern where each field validates on blur and again on submit. `FormField`'s `error` prop drives the message, the dashed invalid border, and `aria-invalid`/`aria-errormessage` on the control.",
+      },
+    },
+  },
 };
 
 export default meta;
@@ -101,6 +109,6 @@ function ValidatedForm() {
 }
 
 /** Validate on blur, then on submit; errors clear as the user corrects them. */
-export const LiveValidation: Story = {
+export const Default: Story = {
   render: () => <ValidatedForm />,
 };

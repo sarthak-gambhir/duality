@@ -4,6 +4,26 @@ import { Table, TBody, Td, Th, THead, Tr } from "../../src";
 const meta: Meta<typeof Table> = {
   title: "Data/Table",
   component: Table,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Two-color data table with pixel rules. Compose with the `THead`/`TBody`/`Tr`/`Th`/`Td` section primitives; `stickyHeader` pins the header while the scroll container scrolls.",
+      },
+    },
+  },
+  argTypes: {
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      description: "Cell padding scale.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    stickyHeader: {
+      control: "boolean",
+      description: "Pin the header row while the scroll container scrolls.",
+    },
+  },
 };
 
 export default meta;

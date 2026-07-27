@@ -38,7 +38,7 @@ export const Default: Story = {
   ),
 };
 
-function Controlled() {
+function ControlledExample() {
   const [value, setValue] = useState<[number, number]>([20, 80]);
   return (
     <Stack gap={3} style={{ maxWidth: 320 }}>
@@ -51,9 +51,8 @@ function Controlled() {
 }
 
 /** Controlled `value` + `onValueChange`, echoing the current range. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

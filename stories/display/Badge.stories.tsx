@@ -43,7 +43,7 @@ export default meta;
 type Story = StoryObj<typeof Badge>;
 
 /** Args-driven playground; use the Controls panel to explore every prop. */
-export const Playground: Story = {};
+export const Default: Story = {};
 
 export const Variants: Story = {
   render: () => (

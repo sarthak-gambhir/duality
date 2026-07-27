@@ -4,6 +4,27 @@ import { Stat, StatGroup } from "../../src";
 const meta: Meta<typeof Stat> = {
   title: "Display/Stat",
   component: Stat,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Compact metric display: a label, primary value, and an optional directional delta shown as an arrow shape (not color).",
+      },
+    },
+  },
+  argTypes: {
+    label: { control: "text", description: "Descriptive label above the value." },
+    value: { control: "text", description: "The primary metric." },
+    delta: {
+      control: "text",
+      description: "Optional change indicator shown below the value.",
+    },
+    deltaDirection: {
+      control: "inline-radio",
+      options: ["up", "down", "neutral"],
+      description: "Direction of the delta (arrow shape, not color).",
+    },
+  },
 };
 
 export default meta;

@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { Input } from "../src/components/input/Input";
-import { Textarea } from "../src/components/textarea/Textarea";
 
 describe("Input", () => {
   it("accepts typed text", async () => {
@@ -47,24 +46,5 @@ describe("Input", () => {
     expect(
       screen.queryByRole("button", { name: "Clear" }),
     ).not.toBeInTheDocument();
-  });
-});
-
-describe("Textarea", () => {
-  it("accepts typed text and marks invalid", async () => {
-    const user = userEvent.setup();
-    render(<Textarea aria-label="msg" invalid />);
-    const area = screen.getByRole("textbox", { name: "msg" });
-    await user.type(area, "hello");
-    expect(area).toHaveValue("hello");
-    expect(area).toHaveAttribute("aria-invalid", "true");
-  });
-
-  it("shows a character count against maxLength", async () => {
-    const user = userEvent.setup();
-    render(<Textarea aria-label="msg" showCount maxLength={10} />);
-    const area = screen.getByRole("textbox", { name: "msg" });
-    await user.type(area, "hey");
-    expect(screen.getByText("3 / 10")).toBeInTheDocument();
   });
 });

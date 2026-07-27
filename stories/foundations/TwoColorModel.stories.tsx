@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { palettes, paletteNames, contrastRatio, meetsAAA } from "../src";
+import { palettes, paletteNames, contrastRatio, meetsAAA } from "../../src";
 
 /**
  * Foundations: the two-color model. Everything Duality renders resolves to
@@ -22,7 +22,7 @@ const swatch = (bg: string, fg: string): CSSProperties => ({
   minWidth: 160,
 });
 
-export const CurrentTheme: Story = {
+export const Default: Story = {
   render: () => (
     <div style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>
       <div style={swatch("var(--bg)", "var(--fg)")}>

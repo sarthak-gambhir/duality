@@ -3,12 +3,20 @@ import { Inline, Skeleton, Spinner, Stack } from "../../src";
 
 const meta: Meta = {
   title: "Display/Spinner & Skeleton",
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Loading affordances: `Spinner` is a stepped pixel-rotation indicator; `Skeleton` is a dithered placeholder block for content that is still loading.",
+      },
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj;
 
-export const Spinners: Story = {
+export const Default: Story = {
   render: () => (
     <Inline gap={4}>
       <Spinner size="sm" />

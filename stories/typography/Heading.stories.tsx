@@ -29,7 +29,7 @@ const meta: Meta<typeof Heading> = {
 export default meta;
 type Story = StoryObj<typeof Heading>;
 
-export const AllLevels: Story = {
+export const Default: Story = {
   render: () => (
     <div style={{ display: "grid", gap: "var(--space-3)" }}>
       {([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => (

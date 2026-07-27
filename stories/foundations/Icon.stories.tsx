@@ -29,12 +29,32 @@ import {
 const meta: Meta<typeof Icon> = {
   title: "Foundations/Icon",
   component: Icon,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Thin two-color wrapper around `react-icons`. Icons render with `fill: currentColor`, so they inherit `--fg`/`--bg` and invert with their surface. Pass `label` to expose an accessible name; otherwise the icon is decorative.",
+      },
+    },
+  },
+  argTypes: {
+    icon: { control: false, description: "The react-icons component to render." },
+    size: {
+      control: "text",
+      description: "Tier keyword (sm/md/lg/xl), px number, or CSS length.",
+      table: { defaultValue: { summary: "1em" } },
+    },
+    label: {
+      control: "text",
+      description: "Accessible name; omit to keep the icon decorative.",
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Icon>;
 
-export const Basic: Story = {
+export const Default: Story = {
   render: () => (
     <Stack gap={4}>
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>

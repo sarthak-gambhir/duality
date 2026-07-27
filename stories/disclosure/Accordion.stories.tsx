@@ -33,7 +33,7 @@ const meta: Meta<typeof Accordion> = {
 export default meta;
 type Story = StoryObj<typeof Accordion>;
 
-export const Single: Story = {
+export const Default: Story = {
   render: () => (
     <Accordion type="single" defaultValue="a">
       <AccordionItem value="a" title="What is Duality?">
@@ -93,6 +93,22 @@ function ControlledAccordion() {
 /** Controlled `value`/`onValueChange` in single mode. */
 export const Controlled: Story = {
   render: () => <ControlledAccordion />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState<string | string[]>("a");
+  return (
+    <Accordion type="single" value={value} onValueChange={setValue}>
+      <AccordionItem value="a" title="First">First panel</AccordionItem>
+      <AccordionItem value="b" title="Second">Second panel</AccordionItem>
+      <AccordionItem value="c" title="Third">Third panel</AccordionItem>
+    </Accordion>
+  );
+}`,
+      },
+    },
+  },
 };
 
 /**

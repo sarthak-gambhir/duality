@@ -35,7 +35,7 @@ export const Default: Story = {
   ),
 };
 
-function Controlled() {
+function ControlledExample() {
   const [tags, setTags] = useState<string[]>(["design", "system"]);
   return (
     <div style={{ maxInlineSize: 360 }}>
@@ -50,9 +50,8 @@ function Controlled() {
 }
 
 /** Controlled `value` + `onValueChange`. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

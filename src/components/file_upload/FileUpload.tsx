@@ -12,7 +12,7 @@ import { cx } from "../../utils/cx";
 import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useFormField } from "../form_field/FormFieldContext";
-import { DisabledMessage } from "../form_field/disabledMessage";
+import { DisabledMessage } from "../form_field/DisabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 

@@ -41,7 +41,7 @@ type Story = StoryObj<typeof FormField>;
  * Args-driven playground: use the Controls panel to toggle `required`,
  * `disabled`, and to set the `label`, `hint`, and `error` text live.
  */
-export const Playground: Story = {
+export const Default: Story = {
   args: { label: "Email", hint: "We never share it.", required: true },
   render: (args) => (
     <FormField {...args}>

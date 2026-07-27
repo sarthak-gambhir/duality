@@ -20,7 +20,30 @@ import {
 const meta: Meta<typeof CommandPalette> = {
   title: "Overlays/CommandPalette",
   component: CommandPalette,
-  parameters: { docsMinHeight: 480 },
+  parameters: {
+    docsMinHeight: 480,
+    docs: {
+      description: {
+        component:
+          "Searchable command launcher in a centered modal. Pass `commands` to search and run, optional `recentIds` surfaced when the query is empty, and control open state via `isOpen`/`onClose`.",
+      },
+    },
+  },
+  argTypes: {
+    commands: { control: false, description: "Commands to search and run." },
+    recentIds: {
+      control: false,
+      description: 'Ids surfaced under "Recent" when the query is empty.',
+    },
+    placeholder: {
+      control: "text",
+      description: "Placeholder for the search input.",
+    },
+    emptyMessage: {
+      control: "text",
+      description: "Message shown when nothing matches.",
+    },
+  },
 };
 
 export default meta;

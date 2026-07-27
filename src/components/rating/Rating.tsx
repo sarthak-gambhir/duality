@@ -106,6 +106,38 @@ export function Rating({
 
   const blocks = Array.from({ length: max }, (_, i) => i + 1);
   const tabValue = current === 0 ? 1 : Math.ceil(current);
+  const showLock = readOnly && !disabled;
+
+  const stars = blocks.map((n) => {
+    const filled = n <= display;
+    const half = allowHalf && !filled && display >= n - 0.5 && display < n;
+    return (
+      <button
+        key={n}
+        type="button"
+        role="radio"
+        aria-checked={n === current}
+        aria-label={`${n} of ${max}`}
+        tabIndex={n === tabValue ? 0 : -1}
+        disabled={!interactive}
+        data-filled={filled || undefined}
+        data-half={half || undefined}
+        className="du_rating_item"
+        onClick={(event) => commit(valueFromPointer(n, event))}
+        onMouseMove={(event) =>
+          interactive && setHover(valueFromPointer(n, event))
+        }
+      >
+        {filled ? (
+          <Icon icon={icons.starFilled} className="du_rating_star" />
+        ) : half ? (
+          <Icon icon={icons.starHalf} className="du_rating_star" />
+        ) : (
+          <Icon icon={icons.star} className="du_rating_star" />
+        )}
+      </button>
+    );
+  });
 
   return (
     <div
@@ -116,40 +148,23 @@ export function Rating({
         "du_rating",
         `du_rating_${size}`,
         disabled && "du_rating_disabled",
+        readOnly && !disabled && "du_rating_readonly",
         className,
       )}
       onKeyDown={onKeyDown}
       onMouseLeave={() => setHover(null)}
       {...rest}
     >
-      {blocks.map((n) => {
-        const filled = n <= display;
-        const half = allowHalf && !filled && display >= n - 0.5 && display < n;
-        return (
-          <button
-            key={n}
-            type="button"
-            role="radio"
-            aria-checked={n === current}
-            aria-label={`${n} of ${max}`}
-            tabIndex={n === tabValue ? 0 : -1}
-            disabled={!interactive}
-            data-filled={filled || undefined}
-            data-half={half || undefined}
-            className="du_rating_item"
-            onClick={(event) => commit(valueFromPointer(n, event))}
-            onMouseMove={(event) =>
-              interactive && setHover(valueFromPointer(n, event))
-            }
-          >
-            {filled ? (
-              <Icon icon={icons.star} className="du_rating_star" />
-            ) : half ? (
-              <Icon icon={icons.starHalf} className="du_rating_star" />
-            ) : null}
-          </button>
-        );
-      })}
+      {showLock ? (
+        <>
+          <span className="du_rating_lockbox" aria-hidden="true">
+            <Icon icon={icons.lock} className="du_rating_lock" />
+          </span>
+          <div className="du_rating_track">{stars}</div>
+        </>
+      ) : (
+        stars
+      )}
       {name && <input type="hidden" name={name} value={current} />}
     </div>
   );

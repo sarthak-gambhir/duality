@@ -35,7 +35,7 @@ const box = {
   border: "var(--border-width) dashed var(--fg)",
 };
 
-export const SingleLine: Story = {
+export const Default: Story = {
   render: () => (
     <div style={box}>
       <TruncatedText>

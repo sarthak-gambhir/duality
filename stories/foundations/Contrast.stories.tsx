@@ -115,7 +115,7 @@ function ContrastCheckerDemo() {
   );
 }
 
-export const ContrastChecker: Story = {
+export const Default: Story = {
   render: () => <ContrastCheckerDemo />,
   parameters: {
     docs: {

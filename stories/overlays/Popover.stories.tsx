@@ -11,7 +11,35 @@ import {
 const meta: Meta<typeof Popover> = {
   title: "Overlays/Popover",
   component: Popover,
-  parameters: { docsMinHeight: 220 },
+  parameters: {
+    docsMinHeight: 220,
+    docs: {
+      description: {
+        component:
+          "Click-triggered anchored panel, dismissed on outside press or Escape. Rendered in a portal and positioned with collision-aware flip/shift.",
+      },
+    },
+  },
+  argTypes: {
+    placement: {
+      control: false,
+      description: "Anchor position.",
+      table: { defaultValue: { summary: "bottom-start" } },
+    },
+    offset: { control: "number", description: "Gap between trigger and panel, in px." },
+    flip: {
+      control: "boolean",
+      description: "Flip to the opposite side on overflow.",
+    },
+    shift: {
+      control: "boolean",
+      description: "Slide along the cross axis to stay in view.",
+    },
+    arrow: {
+      control: "boolean",
+      description: "Show a pointer arrow toward the trigger.",
+    },
+  },
 };
 
 export default meta;
@@ -119,4 +147,24 @@ function ControlledDemo() {
   );
 }
 
-export const Controlled: Story = { render: () => <ControlledDemo /> };
+export const Controlled: Story = {
+  render: () => <ControlledDemo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+      trigger={<Button>Controlled trigger</Button>}
+    >
+      <p>Popover content</p>
+    </Popover>
+  );
+}`,
+      },
+    },
+  },
+};

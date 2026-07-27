@@ -73,7 +73,7 @@ function Demo({ orientation }: { orientation?: "horizontal" | "vertical" }) {
   );
 }
 
-export const Horizontal: Story = { render: () => <Demo /> };
+export const Default: Story = { render: () => <Demo /> };
 export const Vertical: Story = {
   render: () => <Demo orientation="vertical" />,
 };

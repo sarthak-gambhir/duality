@@ -10,7 +10,15 @@ import {
 
 const meta: Meta = {
   title: "Overlays/Toast",
-  parameters: { docsMinHeight: 320 },
+  parameters: {
+    docsMinHeight: 320,
+    docs: {
+      description: {
+        component:
+          "Transient notifications. Wrap the app in `ToastProvider` and call `useToast()` to push toasts; each is a two-color callout with an optional action and configurable placement.",
+      },
+    },
+  },
 };
 
 export default meta;

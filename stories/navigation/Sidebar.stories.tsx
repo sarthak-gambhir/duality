@@ -251,7 +251,33 @@ function ControlledDemo() {
   );
 }
 
-export const Controlled: Story = { render: () => <ControlledDemo /> };
+export const Controlled: Story = {
+  render: () => <ControlledDemo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [collapsed, setCollapsed] = useState(false);
+  return (
+    <Sidebar
+      aria-label="Controlled"
+      collapsed={collapsed}
+      onCollapsedChange={setCollapsed}
+    >
+      <SidebarHeader>
+        <Logo />
+      </SidebarHeader>
+      <SidebarBody>{/* nav items */}</SidebarBody>
+      <SidebarFooter>
+        <SidebarTrigger />
+      </SidebarFooter>
+    </Sidebar>
+  );
+}`,
+      },
+    },
+  },
+};
 
 function ResponsiveDemo() {
   const [open, setOpen] = useState(false);

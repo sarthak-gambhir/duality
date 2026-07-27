@@ -5,7 +5,27 @@ import { Button, ConfirmDialog } from "../../src";
 const meta: Meta<typeof ConfirmDialog> = {
   title: "Overlays/ConfirmDialog",
   component: ConfirmDialog,
-  parameters: { docsMinHeight: 360 },
+  parameters: {
+    docsMinHeight: 360,
+    docs: {
+      description: {
+        component:
+          "Confirmation dialog built on Modal. Focuses the confirm action on open (Cancel for destructive actions) and shows a pending state for async confirms.",
+      },
+    },
+  },
+  argTypes: {
+    title: { control: "text", description: "Dialog heading." },
+    description: { control: "text", description: "Explanatory body text." },
+    confirmLabel: { control: "text", description: "Confirm button label." },
+    cancelLabel: { control: "text", description: "Cancel button label." },
+    tone: {
+      control: "inline-radio",
+      options: ["default", "danger"],
+      description: "`danger` signals a destructive action via a heavier confirm border.",
+      table: { defaultValue: { summary: "default" } },
+    },
+  },
 };
 
 export default meta;

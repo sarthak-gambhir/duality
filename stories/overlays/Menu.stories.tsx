@@ -5,7 +5,27 @@ import { Button, Menu, MenuItem, MenuSeparator, Text } from "../../src";
 const meta: Meta<typeof Menu> = {
   title: "Overlays/Menu",
   component: Menu,
-  parameters: { docsMinHeight: 240 },
+  parameters: {
+    docsMinHeight: 240,
+    docs: {
+      description: {
+        component:
+          "Dropdown menu with a button trigger and a keyboard-navigable list of `MenuItem`s. Rendered in a portal with collision-aware placement; controlled or uncontrolled open state.",
+      },
+    },
+  },
+  argTypes: {
+    placement: {
+      control: false,
+      description: "Anchor position.",
+      table: { defaultValue: { summary: "bottom-start" } },
+    },
+    offset: { control: "number", description: "Gap between trigger and menu, in px." },
+    flip: {
+      control: "boolean",
+      description: "Flip to the opposite side on overflow.",
+    },
+  },
 };
 
 export default meta;
@@ -95,4 +115,26 @@ function ControlledDemo() {
   );
 }
 
-export const Controlled: Story = { render: () => <ControlledDemo /> };
+export const Controlled: Story = {
+  render: () => <ControlledDemo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Menu
+      open={open}
+      onOpenChange={setOpen}
+      trigger={<Button>Actions</Button>}
+      aria-label="Actions"
+    >
+      <MenuItem onSelect={() => {}}>Edit</MenuItem>
+      <MenuItem onSelect={() => {}}>Duplicate</MenuItem>
+    </Menu>
+  );
+}`,
+      },
+    },
+  },
+};

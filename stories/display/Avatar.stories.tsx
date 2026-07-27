@@ -4,12 +4,33 @@ import { Avatar, AvatarGroup, Inline } from "../../src";
 const meta: Meta<typeof Avatar> = {
   title: "Display/Avatar",
   component: Avatar,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Square, pixel-framed avatar that shows an image or falls back to initials derived from `name` (also on image load failure).",
+      },
+    },
+  },
+  argTypes: {
+    name: {
+      control: "text",
+      description: "Name used to derive initials when no image is given.",
+    },
+    src: { control: "text", description: "Image source." },
+    size: {
+      control: "inline-radio",
+      options: ["xs", "sm", "md", "lg"],
+      description: "Size.",
+      table: { defaultValue: { summary: "md" } },
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Avatar>;
 
-export const Initials: Story = {
+export const Default: Story = {
   render: () => (
     <Inline gap={3}>
       <Avatar name="Ada Lovelace" size="xs" />

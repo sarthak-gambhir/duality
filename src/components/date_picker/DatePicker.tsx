@@ -12,7 +12,7 @@ import { mergeRefs } from "../../utils/mergeRefs";
 import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFormField } from "../form_field/FormFieldContext";
-import { DisabledMessage } from "../form_field/disabledMessage";
+import { DisabledMessage } from "../form_field/DisabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { ControlSize } from "../../tokens/scale";

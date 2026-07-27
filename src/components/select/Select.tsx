@@ -18,7 +18,7 @@ import { useControllableState } from "../../utils/useControllableState";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import { useFormField } from "../form_field/FormFieldContext";
-import { DisabledMessage } from "../form_field/disabledMessage";
+import { DisabledMessage } from "../form_field/DisabledMessage";
 import type { ControlSize } from "../../tokens/scale";
 
 export interface SelectOption {

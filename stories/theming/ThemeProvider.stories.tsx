@@ -88,7 +88,7 @@ function ThemeSwitcher() {
  * A self-contained theme scope. The nested `ThemeProvider` runs its own theme,
  * independent of the toolbar globals; `useTheme` drives it from the buttons.
  */
-export const Scoped: Story = {
+export const Default: Story = {
   render: () => (
     <ThemeProvider defaultTheme="phosphor">
       <Card>

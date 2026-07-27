@@ -6,6 +6,22 @@ import { Icon, Tree, type TreeNode } from "../../src";
 const meta: Meta<typeof Tree> = {
   title: "Data/Tree",
   component: Tree,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Accessible disclosure tree with roving-tabindex keyboard navigation. Expansion and selection each support controlled (`expanded`/`selected`) and uncontrolled (`defaultExpanded`/`defaultSelected`) use.",
+      },
+    },
+  },
+  argTypes: {
+    items: { control: false, description: "Tree data." },
+    defaultExpandAll: {
+      control: "boolean",
+      description: "Expand every parent node initially (uncontrolled).",
+    },
+    label: { control: "text", description: "Accessible tree label." },
+  },
 };
 
 export default meta;
@@ -48,7 +64,27 @@ function Demo() {
   );
 }
 
-export const Default: Story = { render: () => <Demo /> };
+export const Default: Story = {
+  render: () => <Demo />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [selected, setSelected] = useState<string>("button");
+  return (
+    <Tree
+      items={items}
+      label="Files"
+      defaultExpanded={["src", "components"]}
+      selected={selected}
+      onSelectedChange={setSelected}
+    />
+  );
+}`,
+      },
+    },
+  },
+};
 
 const iconItems: TreeNode[] = [
   {

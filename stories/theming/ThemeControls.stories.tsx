@@ -9,7 +9,7 @@ import {
 } from "../../src";
 
 const meta: Meta = {
-  title: "Theming/Controls",
+  title: "Theming/Theme Controls",
   parameters: {
     docs: {
       description: {
@@ -27,7 +27,7 @@ type Story = StoryObj;
  * `PaletteSelect` reads/writes the ThemeProvider from the preview decorator, so
  * it changes the live theme alongside the toolbar control.
  */
-export const Palette: Story = {
+export const Default: Story = {
   render: () => (
     <Inline gap={5} align="center">
       <div style={{ minWidth: 200 }}>

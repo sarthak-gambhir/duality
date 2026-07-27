@@ -5,6 +5,28 @@ import { Radio, RadioGroup } from "../../src";
 const meta: Meta<typeof RadioGroup> = {
   title: "Controls/Radio",
   component: RadioGroup,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Two-color radio group. `RadioGroup` wires shared name/value/onChange to its child `Radio`s and supports controlled (`value`) or uncontrolled (`defaultValue`) selection.",
+      },
+    },
+  },
+  argTypes: {
+    orientation: {
+      control: "inline-radio",
+      options: ["horizontal", "vertical"],
+      description: "Layout direction of the radios.",
+      table: { defaultValue: { summary: "vertical" } },
+    },
+    disabled: {
+      control: "boolean",
+      description: "Disables every radio in the group.",
+    },
+    label: { control: "text", description: "Accessible group label." },
+    name: { control: "text", description: "Shared input name (auto when omitted)." },
+  },
 };
 
 export default meta;
@@ -21,7 +43,7 @@ function ControlledGroup() {
   );
 }
 
-export const Group: Story = {
+export const Default: Story = {
   render: () => <ControlledGroup />,
 };
 

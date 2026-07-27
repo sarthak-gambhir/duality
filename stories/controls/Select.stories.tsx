@@ -50,7 +50,7 @@ export const Default: Story = {
   ),
 };
 
-function Controlled() {
+function ControlledExample() {
   const [value, setValue] = useState("classic");
   return (
     <Select
@@ -62,8 +62,8 @@ function Controlled() {
   );
 }
 
-export const Selected: Story = {
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {
@@ -92,6 +92,23 @@ export const Invalid: Story = {
 export const Disabled: Story = {
   render: (args) => (
     <Select {...args} options={options} defaultValue="amber" disabled />
+  ),
+};
+
+/**
+ * When disabled, the selected label stays readable and the `disabledReason`
+ * appears in a persistent caption below the control.
+ */
+export const DisabledWithReason: Story = {
+  render: (args) => (
+    <Select
+      {...args}
+      options={options}
+      defaultValue="amber"
+      disabled
+      disabledReason="Palette is locked for this workspace"
+      aria-label="palette"
+    />
   ),
 };
 

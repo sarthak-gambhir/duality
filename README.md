@@ -30,20 +30,21 @@ export function App() {
 
 ## Components
 
-All components are drawn with the two-color model: base is `--fg` on `--bg`, hover/selected inverts the pair, focus adds an outline, and disabled uses a dither fill. State is never conveyed by color alone.
+All components are drawn with the two-color model: base is `--fg` on `--bg`, hover/selected inverts the pair, focus adds an outline, and disabled uses a dither fill. State is never conveyed by color alone. Disabled value controls keep their value readable and can surface a `disabledReason` in a persistent caption below the field.
 
 - **Layout:** `Box` (polymorphic), `Stack`, `Inline`, `Grid`, `Container`, `Divider`
-- **Typography:** `Text` (polymorphic), `Heading`, `Link`, `Code`, `Kbd`
+- **Typography:** `Text` (polymorphic), `Heading`, `Link`, `Code`, `Kbd`, `TruncatedText`
+- **Icons & brand:** `Icon`, `IconsProvider`, `useIcons`, `Logo`
 - **Form controls:** `Button`, `Input`, `Textarea`, `Checkbox`, `Radio` + `RadioGroup`, `Switch`, `Select`, `MultiSelect`, `NumberInput`, `ToggleGroup` (+ `ToggleGroupItem`), `Rating`, `Combobox`, `Slider`, `RangeSlider`, `DatePicker`, `TimePicker`, `TagInput`, `FileUpload`, `PinInput`
 - **Form composition:** `Label`, `FormField` (wires `id` / `aria-describedby` / `aria-invalid`)
-- **Display:** `Card` (+ `CardHeader` / `CardBody` / `CardFooter`), `Badge` (alias `Tag`), `Alert`, `Banner`, `Avatar`, `Progress`, `Spinner`, `Skeleton`, `Stat`, `EmptyState`
+- **Display:** `Card` (+ `CardHeader` / `CardBody` / `CardFooter` / `CardMedia`), `Badge` (alias `Tag`), `Alert`, `Banner`, `Avatar`, `Progress`, `Spinner`, `Skeleton`, `Stat`, `EmptyState`
 - **Data:** `Table` (+ `THead` / `TBody` / `Tr` / `Th` / `Td`), `DataTable` (sortable + filterable), `Tree`, `Timeline`
-- **Navigation:** `Breadcrumbs`, `Pagination`, `Stepper`, `SideNav`
+- **Navigation:** `Breadcrumbs`, `Pagination`, `Stepper`, `SideNav`, `Sidebar` (+ `SidebarHeader` / `SidebarBody` / `SidebarFooter` / `SidebarTrigger`, `useSidebar`)
 - **Disclosure:** `Tabs` (+ `TabList` / `Tab` / `TabPanel`), `Accordion` (+ `AccordionItem`)
 - **Overlays:** `Modal` (+ sections), `Drawer` (+ sections), `ConfirmDialog`, `Tooltip`, `Popover`, `Menu` (+ `MenuItem` / `MenuSeparator`), `ContextMenu`, `CommandPalette`, `Toast` (`ToastProvider` / `useToast`)
-- **Theming:** `PaletteSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`
+- **Theming:** `PaletteSelect`, `DensitySelect`, `TextureSelect`, and hooks/utilities `useDisclosure`, `Portal`, `useControllableState`, `useFocusTrap`, `useDismiss`, `usePortalContainer`
 
-Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence. Each component has a Storybook story; interactive components have Vitest + Testing Library coverage. In-depth guides (Accessibility, Theming and Density, Two-Color Patterns) live under **Guides** in Storybook.
+Theme utilities (`ThemeProvider`, `useTheme`, `palettes`, `contrastRatio`, `meetsAAA`) and the `cx` classname helper are also exported. `ThemeProvider` supports optional `storageKey` persistence. Each component ships a Storybook story, and most components have Vitest + Testing Library coverage. In-depth guides (Accessibility, Theming and Density, Two-Color Patterns) live under **Guides** in Storybook.
 
 Full composed demo pages — Dashboard, Settings, Email, File Manager, Checkout, and a retro Command Center — live under **Examples** in Storybook. Each is built entirely from public exports and doubles as a copy-paste usage reference.
 

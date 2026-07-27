@@ -5,12 +5,34 @@ import { Banner, Button, Stack } from "../../src";
 const meta: Meta<typeof Banner> = {
   title: "Display/Banner",
   component: Banner,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Full-width, page-level callout. Tone is signalled by marker shape and border style (never color); optionally dismissible with a trailing action slot.",
+      },
+    },
+  },
+  argTypes: {
+    tone: {
+      control: "inline-radio",
+      options: ["info", "warning", "error"],
+      description: "Severity, signalled by marker shape + border style.",
+      table: { defaultValue: { summary: "info" } },
+    },
+    title: { control: "text", description: "Optional bold heading." },
+    action: { control: false, description: "Trailing action slot (e.g. a Button)." },
+    onDismiss: {
+      control: false,
+      description: "Show a close button and call this when pressed.",
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Banner>;
 
-export const Tones: Story = {
+export const Default: Story = {
   render: () => (
     <Stack gap={3}>
       <Banner tone="info" title="Heads up">

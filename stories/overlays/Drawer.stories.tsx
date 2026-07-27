@@ -16,7 +16,35 @@ import {
 const meta: Meta<typeof Drawer> = {
   title: "Overlays/Drawer",
   component: Drawer,
-  parameters: { docsMinHeight: 480 },
+  parameters: {
+    docsMinHeight: 480,
+    docs: {
+      description: {
+        component:
+          "Accessible edge-anchored panel (sheet) rendered in a portal over a dithered scrim, with focus trapping and scroll locking. Compose with DrawerHeader/DrawerBody/DrawerFooter.",
+      },
+    },
+  },
+  argTypes: {
+    side: {
+      control: "inline-radio",
+      options: ["start", "end", "top", "bottom"],
+      description: "Edge the panel is anchored to.",
+      table: { defaultValue: { summary: "end" } },
+    },
+    size: {
+      control: "text",
+      description: "Preset (sm/md/lg/full), px number, or CSS length.",
+    },
+    showCloseButton: {
+      control: "boolean",
+      description: "Render a close (X) button in the header corner.",
+    },
+    isDismissable: {
+      control: "boolean",
+      description: "When false, disables both backdrop and Escape dismissal.",
+    },
+  },
 };
 
 export default meta;

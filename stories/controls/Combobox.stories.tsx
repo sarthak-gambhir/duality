@@ -59,7 +59,7 @@ export const Default: Story = {
   ),
 };
 
-function Controlled() {
+function ControlledExample() {
   const [value, setValue] = useState("");
   return (
     <div style={{ maxWidth: 260 }}>
@@ -75,9 +75,8 @@ function Controlled() {
 }
 
 /** Controlled `value` + `onValueChange`. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

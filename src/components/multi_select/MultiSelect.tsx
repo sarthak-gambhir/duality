@@ -15,7 +15,7 @@ import { useControllableState } from "../../utils/useControllableState";
 import { useDismiss } from "../../utils/useDismiss";
 import { Badge } from "../badge/Badge";
 import { useFormField } from "../form_field/FormFieldContext";
-import { DisabledMessage } from "../form_field/disabledMessage";
+import { DisabledMessage } from "../form_field/DisabledMessage";
 import { Icon } from "../icon/Icon";
 import { useIcons } from "../icon/IconsProvider";
 import type { SelectOption } from "../select/Select";

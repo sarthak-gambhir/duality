@@ -9,6 +9,17 @@ import { Icon, Timeline, type TimelineItem } from "../../src";
 const meta: Meta<typeof Timeline> = {
   title: "Data/Timeline",
   component: Timeline,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Vertical event list with pixel markers and connectors. Pass `items` in display order; each may carry a `status` (marker shape) and an optional `icon`.",
+      },
+    },
+  },
+  argTypes: {
+    items: { control: false, description: "Events in display order." },
+  },
 };
 
 export default meta;

@@ -12,14 +12,14 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  inline-size: var(--size-md);
-  block-size: var(--size-md);
+  inline-size: var(--size-xl);
+  block-size: var(--size-xl);
   color: var(--fg);
   background-color: var(--bg);
   cursor: pointer;
 
-  // Fill-only icons can't render an outline, so each position is framed by a
-  // bordered cell; the star icon marks filled/half. Empty = an empty cell.
+  // Each position is a square, PinInput-style cell so all slots stay visible as
+  // a track; the star glyph marks filled/half and an empty cell reads as unset.
   border: var(--border-width) solid var(--fg);
 
   @include m.du_focus;
@@ -29,19 +29,81 @@
   }
 }
 
-.du_rating_star {
-  inline-size: 80%;
-  block-size: 80%;
+.du_rating_star,
+.du_rating_lock {
+  inline-size: var(--icon-lg);
+  block-size: var(--icon-lg);
 }
 
 .du_rating_sm .du_rating_item {
-  inline-size: var(--size-sm);
-  block-size: var(--size-sm);
+  inline-size: var(--size-lg);
+  block-size: var(--size-lg);
+}
+
+.du_rating_sm .du_rating_star,
+.du_rating_sm .du_rating_lock {
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
 }
 
 .du_rating_lg .du_rating_item {
+  inline-size: calc(var(--size-xl) + var(--space-2));
+  block-size: calc(var(--size-xl) + var(--space-2));
+}
+
+.du_rating_lg .du_rating_star,
+.du_rating_lg .du_rating_lock {
+  inline-size: var(--icon-xl);
+  block-size: var(--icon-xl);
+}
+
+// Read-only: two joined cells inside one frame — a lock cell (left) and a
+// vertical rule, then the borderless stars (right). Signals a fixed value
+// without repeating a marker on every box (state is never color-only).
+.du_rating_readonly {
+  gap: 0;
+  inline-size: fit-content;
+  border: var(--border-width) solid var(--fg);
+}
+
+.du_rating_lockbox {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--size-xl);
+  block-size: var(--size-xl);
+  color: var(--fg);
+  background-color: var(--bg);
+
+  // The lock cell's trailing edge is the vertical rule between it and the stars.
+  border-inline-end: var(--border-width) solid var(--fg);
+}
+
+.du_rating_sm .du_rating_lockbox {
   inline-size: var(--size-lg);
-  block-size: var(--size-lg);
+}
+
+.du_rating_lg .du_rating_lockbox {
+  inline-size: calc(var(--size-xl) + var(--space-2));
+}
+
+.du_rating_track {
+  display: inline-flex;
+  align-items: center;
+}
+
+.du_rating_track .du_rating_star {
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+}
+
+// Inside the read-only frame the stars are plain glyphs, not boxed cells.
+.du_rating_readonly .du_rating_item {
+  inline-size: auto;
+  block-size: auto;
+  border: 0;
+  background-color: transparent;
 }
 
 // Disabled: dither each cell so state is never color-only.

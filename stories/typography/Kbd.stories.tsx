@@ -21,7 +21,7 @@ const meta: Meta<typeof Kbd> = {
 export default meta;
 type Story = StoryObj<typeof Kbd>;
 
-export const Single: Story = {
+export const Default: Story = {
   render: () => (
     <p>
       Press <Kbd>Esc</Kbd> to dismiss.

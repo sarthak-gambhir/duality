@@ -35,7 +35,7 @@ export const Alphanumeric: Story = {
   render: () => <PinInput type="alphanumeric" />,
 };
 
-function Controlled() {
+function ControlledExample() {
   const [value, setValue] = useState("");
   return (
     <div>
@@ -48,9 +48,8 @@ function Controlled() {
 }
 
 /** Controlled `value` + `onValueChange`, echoing the assembled code. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

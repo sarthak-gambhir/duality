@@ -21,7 +21,7 @@ const meta: Meta<typeof Code> = {
 export default meta;
 type Story = StoryObj<typeof Code>;
 
-export const Inline: Story = {
+export const Default: Story = {
   render: () => (
     <p>
       Run <Code>pnpm build</Code> to compile the library.

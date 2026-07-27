@@ -63,7 +63,7 @@ function Demo({
   );
 }
 
-export const Short: Story = { render: () => <Demo count={5} /> };
+export const Default: Story = { render: () => <Demo count={5} /> };
 export const Long: Story = { render: () => <Demo count={20} /> };
 
 export const WithEdges: Story = {

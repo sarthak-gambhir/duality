@@ -114,3 +114,10 @@
 
   text-shadow: $shadows;
 }
+
+// Dither pattern for icon SVG elements.
+@mixin du_dither_icon_stroke {
+  stroke: var(--bg);
+  stroke-width: 4px;
+  paint-order: stroke;
+}

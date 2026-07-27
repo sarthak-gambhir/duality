@@ -36,7 +36,7 @@ const meta: Meta<typeof Tooltip> = {
 export default meta;
 type Story = StoryObj<typeof Tooltip>;
 
-export const Placements: Story = {
+export const Default: Story = {
   render: () => (
     <div
       style={{

@@ -55,7 +55,7 @@ function Multiple() {
   );
 }
 
-export const SingleSelect: Story = {
+export const Default: Story = {
   render: () => <Single />,
   parameters: {
     docs: {

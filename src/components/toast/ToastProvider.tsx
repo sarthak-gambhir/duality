@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { Portal } from "../../utils/Portal";
+import { Portal } from "../../utils/portal";
 import { Alert } from "../alert/Alert";
 import { Button } from "../button/Button";
 

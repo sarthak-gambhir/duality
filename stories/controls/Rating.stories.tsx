@@ -6,6 +6,31 @@ const meta: Meta<typeof Rating> = {
   title: "Controls/Rating",
   component: Rating,
   args: { max: 5, size: "md" },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Pixel-block rating where fill (never color) conveys the value: filled blocks are `--fg`, empty blocks are outlined, half blocks are split. Supports half steps, clearing, read-only, and disabled states.",
+      },
+    },
+  },
+  argTypes: {
+    max: { control: "number", description: "Number of blocks." },
+    size: {
+      control: "inline-radio",
+      options: ["sm", "md", "lg"],
+      description: "Control size.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    allowHalf: { control: "boolean", description: "Allow half-block increments." },
+    allowClear: {
+      control: "boolean",
+      description: "Clicking the current value (or Home) resets to 0.",
+    },
+    readOnly: { control: "boolean", description: "Non-interactive display." },
+    disabled: { control: "boolean", description: "Disable interaction." },
+    label: { control: "text", description: "Accessible group label." },
+  },
 };
 
 export default meta;
@@ -21,7 +46,19 @@ function Demo(args: React.ComponentProps<typeof Rating>) {
   );
 }
 
-export const Default: Story = { render: (args) => <Demo {...args} /> };
+export const Default: Story = {
+  render: (args) => <Demo {...args} />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(3);
+  return <Rating value={value} onValueChange={setValue} label="Score" />;
+}`,
+      },
+    },
+  },
+};
 
 export const AllowHalf: Story = {
   name: "Half steps",

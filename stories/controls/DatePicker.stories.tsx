@@ -39,7 +39,7 @@ export const Default: Story = {
   ),
 };
 
-function Controlled() {
+function ControlledExample() {
   const [value, setValue] = useState<Date | null>(new Date(2026, 6, 15));
   return (
     <Stack gap={2} style={{ maxWidth: 280 }}>
@@ -50,9 +50,8 @@ function Controlled() {
 }
 
 /** Controlled `value` + `onValueChange`, echoing the current selection. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

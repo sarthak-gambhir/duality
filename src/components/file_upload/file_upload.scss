@@ -42,6 +42,10 @@
 
     @include m.du_texture_fill;
     @include m.du_text_outline(2);
+
+    .du_icon {
+      @include m.du_dither_icon_stroke;
+    }
   }
 }
 

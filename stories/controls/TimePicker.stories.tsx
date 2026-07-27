@@ -36,7 +36,7 @@ const meta: Meta<typeof TimePicker> = {
 export default meta;
 type Story = StoryObj<typeof TimePicker>;
 
-export const TwentyFourHour: Story = {
+export const Default: Story = {
   render: (args) => (
     <TimePicker {...args} defaultValue="09:30" aria-label="Meeting time" />
   ),
@@ -47,7 +47,7 @@ export const TwelveHour: Story = {
   ),
 };
 
-function Controlled({ hour12 }: { hour12?: boolean }) {
+function ControlledExample({ hour12 }: { hour12?: boolean }) {
   const [time, setTime] = useState<string | null>("09:30");
   return (
     <TimePicker
@@ -60,9 +60,8 @@ function Controlled({ hour12 }: { hour12?: boolean }) {
 }
 
 /** Controlled `value` + `onValueChange`. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

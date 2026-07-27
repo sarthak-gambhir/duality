@@ -40,6 +40,18 @@ export const Disabled: Story = {
   args: { disabled: true, defaultValue: "disabled" },
 };
 
+/**
+ * When disabled, the value stays readable on a solid background and the
+ * `disabledReason` appears in a persistent caption below the field.
+ */
+export const DisabledWithReason: Story = {
+  args: {
+    disabled: true,
+    defaultValue: "acme-prod-01",
+    disabledReason: "Managed by your administrator",
+  },
+};
+
 export const WithAdornments: Story = {
   name: "Prefix / suffix",
   args: { prefix: "$", suffix: "USD", placeholder: "0.00" },

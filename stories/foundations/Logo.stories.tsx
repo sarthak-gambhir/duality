@@ -31,7 +31,7 @@ const meta: Meta<typeof Logo> = {
 export default meta;
 type Story = StoryObj<typeof Logo>;
 
-export const Sizes: Story = {
+export const Default: Story = {
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
       <Logo size={16} />

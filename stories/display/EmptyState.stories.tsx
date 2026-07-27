@@ -5,6 +5,23 @@ import { Button, EmptyState } from "../../src";
 const meta: Meta<typeof EmptyState> = {
   title: "Display/EmptyState",
   component: EmptyState,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Centered placeholder for empty lists, searches, or first-run screens, with an optional icon, description, and action slot.",
+      },
+    },
+  },
+  argTypes: {
+    title: { control: "text", description: "Primary heading." },
+    description: { control: "text", description: "Supporting explanation." },
+    icon: { control: false, description: "Optional visual/marker above the title." },
+    action: {
+      control: false,
+      description: "Action slot (e.g. a Button) shown below the text.",
+    },
+  },
 };
 
 export default meta;

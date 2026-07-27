@@ -9,7 +9,7 @@ import {
 } from "react";
 import type { IconType } from "react-icons";
 import { cx } from "../../utils/cx";
-import { Portal } from "../../utils/Portal";
+import { Portal } from "../../utils/portal";
 import { useDismiss } from "../../utils/useDismiss";
 import { useFocusTrap } from "../../utils/useFocusTrap";
 import { Icon } from "../icon/Icon";

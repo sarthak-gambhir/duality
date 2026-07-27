@@ -26,7 +26,7 @@ export const Default: Story = {
   decorators: [(Story) => <div style={{ maxWidth: 320 }}><Story /></div>],
 };
 
-function Controlled() {
+function ControlledExample() {
   const [value, setValue] = useState(40);
   return (
     <div style={{ maxWidth: 320 }}>
@@ -42,9 +42,8 @@ function Controlled() {
 }
 
 /** Controlled `value` + `onChange`. */
-export const ControlledValue: Story = {
-  name: "Controlled",
-  render: () => <Controlled />,
+export const Controlled: Story = {
+  render: () => <ControlledExample />,
   parameters: {
     docs: {
       source: {

@@ -14,6 +14,21 @@ import {
 const meta: Meta<typeof Card> = {
   title: "Display/Card",
   component: Card,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Bordered surface composed with CardHeader/CardBody/CardFooter/CardMedia. Pass `interactive` (with `as="a"`/`as="button"`) to make the whole card actionable.',
+      },
+    },
+  },
+  argTypes: {
+    interactive: {
+      control: "boolean",
+      description:
+        'Adds focus ring + hover state; pair with as="a"/as="button".',
+    },
+  },
 };
 
 export default meta;
@@ -42,7 +57,7 @@ function WithSectionsDemo() {
   );
 }
 
-export const WithSections: Story = {
+export const Default: Story = {
   render: () => <WithSectionsDemo />,
 };
 

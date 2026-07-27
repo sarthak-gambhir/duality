@@ -157,7 +157,7 @@ const frameworks: SelectOption[] = [
  * keeps the value legible on a --bg text-stroke plate. A `disabledReason`
  * renders a persistent caption below the control (wired via `aria-describedby`).
  */
-export const ValueControls: Story = {
+export const Default: Story = {
   render: () => (
     <Grid>
       <Row

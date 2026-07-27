@@ -3,7 +3,11 @@
 // NOTE: import the stylesheet once in your app: `import '@duality/ui/styles.css'`.
 
 // Theme
-export { ThemeProvider, useTheme } from "./theme/ThemeProvider";
+export {
+  ThemeProvider,
+  useTheme,
+  usePortalContainer,
+} from "./theme/ThemeProvider";
 export type {
   ThemeProviderProps,
   ThemeContextValue,
@@ -48,11 +52,15 @@ export type {
   AsProp,
 } from "./utils/polymorphic";
 export type { SpaceStep, SizeToken, ControlSize } from "./tokens/scale";
-export { Portal } from "./utils/Portal";
-export type { PortalProps } from "./utils/Portal";
+export { Portal } from "./utils/portal";
+export type { PortalProps } from "./utils/portal";
 export { useDisclosure } from "./utils/useDisclosure";
 export type { Disclosure } from "./utils/useDisclosure";
 export { useControllableState } from "./utils/useControllableState";
+export { useFocusTrap } from "./utils/useFocusTrap";
+export type { FocusTrapOptions } from "./utils/useFocusTrap";
+export { useDismiss } from "./utils/useDismiss";
+export type { UseDismissOptions } from "./utils/useDismiss";
 export {
   computePosition,
   clampToViewport,

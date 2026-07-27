@@ -5,7 +5,22 @@ import { ContextMenu, type ContextMenuItem } from "../../src";
 const meta: Meta<typeof ContextMenu> = {
   title: "Overlays/ContextMenu",
   component: ContextMenu,
-  parameters: { docsMinHeight: 420 },
+  parameters: {
+    docsMinHeight: 420,
+    docs: {
+      description: {
+        component:
+          "Right-click menu opened at the cursor and clamped to the viewport. Pass `items` (each `{ label, onSelect, disabled? }`) and wrap the trigger region as children.",
+      },
+    },
+  },
+  argTypes: {
+    items: { control: false, description: "Menu rows shown at the cursor." },
+    "aria-label": {
+      control: "text",
+      description: "Accessible name for the menu.",
+    },
+  },
 };
 
 export default meta;

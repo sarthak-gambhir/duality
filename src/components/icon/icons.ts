@@ -20,11 +20,13 @@ import {
   RiInboxLine,
   RiInformationLine,
   RiLoader4Line,
+  RiLock2Line,
   RiMoreLine,
   RiQuestionLine,
   RiRadioButtonLine,
   RiRecordCircleLine,
   RiSearchLine,
+  RiStarFill,
   RiStarHalfLine,
   RiStarLine,
   RiSubtractLine,
@@ -50,6 +52,8 @@ export interface DualityIcons {
   sortDesc: IconType;
   star: IconType;
   starHalf: IconType;
+  starFilled: IconType;
+  lock: IconType;
   calendar: IconType;
   clock: IconType;
   search: IconType;
@@ -91,6 +95,8 @@ export const defaultIcons: DualityIcons = {
   sortDesc: RiArrowDownSLine,
   star: RiStarLine,
   starHalf: RiStarHalfLine,
+  starFilled: RiStarFill,
+  lock: RiLock2Line,
   calendar: RiCalendarLine,
   clock: RiTimeLine,
   search: RiSearchLine,
