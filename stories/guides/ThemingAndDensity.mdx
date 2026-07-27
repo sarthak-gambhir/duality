@@ -7,8 +7,8 @@ import { Meta } from "@storybook/addon-docs/blocks";
 Everything renders inside a `ThemeProvider`, which establishes a theme scope on a `du_theme_root` element carrying `data-theme`, `data-density`, and `data-texture`. The tokens stylesheet reads those attributes to resolve the two colors, the spacing / sizing scale, and the texture fill. Import the stylesheet once:
 
 ```tsx
-import { ThemeProvider, Button } from "@duality/ui";
-import "@duality/ui/styles.css";
+import { ThemeProvider, Button } from "@astrabound/duality";
+import "@astrabound/duality/styles.css";
 
 export function App() {
   return (

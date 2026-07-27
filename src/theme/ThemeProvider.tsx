@@ -74,7 +74,7 @@ export interface ThemeProviderProps {
  * Establishes a Duality theme scope. Renders a `du_theme_root` element carrying
  * `data-theme`, `data-density`, and `data-texture`, which the tokens stylesheet
  * uses to resolve `--fg` / `--bg`, the spacing / sizing scale, and the texture
- * fill. Requires `import '@duality/ui/styles.css'` once in the app.
+ * fill. Requires `import '@astrabound/duality/styles.css'` once in the app.
  */
 export function ThemeProvider({
   children,

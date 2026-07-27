@@ -1,4 +1,4 @@
-# @duality/ui
+# @astrabound/duality
 
 A strict **two-color** design system. Everything is drawn with exactly two themeable colors (`--fg` and `--bg`) - no intermediate shades, no hue variants, no transparency. Depth and state are expressed through inversion, pixel/dither patterns, and border-style changes.
 
@@ -20,8 +20,8 @@ pnpm lint           # ESLint + Stylelint
 ## Usage
 
 ```tsx
-import { ThemeProvider } from "@duality/ui";
-import "@duality/ui/styles.css";
+import { ThemeProvider } from "@astrabound/duality";
+import "@astrabound/duality/styles.css";
 
 export function App() {
   return <ThemeProvider defaultTheme="classic">{/* ... */}</ThemeProvider>;

@@ -183,7 +183,7 @@ for (const e of entries) {
 }
 
 const llms = [
-  "# Duality (@duality/ui)",
+  "# Duality (@astrabound/duality)",
   "",
   "> A strict two-color React + TypeScript component library. Everything is drawn with exactly two themeable colors, `--fg` and `--bg`: no third color, hue, or transparency. State is expressed through inversion, texture (dither/hatch), border-style, and marker shape - never color alone. Every theme meets WCAG AAA (7:1).",
   "",

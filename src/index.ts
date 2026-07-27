@@ -1,6 +1,6 @@
-// @duality/ui public API.
+// @astrabound/duality public API.
 //
-// NOTE: import the stylesheet once in your app: `import '@duality/ui/styles.css'`.
+// NOTE: import the stylesheet once in your app: `import '@astrabound/duality/styles.css'`.
 
 // Theme
 export {

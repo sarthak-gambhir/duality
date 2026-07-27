@@ -1,5 +1,5 @@
 ---
-description: Duality two-color design system - hard constraints for any code touching this repo or consuming @duality/ui
+description: Duality two-color design system - hard constraints for any code touching this repo or consuming @astrabound/duality
 alwaysApply: true
 ---
 
@@ -19,6 +19,6 @@ This is a strict **two-color** React + TypeScript component library. Follow thes
 - One folder per component: `src/components/<snake_case>/` with `PascalCase.tsx` + `snake_case.scss`. Re-export public API from [src/index.ts](mdc:src/index.ts).
 - Icons: render `<Icon>` with a semantic slot from [src/components/icon/icons.ts](mdc:src/components/icon/icons.ts) via `useIcons()`; do not import `react-icons` directly in components.
 - Disabled: selection controls use `du_texture_fill` + `du_text_outline(2)`; value controls use `du_disabled_field` (fill + `--bg` stroke plate).
-- Consumers must wrap the app in `ThemeProvider` and import `@duality/ui/styles.css` once. The package is ESM-only.
+- Consumers must wrap the app in `ThemeProvider` and import `@astrabound/duality/styles.css` once. The package is ESM-only.
 
 Before finishing: `pnpm typecheck && pnpm lint && pnpm test` (and `pnpm docs:gen` if a public component's props changed).

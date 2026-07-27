@@ -1,4 +1,4 @@
-# AGENTS.md - working with @duality/ui
+# AGENTS.md - working with @astrabound/duality
 
 Entry point for AI agents. Duality is a strict **two-color** React + TypeScript
 component library. Read the hard constraints first - they are non-negotiable and
@@ -32,8 +32,8 @@ most mistakes come from violating them.
 Two things are required for anything to render correctly:
 
 ```tsx
-import { ThemeProvider, Button } from "@duality/ui";
-import "@duality/ui/styles.css"; // import the stylesheet exactly once, app-wide
+import { ThemeProvider, Button } from "@astrabound/duality";
+import "@astrabound/duality/styles.css"; // import the stylesheet exactly once, app-wide
 
 export function App() {
   return (
@@ -59,7 +59,7 @@ export function App() {
 built-in controls consume the wiring via context):
 
 ```tsx
-import { FormField, Input } from "@duality/ui";
+import { FormField, Input } from "@astrabound/duality";
 
 <FormField
   label="Email"
@@ -86,7 +86,7 @@ Trigger-driven overlays (`Modal`, `Drawer`, `ConfirmDialog`, `CommandPalette`)
 use an `isOpen` / `onClose` pair; `useDisclosure` is the ergonomic helper:
 
 ```tsx
-import { Modal, ModalHeader, ModalBody, Button, useDisclosure } from "@duality/ui";
+import { Modal, ModalHeader, ModalBody, Button, useDisclosure } from "@astrabound/duality";
 
 function Example() {
   const { isOpen, open, close } = useDisclosure();
@@ -115,7 +115,7 @@ import {
   PaletteSelect,
   DensitySelect,
   TextureSelect,
-} from "@duality/ui";
+} from "@astrabound/duality";
 
 <ThemeProvider
   defaultTheme="phosphor"
