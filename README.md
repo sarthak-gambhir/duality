@@ -1,5 +1,7 @@
 # @astrabound/duality
 
+![Duality](duality.svg)
+
 A strict **two-color** design system. Everything is drawn with exactly two themeable colors (`--fg` and `--bg`) - no intermediate shades, no hue variants, no transparency. Depth and state are expressed through inversion, pixel/dither patterns, and border-style changes.
 
 ## Requirements
@@ -16,6 +18,12 @@ pnpm build          # build the package (dist/index.js + dist/duality.css)
 pnpm test           # run the test suite (Vitest)
 pnpm lint           # ESLint + Stylelint
 ```
+
+## Documentation
+
+See the **[live Storybook on Render](https://duality-storybook.onrender.com)** for component docs, guides, and interactive examples. For local development, run `pnpm dev` (starts at `http://localhost:6006`).
+
+For detailed usage patterns and quick-start examples, see [usage.md](usage.md).
 
 ## Usage
 

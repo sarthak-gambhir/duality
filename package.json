@@ -1,7 +1,8 @@
 {
   "name": "@astrabound/duality",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Duality - a strict two-color React + TypeScript component library.",
+  "readme": "usage.md",
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@11.9.0",
