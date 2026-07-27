@@ -34,7 +34,7 @@ Use the **Theme** control in the toolbar (top of the canvas) to preview any stor
 ## Principles
 
 - **Two colors only.** Every surface resolves to `--fg` on `--bg`, or the inverse. See _Foundations → Two-Color Model_.
-- **State without color.** Hover / selected inverts the pair, focus adds an outline, and disabled uses a dither fill with an outlined label so text stays legible.
+- **State without color.** Hover / selected inverts the pair, focus adds an outline, and disabled uses a texture fill (dither or hatch) that keeps its text legible - an outlined label on selection controls, or a readable value plate on value controls.
 - **AAA contrast.** Every palette meets WCAG AAA (7:1) between the two colors.
 - **Accessible by default.** Interactive components ship with the correct ARIA roles, keyboard support, and focus management.
 

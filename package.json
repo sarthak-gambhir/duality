@@ -13,7 +13,10 @@
     "**/*.scss"
   ],
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md",
+    "llms.txt",
+    "docs"
   ],
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -42,6 +45,9 @@
     "lint": "pnpm run lint:es && pnpm run lint:style",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "docs:gen": "node scripts/gen-docs.mjs",
+    "docs:check": "node scripts/gen-docs.mjs --check",
+    "verify": "pnpm run typecheck && pnpm run lint && pnpm run docs:check && pnpm run test",
     "clean": "rimraf dist storybook-static",
     "prepublishOnly": "pnpm run build"
   },
@@ -69,6 +75,7 @@
     "jsdom": "^25.0.1",
     "prettier": "^3.4.2",
     "react": "^18.3.1",
+    "react-docgen-typescript": "^2.4.0",
     "react-dom": "^18.3.1",
     "rimraf": "^6.0.1",
     "sass": "^1.83.4",

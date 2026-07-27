@@ -1,0 +1,24 @@
+---
+description: Duality two-color design system - hard constraints for any code touching this repo or consuming @duality/ui
+alwaysApply: true
+---
+
+# Duality design system rules
+
+This is a strict **two-color** React + TypeScript component library. Follow these non-negotiable constraints. Full context: [AGENTS.md](mdc:AGENTS.md).
+
+- **Two colors only.** Everything resolves to `--fg` / `--bg`. Never add a third color, hue, gray, shadow, or transparency (no `rgba()`, no opacity for "muted" text).
+- **State is never color-only.** Use inversion, texture (dither/hatch), border-style, marker shape, or an outline - always with the matching ARIA.
+- **AAA contrast (7:1).** Never break it; themes are verified by `test/contrast.test.ts`.
+- **SCSS naming:** `du_` prefixed `snake_case` with single underscores. Enforced by Stylelint.
+- **RTL-safe:** CSS logical properties only (`inline-size`, `inset-inline-start`, `padding-inline`) - never `width`/`left`/`margin-left`.
+- **Use tokens + mixins**, not raw px or ad-hoc rules. See [docs/foundations.md](mdc:docs/foundations.md), [src/tokens/tokens.scss](mdc:src/tokens/tokens.scss), and [src/styles/mixins.scss](mdc:src/styles/mixins.scss).
+
+## Component conventions
+
+- One folder per component: `src/components/<snake_case>/` with `PascalCase.tsx` + `snake_case.scss`. Re-export public API from [src/index.ts](mdc:src/index.ts).
+- Icons: render `<Icon>` with a semantic slot from [src/components/icon/icons.ts](mdc:src/components/icon/icons.ts) via `useIcons()`; do not import `react-icons` directly in components.
+- Disabled: selection controls use `du_texture_fill` + `du_text_outline(2)`; value controls use `du_disabled_field` (fill + `--bg` stroke plate).
+- Consumers must wrap the app in `ThemeProvider` and import `@duality/ui/styles.css` once. The package is ESM-only.
+
+Before finishing: `pnpm typecheck && pnpm lint && pnpm test` (and `pnpm docs:gen` if a public component's props changed).

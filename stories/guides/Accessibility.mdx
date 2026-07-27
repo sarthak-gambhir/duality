@@ -16,7 +16,8 @@ Every theme is a pair of colors that meets the AAA **7:1** contrast ratio. All t
 | --- | --- |
 | Hover / selected | Full **inversion** of the `--fg` / `--bg` pair |
 | Focus | A visible **outline** ring (color-safe, offset) |
-| Disabled | A **dither** fill plus a `du_text_outline` so the label stays legible |
+| Disabled | A **texture** fill (dither or hatch) plus legible text - `du_text_outline` on selection controls, or a `--bg` stroke plate (`du_disabled_field`) on value controls; an optional `disabledReason` renders in a caption wired via `aria-describedby` |
+| Read-only | Stays legible and unfilled, marked by a **lock** cue (distinct from disabled) |
 | Invalid | A **border-style** change (dashed), plus `aria-invalid` |
 | Status (info/warning/error) | **Marker shape** + **border style**, e.g. Alert / Banner |
 

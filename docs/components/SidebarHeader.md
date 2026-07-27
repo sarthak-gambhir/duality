@@ -1,0 +1,5 @@
+# SidebarHeader
+
+Top brand/logo slot, separated by a pixel rule.
+
+_No component-specific props (wraps native element props)._

@@ -30,7 +30,7 @@ export function App() {
 
 ## Components
 
-All components are drawn with the two-color model: base is `--fg` on `--bg`, hover/selected inverts the pair, focus adds an outline, and disabled uses a dither fill. State is never conveyed by color alone. Disabled value controls keep their value readable and can surface a `disabledReason` in a persistent caption below the field.
+All components are drawn with the two-color model: base is `--fg` on `--bg`, hover/selected inverts the pair, focus adds an outline, and disabled uses the active texture fill (dither or hatch) with a legible label. State is never conveyed by color alone. Disabled value controls keep their value readable on a `--bg` stroke plate and can surface a `disabledReason` in a persistent caption below the field.
 
 - **Layout:** `Box` (polymorphic), `Stack`, `Inline`, `Grid`, `Container`, `Divider`
 - **Typography:** `Text` (polymorphic), `Heading`, `Link`, `Code`, `Kbd`, `TruncatedText`

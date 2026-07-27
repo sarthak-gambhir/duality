@@ -1,0 +1,116 @@
+# Duality (@duality/ui)
+
+> A strict two-color React + TypeScript component library. Everything is drawn with exactly two themeable colors, `--fg` and `--bg`: no third color, hue, or transparency. State is expressed through inversion, texture (dither/hatch), border-style, and marker shape - never color alone. Every theme meets WCAG AAA (7:1).
+
+## Documentation
+
+- [Agent guide](AGENTS.md): setup contract, hard constraints, recipes, and contributor conventions.
+- [Foundations](docs/foundations.md): design tokens, SCSS mixins, and icon slots.
+- [README](README.md): human-facing overview.
+
+## Components
+
+- [Accordion](docs/components/Accordion.md): Vertically stacked, collapsible disclosure sections.
+- [AccordionItem](docs/components/AccordionItem.md): A single collapsible section within an Accordion.
+- [Alert](docs/components/Alert.md): Callout box.
+- [Avatar](docs/components/Avatar.md): Square, pixel-framed avatar showing an image or derived initials.
+- [AvatarGroup](docs/components/AvatarGroup.md): Overlapping stack of `Avatar`s with an optional `+N` surplus chip.
+- [Badge](docs/components/Badge.md): Small inline chip / tag.
+- [Banner](docs/components/Banner.md): Full-width, page-level callout.
+- [Box](docs/components/Box.md): Polymorphic base element.
+- [Breadcrumbs](docs/components/Breadcrumbs.md): Hierarchical navigation trail; the last crumb is the current page.
+- [Button](docs/components/Button.md): Primary action control.
+- [Card](docs/components/Card.md): Component.
+- [CardBody](docs/components/CardBody.md): Main content section of a Card.
+- [CardFooter](docs/components/CardFooter.md): Bottom section of a Card, separated by a pixel rule.
+- [CardHeader](docs/components/CardHeader.md): Top section of a Card, separated by a pixel rule.
+- [CardMedia](docs/components/CardMedia.md): Full-bleed media region (image/graphic) framed by a pixel rule.
+- [Checkbox](docs/components/Checkbox.md): Two-color checkbox with a native input and a drawn pixel mark.
+- [Code](docs/components/Code.md): Monospace code.
+- [Combobox](docs/components/Combobox.md): Editable ARIA combobox over a filtered listbox.
+- [CommandPalette](docs/components/CommandPalette.md): Searchable command menu in a portaled dialog.
+- [ConfirmDialog](docs/components/ConfirmDialog.md): Confirmation dialog built on Modal.
+- [Container](docs/components/Container.md): Centered, max-width page wrapper with horizontal padding.
+- [ContextMenu](docs/components/ContextMenu.md): Right-click menu opened at the cursor, clamped to the viewport.
+- [DataTable](docs/components/DataTable.md): Sortable, filterable table built on the Table primitives.
+- [DatePicker](docs/components/DatePicker.md): Two-color date picker: a Select-like trigger opens an anchored calendar grid.
+- [DensitySelect](docs/components/DensitySelect.md): A Select bound to the current spacing/sizing density.
+- [Divider](docs/components/Divider.md): A one-pixel-family rule drawn in the foreground color.
+- [Drawer](docs/components/Drawer.md): Accessible edge-anchored panel (Sheet) rendered in a portal over a dithered scrim.
+- [DrawerBody](docs/components/DrawerBody.md): Scrollable main content section of a Drawer.
+- [DrawerCloseButton](docs/components/DrawerCloseButton.md): Corner close button; closes the surrounding Drawer when pressed.
+- [DrawerFooter](docs/components/DrawerFooter.md): Bottom section of a Drawer, separated by a pixel rule.
+- [DrawerHeader](docs/components/DrawerHeader.md): Top section of a Drawer, separated by a pixel rule.
+- [EmptyState](docs/components/EmptyState.md): Centered placeholder for empty lists, searches, or first-run screens.
+- [FileUpload](docs/components/FileUpload.md): File picker with a drag-and-drop dropzone and a removable file list.
+- [FormField](docs/components/FormField.md): Composes a label, optional hint, and error around a single control, wiring `id`, `aria-describedby`, `aria-invalid`/`aria-errormessage`, `aria-required`, and...
+- [Grid](docs/components/Grid.md): CSS grid with token-based gaps.
+- [Heading](docs/components/Heading.md): Section heading on a stepped scale.
+- [Icon](docs/components/Icon.md): Two-color icon wrapper around react-icons.
+- [IconsProvider](docs/components/IconsProvider.md): Globally re-skin Duality's semantic icons by supplying overrides.
+- [Inline](docs/components/Inline.md): Horizontal flex layout with token-based spacing and optional wrapping.
+- [Input](docs/components/Input.md): Single-line text field.
+- [Kbd](docs/components/Kbd.md): Keyboard key hint with a pixel border.
+- [Label](docs/components/Label.md): Form label; associate with a control via `htmlFor`.
+- [Link](docs/components/Link.md): Text link: underlined by default, inverts on hover.
+- [Logo](docs/components/Logo.md): The Duality brand mark: a two-tone circular glyph whose disk and inner cut map to `--fg` / `--bg`, so it inverts with the active theme and reads on any surface.
+- [Menu](docs/components/Menu.md): Dropdown menu with a button trigger and a keyboard-navigable listbox.
+- [MenuItem](docs/components/MenuItem.md): Selectable menu entry.
+- [MenuSeparator](docs/components/MenuSeparator.md): Divider between menu groups.
+- [Modal](docs/components/Modal.md): Accessible modal dialog rendered in a portal with a dithered backdrop.
+- [ModalBody](docs/components/ModalBody.md): Main content section of a Modal.
+- [ModalCloseButton](docs/components/ModalCloseButton.md): Corner close button; closes the surrounding Modal when pressed.
+- [ModalFooter](docs/components/ModalFooter.md): Bottom section of a Modal, separated by a pixel rule.
+- [ModalHeader](docs/components/ModalHeader.md): Top section of a Modal, separated by a pixel rule.
+- [MultiSelect](docs/components/MultiSelect.md): Multi-value combobox: selected options show as removable chips.
+- [NumberInput](docs/components/NumberInput.md): Stepper number field: `-` / `+` buttons flank a `role="spinbutton"` input.
+- [Pagination](docs/components/Pagination.md): Page navigation with prev/next and a windowed set of page buttons.
+- [PaletteSelect](docs/components/PaletteSelect.md): A Select bound to the current palette, listing all named palettes.
+- [PinInput](docs/components/PinInput.md): Segmented one-time-code entry with auto-advance, Backspace, and paste.
+- [Popover](docs/components/Popover.md): Click-triggered anchored panel, dismissed on outside press or Escape.
+- [Progress](docs/components/Progress.md): Two-color progress bar.
+- [Radio](docs/components/Radio.md): Two-color radio.
+- [RadioGroup](docs/components/RadioGroup.md): Groups Radio inputs, managing shared name/value/onChange.
+- [RangeSlider](docs/components/RangeSlider.md): Two-color dual-thumb range slider.
+- [Rating](docs/components/Rating.md): Pixel-block rating.
+- [Select](docs/components/Select.md): Custom two-color dropdown built on the ARIA combobox/listbox pattern, so the open list follows `--fg`/`--bg`, pixel borders, and inversion just like the rest...
+- [Sidebar](docs/components/Sidebar.md): Persistent, in-flow navigation rail that toggles between an expanded (icon + label) and collapsed (icon-only) width.
+- [SidebarBody](docs/components/SidebarBody.md): Scrollable main area, typically holding a `SideNav`.
+- [SidebarFooter](docs/components/SidebarFooter.md): Bottom account/user slot, separated by a pixel rule.
+- [SidebarHeader](docs/components/SidebarHeader.md): Top brand/logo slot, separated by a pixel rule.
+- [SidebarTrigger](docs/components/SidebarTrigger.md): Button that toggles the surrounding Sidebar's collapsed state.
+- [SideNav](docs/components/SideNav.md): Sidebar navigation with optional section headings and an active item.
+- [Skeleton](docs/components/Skeleton.md): Dithered placeholder block for loading states.
+- [Slider](docs/components/Slider.md): Two-color range slider built on a native `input[type=range]`.
+- [Spinner](docs/components/Spinner.md): Stepped pixel-rotation loading indicator.
+- [Stack](docs/components/Stack.md): Vertical flex layout with token-based spacing.
+- [Stat](docs/components/Stat.md): Compact metric display: label, value, and an optional directional delta.
+- [StatGroup](docs/components/StatGroup.md): Row of `Stat`s aligned and separated by dividers.
+- [Stepper](docs/components/Stepper.md): Progress indicator for a multi-step flow.
+- [Switch](docs/components/Switch.md): Two-color toggle switch built on a native checkbox with `role="switch"`.
+- [Tab](docs/components/Tab.md): A single tab button.
+- [Table](docs/components/Table.md): Two-color data table with pixel rules.
+- [TabList](docs/components/TabList.md): Row (or column) of tabs with arrow-key roving focus.
+- [TabPanel](docs/components/TabPanel.md): Content panel shown when its tab is selected.
+- [Tabs](docs/components/Tabs.md): Tabbed interface root.
+- [TagInput](docs/components/TagInput.md): Token entry field.
+- [TBody](docs/components/TBody.md): Component.
+- [Td](docs/components/Td.md): Component.
+- [Text](docs/components/Text.md): Polymorphic inline/block text with token-based sizing.
+- [Textarea](docs/components/Textarea.md): Multi-line text field sharing the Input styling.
+- [TextureSelect](docs/components/TextureSelect.md): A Select bound to the current texture fill (dither or hatch).
+- [Th](docs/components/Th.md): Component.
+- [THead](docs/components/THead.md): Component.
+- [ThemeProvider](docs/components/ThemeProvider.md): Establishes a Duality theme scope.
+- [Timeline](docs/components/Timeline.md): Vertical event list with pixel markers and connectors.
+- [TimePicker](docs/components/TimePicker.md): Two-color time picker: a Select-like trigger opens hour and minute listbox columns (plus AM/PM in 12h mode).
+- [ToastProvider](docs/components/ToastProvider.md): Provides `useToast()` and renders the toast stack in a portal.
+- [ToggleGroup](docs/components/ToggleGroup.md): Segmented control.
+- [ToggleGroupItem](docs/components/ToggleGroupItem.md): A single option button within a ToggleGroup.
+- [Tooltip](docs/components/Tooltip.md): Text hint shown on hover/focus.
+- [Tr](docs/components/Tr.md): Component.
+- [Tree](docs/components/Tree.md): Data-driven tree.
+- [TruncatedText](docs/components/TruncatedText.md): Text that truncates (single line) or clamps (multi line) and reveals the full value in a tooltip only when it is actually overflowing.
+- [useIcons](docs/components/useIcons.md): Resolve the active icon set (built-in defaults merged with any overrides).
+- [useSidebar](docs/components/useSidebar.md): Access the surrounding Sidebar's collapse state (e.g.
+- [useTheme](docs/components/useTheme.md): Access and control the current Duality theme.

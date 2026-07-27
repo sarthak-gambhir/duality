@@ -31,9 +31,11 @@ Implemented with the `du_invert` mixin:
 @include m.du_invert; // color: var(--bg); background-color: var(--fg);
 ```
 
-## 2. Dither
+## 2. Textured fill (dither / hatch)
 
-A checkerboard built from the two colors acts as the system's "gray". It marks disabled surfaces and indeterminate/placeholder states (Skeleton, indeterminate Progress). Because it is literally the two colors interleaved, it reads as a muted tone without introducing a third value.
+A pattern built from the two colors acts as the system's "gray". It marks disabled surfaces and indeterminate/placeholder states (Skeleton, indeterminate Progress, scrims, tracks). Because it is literally the two colors interleaved, it reads as a muted tone without introducing a third value.
+
+The pattern is a single token driven by `data-texture` on the theme root, so it flips between **dither** (default checkerboard) and **hatch** (diagonal lines) across every textured surface at once. Use the **Texture** toolbar control to preview both, or `<ThemeProvider defaultTexture="hatch">`.
 
 <Demo>
   <Inline gap={3}>
@@ -43,19 +45,30 @@ A checkerboard built from the two colors acts as the system's "gray". It marks d
 </Demo>
 
 ```scss
-@include m.du_texture_fill;
+@include m.du_texture_fill; // dither or hatch, per the active texture
 ```
 
-## 3. Text outline
+## 3. Keeping disabled text legible
 
-Text placed over a dither can lose legibility, so disabled labels get a crisp two-color outline (`du_text_outline`) that rings each glyph in `--bg`. No blur, no intermediate tone.
+Text placed over a texture can lose legibility, so disabled controls get one of two two-color treatments - both keep the text crisp with no blur or intermediate tone:
+
+- **Selection / action controls** (Button, Checkbox, etc.) ring each glyph in `--bg` with `du_text_outline`.
+- **Value-entry controls** (Input, Select, DatePicker, etc.) paint the value on a `--bg` text-stroke plate via `du_disabled_field`, so the value stays readable behind the fill whichever texture is active. Disabled value controls can also surface a `disabledReason` in a persistent caption below the field (wired to the control via `aria-describedby`).
 
 ```scss
+// selection / action control
 &:disabled {
   @include m.du_texture_fill;
   @include m.du_text_outline(2);
 }
+
+// value-entry control
+&:disabled {
+  @include m.du_disabled_field; // texture fill + --bg stroke plate behind the value
+}
 ```
+
+Read-only value controls are distinct from disabled: they stay legible and unfilled, marked instead by a lock cell (for example, `Rating` renders a joined lock + rule ahead of the stars).
 
 ## 4. Border style, not color
 
